@@ -1,15 +1,15 @@
-.race-list-layout {
+.raceListLayout {
   margin: 0 2%;
   display: grid;
   grid-template-columns: 50% 50%;
 }
-.race-list-layout li {
+.raceListLayout li {
   border: solid black 1px;
   border-radius: 5px;
   margin-bottom: 5px;
   padding: 5px;
 }
-.race-list-layout li:hover {
+.raceListLayout li:hover {
   background-color: white;
   color: black;
 }

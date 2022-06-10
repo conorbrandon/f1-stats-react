@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import "./SortableTable.css";
+import styles from "./SortableTable.module.css";
 
 interface SortableTableProps {
   items?: any[],
@@ -63,7 +63,7 @@ export const SortableTable: React.FC<SortableTableProps> = ({ items, template, c
     return sortConfig.key === name ? sortConfig.direction === 'asc' ? 'expand_more' : 'expand_less' : '';
   };
   return (
-    <div className="centered-table">
+    <div className={styles.centeredTable}>
       <table>
         {caption && <caption className="xx-large-font">{caption}</caption>}
         <thead>
@@ -71,7 +71,7 @@ export const SortableTable: React.FC<SortableTableProps> = ({ items, template, c
             {template?.map((t, i) => {
               return (
                 <th key={i}>
-                  <button type="button" onClick={() => requestSort(t)}>
+                  <button className={styles.button} type="button" onClick={() => requestSort(t)}>
                     <div className="material-icons-align center">
                       <span>{t}</span><span className='material-icons'>{getClassNamesFor(t)}</span>
                     </div>

@@ -2,7 +2,7 @@ import React from "react";
 import { useOutletContext } from "react-router-dom";
 import { Mapbox } from "../Mapbox/Mapbox";
 import { RaceOutletContext } from "../Race/Race";
-import "./RaceSummary.css";
+import styles from "./RaceSummary.module.css";
 
 export const RaceSummary = ({ }) => {
   const { race }: RaceOutletContext = useOutletContext();

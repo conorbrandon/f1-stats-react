@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./RaceList.css";
+import styles from "./RaceList.module.css";
 
 import { Link } from "react-router-dom";
 import { ScheduleDisplayProps } from "../Schedule/Schedule";
@@ -10,7 +10,7 @@ export const RaceList: React.FC<ScheduleDisplayProps> = ({ races }) => {
   const [activePopup, setActivePopup] = useState<number | undefined>();
 
   return (
-    <div className="race-list-layout">
+    <div className={styles.raceListLayout}>
       <div>
         <ol>
         {races.map((race, i) => {

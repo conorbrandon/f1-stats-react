@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./Schedule.css";
+import styles from "./Schedule.module.css";
 
 import { ErgastRace } from "../../model/ErgastRace";
 import { useParams, useNavigate } from "react-router-dom";

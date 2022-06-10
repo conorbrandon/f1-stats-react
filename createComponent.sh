@@ -1,9 +1,11 @@
 mkdir ./src/components/$1
 touch ./src/components/$1/$1.tsx
-touch ./src/components/$1/$1.css
+touch ./src/components/$1/$1.module.css
 cat << EOF > ./src/components/$1/$1.tsx
 import React from "react";
-import "./$1.css";
+import styles from "./$1.module.css";
+
+
 
 export const $1 = ({ }) => {
 

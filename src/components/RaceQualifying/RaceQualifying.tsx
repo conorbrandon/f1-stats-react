@@ -4,7 +4,7 @@ import { ErgastAPI } from "../../api/ErgastAPI";
 import { FlagHelper } from "../../helpers/FlagHelper";
 import { ErgastRace } from "../../model/ErgastRace";
 import { RaceOutletContext } from "../Race/Race";
-import "./RaceQualifying.css";
+import styles from "./RaceQualifying.module.css";
 
 export const RaceQualifying = ({ }) => {
   const { year, round }: RaceOutletContext = useOutletContext();

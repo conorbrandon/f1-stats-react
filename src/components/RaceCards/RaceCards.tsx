@@ -1,5 +1,5 @@
 import React from "react";
-import "./RaceCards.css";
+import styles from "./RaceCards.module.css";
 
 import { Link } from "react-router-dom";
 import { ScheduleDisplayProps } from "../Schedule/Schedule";
@@ -10,20 +10,20 @@ export const RaceCards: React.FC<ScheduleDisplayProps> = ({ races }) => {
   return (
     <>
       <Mapbox races={races} mapType="horizontal" />
-      <div className="race-card-layout">
+      <div className={styles.raceCardLayout}>
         {races.map(race => {
           return (
-            <div className="race-card cursor-pointer">
+            <div className={`${styles.raceCard} cursor-pointer`}>
               <Link to={`result/${race.season}/${race.round}`} className="no-underline">
                 <span>
                   <h3>{race.raceName}</h3>
                 </span>
                 <h4>{race.Circuit.circuitName}</h4>
-                <div className="row">
-                  <p className="label">{race.Circuit.Location.locality}, {race.Circuit.Location.country}</p>
+                <div className={styles.row}>
+                  <p className={styles.label}>{race.Circuit.Location.locality}, {race.Circuit.Location.country}</p>
                   <img src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} className="race-card-flag card" />
                 </div>
-                <div className="race-card-round-counter">{race.round}</div>
+                <div className={styles.raceCardRoundCounter}>{race.round}</div>
               </Link>
             </div>
           );

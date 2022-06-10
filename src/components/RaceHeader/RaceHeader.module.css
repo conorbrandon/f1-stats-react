@@ -1,0 +1,12 @@
+.links a {
+  margin-right: 2rem;
+}
+
+.img {
+  width: 15%;
+  margin-left: 1rem;
+}
+
+.spaceEvenly {
+  justify-content: space-evenly;
+}

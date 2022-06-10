@@ -5,7 +5,7 @@ import { TimeHelper } from "../../helpers/TimeHelper";
 import { ErgastResult } from "../../model/ErgastResult";
 import { RaceOutletContext } from "../Race/Race";
 import { SortableTable } from "../SortableTable/SortableTable";
-import "./RaceResults.css";
+import styles from "./RaceResults.module.css";
 
 export const RaceResults = ({ }) => {
   const { race }: RaceOutletContext = useOutletContext();

@@ -3,7 +3,7 @@ import { Outlet, useParams } from "react-router-dom";
 import { ErgastAPI } from "../../api/ErgastAPI";
 import { ErgastRace } from "../../model/ErgastRace";
 import { RaceHeader } from "../RaceHeader/RaceHeader";
-import "./Race.css";
+import styles from "./Race.module.css";
 
 export interface RaceOutletContext {
   race?: ErgastRace,

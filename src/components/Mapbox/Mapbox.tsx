@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./Mapbox.css";
+import styles from "./Mapbox.module.css";
 
 import { ErgastRace } from "../../model/ErgastRace";
 import mapboxgl from 'mapbox-gl';
@@ -99,6 +99,6 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType }) =
 
 
   return (
-    <div id="map" className={`map ${mapType}`} ref={el => (mapContainer.current = el as HTMLDivElement)}></div>
+    <div id="map" className={`${styles.map} ${styles[mapType]}`} ref={el => (mapContainer.current = el as HTMLDivElement)}></div>
   );
 };
