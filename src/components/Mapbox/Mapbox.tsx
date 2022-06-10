@@ -24,6 +24,7 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType }) =
   const [zoom, setZoom] = useState<number>(0.5);
 
   const addMarkersForRaces = (races: ErgastRace[], map: mapboxgl.Map) => {
+    console.log('addMarkersForRaces', { races, map });
     setMarkerMap([]);
     let [sumLng, sumLat] = [0, 0];
     setMarkerMap(races.map((race, i) => {
@@ -32,7 +33,7 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType }) =
       let lat = parseFloat(race.Circuit.Location.lat);
       sumLng += lng;
       sumLat += lat;
-      const marker = new mapboxgl.Marker()
+      const marker: mapboxgl.Marker = new mapboxgl.Marker()
         .setLngLat([lng, lat])
         .setPopup(
           new mapboxgl.Popup({ closeButton: true, closeOnClick: true })
@@ -52,6 +53,7 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType }) =
     map?.setCenter([sumLng | 0, sumLat | 0]);
   };
   const removeMarkersForRaces = () => {
+    console.log('removeMarkersForRaces', { markerMap })
     markerMap?.forEach(marker => marker.remove());
   };
 
@@ -65,31 +67,32 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType }) =
       });
       map.addControl(new mapboxgl.NavigationControl());
       map.on("load", () => {
+        console.log('map loaded');
         setMap(map);
+        addMarkersForRaces(races, map);
       });
-      addMarkersForRaces(races, map);
     };
     if (!map) initializeMap(setMap, mapContainer);
-  }, []);
-  useEffect(() => {
-    if (racesRef.current !== races) {
-      console.log('races changed');
-      removeMarkersForRaces();
-      if (map) addMarkersForRaces(races, map);
-      racesRef.current = races;
-    } else {
-      console.log('races constant');
+    else if (map) {
+      if (racesRef.current !== races) {
+        console.log('races changed', { races });
+        removeMarkersForRaces();
+        if (map) addMarkersForRaces(races, map as mapboxgl.Map);
+        racesRef.current = races;
+      } else {
+        console.log('races constant');
+      }
     }
   }, [races]);
   useEffect(() => {
     console.log({activePopup}, {activePopupRef: activePopupRef.current});
     if (activePopup !== undefined) {
       console.log('show');
-      markerMap[activePopup].togglePopup();
+      markerMap[activePopup]?.togglePopup();
     } 
     if (activePopupRef.current !== undefined) {
       console.log('hide');
-      markerMap[activePopupRef.current].togglePopup();
+      markerMap[activePopupRef.current]?.togglePopup();
     }
     activePopupRef.current = activePopup;
   }, [activePopup]);

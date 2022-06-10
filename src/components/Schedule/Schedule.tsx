@@ -17,7 +17,7 @@ export const Schedule = ({  }) => {
   const { year } = useParams();
   const [scheduleYear, setScheduleYear] = useState<string>(year || 'current');
   const [useCardLayout, setUseCardLayout] = useState<boolean>(false);
-  const [races, setRaces] = useState<ErgastRace[]>(ErgastAPI.getSchedule(scheduleYear));
+  const [races, setRaces] = useState<ErgastRace[]>([]);
 
   const changeScheduleYear = (year: string) => {
     setScheduleYear(year);
@@ -25,7 +25,9 @@ export const Schedule = ({  }) => {
   }
 
   useEffect(() => {
-    setRaces(ErgastAPI.getSchedule(scheduleYear));
+    ErgastAPI.getSchedule(scheduleYear)
+      .then(response => setRaces(response))
+      .catch(error => console.log("can't fetch races", error));
   }, [scheduleYear]);
 
   return (
