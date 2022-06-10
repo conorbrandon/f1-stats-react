@@ -1,0 +1,10 @@
+h1 {
+  text-align: center;
+  margin: 3px 0 3px 0;
+}
+h1 span {
+  color: red;
+}
+nav a {
+  padding-left: 20px;
+}

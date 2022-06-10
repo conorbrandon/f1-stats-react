@@ -1,13 +1,103 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* http://meyerweb.com/eric/tools/css/reset/ 
+v2.0 | 20110126
+License: none (public domain)
+
+THIS IS A CSS RESET SO WE DON'T HAVE TO DEAL WITH DUMB CSS STYLES THAT ARE SET AUTOMATICALLY
+*/
+/* a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:"";content:none}table{border-collapse:collapse;border-spacing:0} */
+
+/* You can add global styles to this file, and also import other style files */
+
+html, body {
+  background-color: black;
+  color: white;
+  font-family: 'Kdam Thmor Pro', sans-serif;
+  overflow-x: hidden;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+button, .cursor-pointer {
+  cursor: pointer;
+}
+
+.white-bg {
+  color: black;
+  background-color: white;
+}
+
+.race-card-flag.list {
+  width: 15%;
+  height: auto;
+  border: solid gray 1px;
+  border-radius: 1px;
+  float: right;
+}
+.race-card-flag.card {
+  width: 22%;
+height: auto;
+border: solid gray 1px;
+border-radius: 1px;
+float: right;
+margin-right: 15px;
+}
+
+.mapboxgl-popup-content {
+  color: black;
+}
+
+a {
+  color: white;
+}
+.no-underline {
+  text-decoration: none;
+}
+.hover-underline {
+  text-decoration: none;
+}
+.hover-underline:hover {
+  text-decoration: underline;
+}
+
+.x-large-font {
+  font-size: x-large;
+}
+.xx-large-font {
+  font-size: xx-large;
+}
+.large-font {
+  font-size: large;
+}
+.medium-font {
+  font-size: medium;
+}
+
+.app-header {
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  width: 90vw;
+  padding: 0 5vw;
+  height: 12vh;
+  background-color: black;
+  z-index: 5;
+  border-bottom: solid white 3px;
+}
+.page-header {
+  overflow: hidden;
+  position: fixed;
+  top: 12vh;
+  width: 82vw;
+  height: 10vh;
+  background-color: black;
+  z-index: 5;
+  padding: 0 9vw;
+  border-top: solid white 3px;
+}
+.page-content {
+  position: absolute;
+  overflow: scroll;
+  top: 22vh;
+  width: 100vw;
+}
+.page-content.padded {
+  margin: 0 2%;
 }

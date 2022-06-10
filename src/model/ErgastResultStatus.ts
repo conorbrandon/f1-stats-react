@@ -1,0 +1,1 @@
+export type ErgastResultStatus = "Finished" | "+1 Lap" | "Suspension" | "Collision";

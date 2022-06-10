@@ -1,0 +1,19 @@
+.map {
+  margin: 2% auto;
+  border: solid white 3px;
+}
+.map.horizontal {
+  height: 400px;
+  width: 50%;
+}
+.map.vertical {
+  height: 75vh;
+  width: 40%;
+  margin-left: 5%;
+  margin-top: 1%;
+  position: fixed;
+}
+.map.square {
+  height: 400px;
+  width: 400px;
+}

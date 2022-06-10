@@ -1,0 +1,47 @@
+.race-card {
+  border: solid 1px white;
+  border-radius: 5px;
+  flex: 0 1 21%;
+  /* max-width: 25%; */
+  padding: 5px;
+  text-align: left;
+  position: relative;
+  margin: 5px;
+}
+
+.race-card:hover {
+  background-color: white;
+  color: black;
+}
+.race-card:hover a {
+  color: black;
+}
+
+.race-card-round-counter {
+  position: absolute;
+  top: 0;
+  left: 89%;
+  font-size: x-large;
+  width: 10%;
+  height: auto;
+  border-bottom: solid white 1px;
+  border-left: solid white 1px;
+  padding: 1px;
+  text-align: center;
+}
+
+.race-card-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  /* margin: 0 auto; */
+  width: 100%;
+}
+
+.row {
+  vertical-align: bottom;
+}
+.label {
+  display: inline-block;
+}
