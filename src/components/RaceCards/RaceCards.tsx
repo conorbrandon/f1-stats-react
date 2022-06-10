@@ -14,7 +14,7 @@ export const RaceCards: React.FC<ScheduleDisplayProps> = ({ races }) => {
         {races.map(race => {
           return (
             <div className={`${styles.raceCard} cursor-pointer`}>
-              <Link to={`result/${race.season}/${race.round}`} className="no-underline">
+              <Link to={`/${race.season}/${race.round}`} className="no-underline">
                 <span>
                   <h3>{race.raceName}</h3>
                 </span>

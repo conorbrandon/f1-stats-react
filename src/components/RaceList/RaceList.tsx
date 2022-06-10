@@ -15,7 +15,7 @@ export const RaceList: React.FC<ScheduleDisplayProps> = ({ races }) => {
         <ol>
         {races.map((race, i) => {
           return (
-            <Link key={i} to={`/result/${race.season}/${race.round}`} className="no-underline">
+            <Link key={i} to={`/${race.season}/${race.round}`} className="no-underline">
               <li className="cursor-pointer" onMouseEnter={() => setActivePopup(i)} onMouseLeave={() => setActivePopup(undefined)}>
                 <span className="x-large-font">{race.raceName}
                   <img className="race-card-flag list" src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={race.Circuit.Location.country} /> 
