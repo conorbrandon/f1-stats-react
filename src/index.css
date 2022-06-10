@@ -91,6 +91,9 @@ a {
   z-index: 5;
   padding: 0 9vw;
   border-top: solid white 3px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .page-content {
   position: absolute;
@@ -100,4 +103,12 @@ a {
 }
 .page-content.padded {
   margin: 0 2%;
+}
+
+.material-icons-align {
+  display: flex;
+  align-items: center;
+}
+.material-icons-align.center {
+  justify-content: center;
 }

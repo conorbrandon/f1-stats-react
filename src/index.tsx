@@ -5,6 +5,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Schedule } from './components/Schedule/Schedule';
+import { Race } from './components/Race/Race';
+import { RaceSummary } from './components/RaceSummary/RaceSummary';
+import { RaceResults } from './components/RaceResults/RaceResults';
+import { RaceQualifying } from './components/RaceQualifying/RaceQualifying';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,6 +19,11 @@ root.render(
       <Routes>
         <Route path="/" element={<App />} >
           <Route path={"/:year"} element={<Schedule />} />
+          <Route path={"/:year/:round"} element={<Race />}>
+            <Route path='' element={<RaceSummary />} />
+            <Route path='results' element={<RaceResults />}/>
+            <Route path='qualifying' element={<RaceQualifying />}/>
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

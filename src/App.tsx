@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useOutletContext } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import './App.css';
 
 import { AppHeader } from "./components/AppHeader/AppHeader";
