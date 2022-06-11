@@ -4,20 +4,22 @@ import { SortableTableHelper } from "../../helpers/SortableTableHelper";
 import { ErgastQualifyingResult } from "../../model/ErgastQualifyingResult";
 import { ErgastResult } from "../../model/ErgastResult";
 import { RaceOutletContext } from "../Race/Race";
+import { RaceResultsProps } from "../RaceResults/RaceResults";
 import { SortableTable } from "../SortableTable/SortableTable";
 import styles from "./RaceQualifying.module.css";
 
-export const RaceQualifying = ({ }) => {
+export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam }) => {
   const { raceQualifying }: RaceOutletContext = useOutletContext();
   const hasQ3 = raceQualifying?.QualifyingResults?.length ? raceQualifying.QualifyingResults[0].Q3 : false;
   let template = ['Position', 'Driver', 'Constructor', 'Q1'];
   if (hasQ3) {
     template.push(...['Q2', 'Q3']);
   }
+  template = templateParam || template;
   return (
-    <div className="page-content padded">
+    <div className={noClass ? '' : "page-content padded"}>
       <SortableTable 
-        items={raceQualifying?.QualifyingResults}
+        items={limit ? raceQualifying?.QualifyingResults?.slice(0, limit) : raceQualifying?.QualifyingResults}
         caption={"Qualifying Results"}
         template={template}
         comparators={{

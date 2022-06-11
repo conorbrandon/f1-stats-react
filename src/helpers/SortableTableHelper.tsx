@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { ErgastQualifyingResult } from "../model/ErgastQualifyingResult";
 import { ErgastResult } from "../model/ErgastResult";
 import { FlagHelper } from "./FlagHelper";
@@ -15,11 +16,11 @@ export const SortableTableHelper = {
     Driver: (result: ErgastResult) => {
       return <div className="material-icons-align">
         <img src={FlagHelper.getFlagFromDenonym(result.Driver.nationality)} alt={`${result.Driver.nationality} flag`} />
-        {result.Driver.givenName} {result.Driver.familyName}
+        <Link to={`/driver/${result.Driver.driverId}`}>{result.Driver.givenName} {result.Driver.familyName}</Link>
       </div>
     },
     Constructor: (result: ErgastResult) => {
-      return <>{result.Constructor.name}</>
+      return <Link to={`/constructor/${result.Constructor.constructorId}`}>{result.Constructor.name}</Link>
     },
     Points: (result: ErgastResult) => {
       return <div>{result.points}</div>

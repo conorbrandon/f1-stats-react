@@ -7,14 +7,21 @@ import { RaceOutletContext } from "../Race/Race";
 import { SortableTable } from "../SortableTable/SortableTable";
 import styles from "./RaceResults.module.css";
 
-export const RaceResults = ({ }) => {
+export interface RaceResultsProps {
+  noClass?: boolean,
+  limit?: number,
+  templateParam?: string[]
+}
+
+export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam }) => {
   const { race }: RaceOutletContext = useOutletContext();
+  const template = templateParam || ['Position', 'Driver', 'Constructor', 'Points', 'Fastest Lap', 'Finishing Status', 'Laps'];
   return (
-    <div className="page-content padded">
+    <div className={noClass ? '' : "page-content padded"}>
       <SortableTable
-        items={race?.Results}
+        items={limit ? race?.Results?.slice(0, limit) : race?.Results}
         caption={'Results'}
-        template={['Position', 'Driver', 'Constructor', 'Points', 'Fastest Lap', 'Finishing Status', 'Laps']}
+        template={template}
         comparators={{
           Position: SortableTableHelper.comparators.Position,
           Driver: SortableTableHelper.comparators.Driver,

@@ -13,9 +13,9 @@
 .centeredTable img {
   width: 5%;
 }
-.centeredTable table {
+/* .centeredTable table {
   min-width: 80%;
-}
+} */
 .centeredTable tbody tr:nth-child(odd){
   background-color: rgb(83, 83, 83);
   color: #fff;
