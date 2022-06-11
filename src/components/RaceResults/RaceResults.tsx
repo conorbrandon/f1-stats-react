@@ -20,7 +20,7 @@ export const RaceResults = ({ }) => {
           Driver: SortableTableHelper.comparators.Driver,
           Constructor: SortableTableHelper.comparators.Constructor,
           Points: SortableTableHelper.comparators.Points,
-          'Fastest Lap': SortableTableHelper.comparators.LapTime,
+          'Fastest Lap': (a: ErgastResult, b: ErgastResult) => SortableTableHelper.comparators.LapTime(a, b, 'FastestLap.Time.time'),
           'Finishing Status': SortableTableHelper.comparators["Finishing Status"],
           Laps: SortableTableHelper.comparators.Laps,
         }}

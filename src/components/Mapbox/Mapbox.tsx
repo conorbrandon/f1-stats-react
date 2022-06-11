@@ -8,9 +8,10 @@ interface MapboxProps {
   races: ErgastRace[],
   activePopup?: number,
   mapType: string,
+  zoomParam?: number
 }
 
-export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType }) => {
+export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType, zoomParam }) => {
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN as string;
   const [map, setMap] = useState<mapboxgl.Map>();
   const mapContainer = useRef<HTMLDivElement>();
@@ -21,7 +22,7 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType }) =
   const style: string = 'mapbox://styles/mapbox/outdoors-v9';
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
-  const [zoom, setZoom] = useState<number>(0.5);
+  const [zoom, setZoom] = useState<number>(zoomParam || 0.5);
 
   const addMarkersForRaces = (races: ErgastRace[], map: mapboxgl.Map) => {
     console.log('addMarkersForRaces', { races, map });
@@ -50,6 +51,7 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType }) =
     }));
     sumLng /= races.length;
     sumLat /= races.length;
+    console.log({ sumLng, sumLat })
     map?.setCenter([sumLng | 0, sumLat | 0]);
   };
   const removeMarkersForRaces = () => {

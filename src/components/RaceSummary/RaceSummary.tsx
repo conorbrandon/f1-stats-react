@@ -5,14 +5,14 @@ import { RaceOutletContext } from "../Race/Race";
 import styles from "./RaceSummary.module.css";
 
 export const RaceSummary = ({ }) => {
-  const { race }: RaceOutletContext = useOutletContext();
+  const { race, raceQualifying }: RaceOutletContext = useOutletContext();
   return (
     <div className="page-content padded">
       {race && <><p>{race.Circuit.circuitName}</p>
       <p>{race.Circuit.Location.locality}, {race.Circuit.Location.country}</p>
       <p>{new Date(race.date).toLocaleDateString()}</p>
       <a href={race.url} target="_blank" rel="noopener">Wikipedia</a>
-      <Mapbox races={[race]} mapType="square" /></>}
+      <Mapbox races={[race]} mapType="square" zoomParam={5} /></>}
     </div>
   );
 };

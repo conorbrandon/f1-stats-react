@@ -51,8 +51,18 @@ export const SortableTableHelper = {
     Driver: (a: ErgastResult, b: ErgastResult) => a.Driver.familyName > b.Driver.familyName ? 1 : -1,
     Constructor: (a: ErgastResult, b: ErgastResult) => a.Constructor.name > b.Constructor.name ? 1 : -1,
     Points: (a: ErgastResult, b: ErgastResult) => parseInt(b.points) - parseInt(a.points),
-    LapTime: (a: ErgastResult, b: ErgastResult) => TimeHelper.raceTimeToMs(a.FastestLap?.Time.time) - TimeHelper.raceTimeToMs(b.FastestLap?.Time.time),
+    LapTime: (a: ErgastResult | ErgastQualifyingResult, b: ErgastResult | ErgastQualifyingResult, objectPath: string) => TimeHelper.raceTimeToMs(deep_value(a, objectPath)) - TimeHelper.raceTimeToMs(deep_value(b, objectPath)),
     'Finishing Status': (a: ErgastResult, b: ErgastResult) => a.status > b.status ? 1 : -1,
     Laps: (a: ErgastResult, b: ErgastResult) => parseInt(a.laps) - parseInt(b.laps),
+  },
+};
+
+export const deep_value = (obj: any, path: string) => {
+  const pathParts = path.split('.');
+  for (let i = 0; i < pathParts.length; i++) {
+    console.log({ obj });
+    if (obj === undefined) return obj;
+    obj = obj[pathParts[i] as keyof typeof obj];
   }
+  return obj;
 };
