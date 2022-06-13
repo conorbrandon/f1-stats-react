@@ -117,3 +117,20 @@ a {
 .gold {
   color: gold;
 }
+
+
+.recharts-tooltip-label {
+  color: black;
+  font-size: small;
+}
+.recharts-tooltip-item-list {
+  font-size: x-small;
+}
+.recharts-responsive-container {
+  background-color: white;
+  margin-top: 1rem;
+}
+.VictoryContainer {
+  background-color: white;
+  margin-top: 1rem;
+}

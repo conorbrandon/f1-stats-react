@@ -7,7 +7,7 @@ import { RaceResults } from "../RaceResults/RaceResults";
 import styles from "./RaceSummary.module.css";
 
 export const RaceSummary = ({ }) => {
-  const { race, raceQualifying }: RaceOutletContext = useOutletContext();
+  const { race, raceQualifying, lapTimes, driverIDSet, scaleDomain }: RaceOutletContext = useOutletContext();
   return (
     <div className={`page-content padded ${styles.raceSummaryLayout}`}>
       <div className={styles.raceSummaryLocation}>
@@ -18,6 +18,7 @@ export const RaceSummary = ({ }) => {
           </div>
           <p>Date: {new Date(race.date).toLocaleDateString()}</p>
           <Mapbox races={[race]} mapType="square" zoomParam={5} />
+          <p><a href={`https://www.google.com/maps/place/${race.Circuit.Location.lat},${race.Circuit.Location.long}`} target="_blank" rel="noopener noreferrer">Google Maps</a></p>
           <p><a href={race.url} target="_blank" rel="noopener">Wikipedia</a></p>
           </>}
       </div>

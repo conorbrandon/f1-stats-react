@@ -21,6 +21,7 @@ export const RaceHeader: React.FC<RaceHeaderProps> = ({ race }) => {
         <Link to="">Summary</Link>
         <Link to="results">Results</Link>
         <Link to="qualifying">Qualifying</Link>
+        <Link to="laptimes">Lap/Position Trace</Link>
       </span>
     </div>
   );

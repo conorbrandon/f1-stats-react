@@ -10,6 +10,7 @@ export const AppHeader = ({ }) => {
       <nav className={styles.paddedLink}>
         <Link to="2012">season schedules</Link>
         <Link to="2008/5">test race</Link>
+        <Link to="driver/massa">test driver</Link>
       </nav>
     </div>
   );

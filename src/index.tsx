@@ -9,6 +9,9 @@ import { Race } from './components/Race/Race';
 import { RaceSummary } from './components/RaceSummary/RaceSummary';
 import { RaceResults } from './components/RaceResults/RaceResults';
 import { RaceQualifying } from './components/RaceQualifying/RaceQualifying';
+import { Driver } from './components/Driver/Driver';
+import { Constructor } from './components/Constructor/Constructor';
+import { RaceLapTimes } from './components/RaceLapTimes/RaceLapTimes';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -23,7 +26,10 @@ root.render(
             <Route path='' element={<RaceSummary />} />
             <Route path='results' element={<RaceResults />}/>
             <Route path='qualifying' element={<RaceQualifying />}/>
+            <Route path='laptimes' element={<RaceLapTimes />}/>
           </Route>
+          <Route path='/driver/:driverID' element={<Driver />}/>
+          <Route path='/constructor/:constructorID' element={<Constructor />}/>
         </Route>
       </Routes>
     </BrowserRouter>

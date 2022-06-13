@@ -1,5 +1,6 @@
 import { ErgastCircuit } from "./ErgastCircuit";
 import { ErgastDate } from "./ErgastDate";
+import { ErgastLap } from "./ErgastLap";
 import { ErgastQualifyingResult } from "./ErgastQualifyingResult";
 import { ErgastResult } from "./ErgastResult";
 
@@ -16,5 +17,6 @@ export interface ErgastRace {
   // "ThirdPractice": ErgastDate,
   // "Qualifying": ErgastDate
   "Results"?: ErgastResult[]
-  "QualifyingResults"?: ErgastQualifyingResult[]
+  "QualifyingResults"?: ErgastQualifyingResult[],
+  "Laps"?: ErgastLap[]
 };

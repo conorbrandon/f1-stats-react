@@ -1,0 +1,12 @@
+.centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.floatRight {
+  margin-top: 2rem;
+  margin-right: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+}

@@ -8,6 +8,8 @@ import styles from "./$1.module.css";
 
 
 export const $1 = ({ }) => {
-
+  return (
+    <div></div>
+  );
 };
 EOF
