@@ -18,11 +18,12 @@ interface GenericTraceProps {
   domain: any[],
   tickCount: number,
   formatter?: (value: number) => string,
-  reversed?: boolean
+  reversed?: boolean,
+  dot?: boolean
 };
 const genericFormatter = (value: number) => value + '';
 
-export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, width, height, chartTitle, scale, domain, tickCount, formatter, reversed }) => {
+export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, width, height, chartTitle, scale, domain, tickCount, formatter, reversed, dot }) => {
   const [getPng, { ref, isLoading }] = useCurrentPng();
   const handleDownload = useCallback(async () => {
     const png = await getPng();
@@ -34,21 +35,23 @@ export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, w
   }, [getPng]);
   return (
     <div>
-      <button onClick={handleDownload}>
+      <button onClick={handleDownload} style={{ fontSize: 'medium' }}>
         {isLoading ? 'Downloading...' : 'Download Chart'}
       </button>
       <ResponsiveContainer width={width || '90%'} height={height}>
         <LineChart margin={{ top: 50, left: 30, right: 30, bottom: 30 }} data={data} ref={ref}>
-        <text x={(width || 0) / 2} y={20} fill="black" textAnchor="middle" dominantBaseline="central">
+          <text x={(width || 0) / 2} y={20} fill="black" textAnchor="middle" dominantBaseline="central">
             <tspan fontSize="14">{chartTitle || ''}</tspan>
-        </text>
+          </text>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="lapNum" interval={1} />
           <YAxis scale={scale || scaleLinear()} type="number" domain={domain} interval={0} tickFormatter={formatter || genericFormatter} width={100} tickCount={tickCount} reversed={reversed || false} />
-          <Tooltip formatter={formatter || genericFormatter} />
+          <Tooltip itemSorter={(item) => {
+            return item.value as number;
+          }} formatter={formatter || genericFormatter} position={{ y: -100 }} />
           <Legend />
           {driverIDSet?.filter(driver => driver.isSelected).map((driver, _i) => {
-            return <Line key={driver.driverID} type="linear" dataKey={driver.driverID} stroke={driver.driverColor} strokeWidth={2} />;
+            return <Line key={driver.driverID} type="linear" dataKey={driver.driverID} stroke={driver.driverColor} strokeWidth={2} dot={dot !== undefined ? dot : true} />;
           })}
         </LineChart>
       </ResponsiveContainer>

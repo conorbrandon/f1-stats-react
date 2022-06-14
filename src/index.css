@@ -118,7 +118,9 @@ a {
   color: gold;
 }
 
-
+.recharts-tooltip-wrapper {
+  border: solid 3px black;
+}
 .recharts-tooltip-label {
   color: black;
   font-size: small;

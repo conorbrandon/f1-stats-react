@@ -23,10 +23,10 @@ export interface RaceOutletContext {
   setDriverIDSet: React.Dispatch<React.SetStateAction<DriverIDSet>>,
   positionTrace: lapTime[]
 }
-interface ScaleDomain {min: number, max: number};
+interface ScaleDomain { min: number, max: number };
 
 function shuffle(array: any[]) {
-  let currentIndex = array.length,  randomIndex;
+  let currentIndex = array.length, randomIndex;
 
   // While there remain elements to shuffle.
   while (currentIndex != 0) {
@@ -73,51 +73,64 @@ export const Race = ({ }) => {
       .catch(error => console.log("can't get drivers", error));
   }, [drivers]);
   useEffect(() => {
-    ErgastAPI.getLapTimes(year || '', round || '')
-      .then(response => {
-        // console.log({ response });
-        let driverIDSet: DriverIDSet = [];
-        const numDrivers = (response.Laps as ErgastLap[])[0].Timings.length;
-        const randomColorIndexSet: number[] = shuffle(Array.from({ length: numDrivers }, (_, i: number) => i));
-        // console.log({randomColorIndexSet});
-        (response.Laps as ErgastLap[])[0].Timings.forEach((timing, _i) => driverIDSet.push({ driverID: timing.driverId, isSelected: true, driverColor: interpolateRainbow(randomColorIndexSet[_i] / numDrivers ), value: timing.driverId, label: timing.driverId }));
-        // console.log({ driverIDSet });
-        let minLapTime = Infinity; let maxLapTime = -Infinity;
-        let transformedLaps: lapTime[] = (response.Laps as ErgastLap[]).map((lap, lapNum) => {
-          let driverIDLapMap: lapTime = { lapNum: lapNum + 1 };
-          lap.Timings.forEach(timing => {
-            const lapTime = TimeHelper.raceTimeToMs(timing.time);
-            driverIDLapMap[timing.driverId] = lapTime;
-            if (lapTime > maxLapTime) maxLapTime = lapTime;
-            if (lapTime < minLapTime) minLapTime = lapTime;
+    if (raceQualifying) {
+      ErgastAPI.getLapTimes(year || '', round || '')
+        .then(response => {
+          // console.log({ response });
+          let driverIDSet: DriverIDSet = [];
+          const numDrivers = (response.Laps as ErgastLap[])[0].Timings.length;
+          const randomColorIndexSet: number[] = shuffle(Array.from({ length: numDrivers }, (_, i: number) => i));
+          // console.log({randomColorIndexSet});
+          (response.Laps as ErgastLap[])[0].Timings.forEach((timing, _i) => {
+            driverIDSet.push({
+              driverID: timing.driverId,
+              isSelected: true,
+              driverColor: interpolateRainbow(randomColorIndexSet[_i] / numDrivers),
+              value: timing.driverId,
+              label: timing.driverId
+            });
           });
-          return driverIDLapMap;
-        });
-        let transformedPositions: lapTime[] = (response.Laps as ErgastLap[]).map((lap, lapNum) => {
-          let driverIDPositionMap: lapTime = { lapNum: lapNum + 1 };
-          lap.Timings.forEach(timing => {
-            driverIDPositionMap[timing.driverId] = parseInt(timing.position);
+          // console.log({ driverIDSet });
+          let minLapTime = Infinity; 
+          let maxLapTime = -Infinity;
+          let transformedLaps: lapTime[] = (response.Laps as ErgastLap[]).map((lap, lapNum) => {
+            let driverIDLapMap: lapTime = { lapNum: lapNum + 1 };
+            lap.Timings.forEach(timing => {
+              const lapTime = TimeHelper.raceTimeToMs(timing.time);
+              driverIDLapMap[timing.driverId] = lapTime;
+              if (lapTime > maxLapTime) maxLapTime = lapTime;
+              if (lapTime < minLapTime) minLapTime = lapTime;
+            });
+            return driverIDLapMap;
           });
-          return driverIDPositionMap;
-        });
-        let lap0Position: lapTime = { lapNum: 0 };
-        raceQualifying?.QualifyingResults?.forEach(result => {
-          lap0Position[result.Driver.driverId] = parseInt(result.position);
+          let transformedPositions: lapTime[] = (response.Laps as ErgastLap[]).map((lap, lapNum) => {
+            let driverIDPositionMap: lapTime = { lapNum: lapNum + 1 };
+            lap.Timings.forEach(timing => {
+              driverIDPositionMap[timing.driverId] = parseInt(timing.position);
+            });
+            return driverIDPositionMap;
+          });
+          let lap0Position: lapTime = { lapNum: 0 };
+          console.log({ raceQualifying });
+          raceQualifying?.QualifyingResults?.forEach(result => {
+            lap0Position[result.Driver.driverId] = parseInt(result.position);
+            console.log({ lap0Position });
+          })
+          transformedPositions.unshift(lap0Position);
+          setScaleDomain({ min: minLapTime, max: maxLapTime });
+          // console.log({ transformedLaps, transformedPositions });
+          setLapTimes(transformedLaps);
+          setPositionTrace(transformedPositions);
+          setDriverIDSet(driverIDSet);
         })
-        transformedPositions.unshift(lap0Position);
-        setScaleDomain({min: minLapTime, max: maxLapTime});
-        // console.log({ transformedLaps, transformedPositions });
-        setLapTimes(transformedLaps);
-        setPositionTrace(transformedPositions);
-        setDriverIDSet(driverIDSet);
-      })
-      .catch(error => console.log("couldn't fetch lap times", error));
-  }, []);
+        .catch(error => console.log("couldn't fetch lap times", error));
+    }
+  }, [raceQualifying]);
 
   return (
     <>
       <RaceHeader race={race} />
-      <Outlet context={{year, round, race, raceQualifying, drivers, driverIDSetSimple, driverIDSet, lapTimes, scaleDomain, setDriverIDSet, positionTrace }} />
+      <Outlet context={{ year, round, race, raceQualifying, drivers, driverIDSetSimple, driverIDSet, lapTimes, scaleDomain, setDriverIDSet, positionTrace }} />
     </>
   );
 };

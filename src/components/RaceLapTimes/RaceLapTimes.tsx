@@ -70,14 +70,14 @@ export const RaceLapTimes = ({ }) => {
           width={1200} height={450} 
           chartTitle={`${year} ${race?.raceName} Lap Comparison`}
           scale={scaleLog([scaleDomain?.min as number, scaleDomain?.max as number], [1, 10])}
-          tickCount={20} formatter={TimeHelper.msToRaceTime} /> 
+          tickCount={20} formatter={TimeHelper.msToRaceTime} dot={true} /> 
         }
         {showPositions &&
           <GenericTrace driverIDSet={driverIDSet} 
           data={positionTrace} domain={[1, driverIDSet.length + 1]}
           width={1200} height={450} 
           chartTitle={`${year} ${race?.raceName} Position Trace`}
-          tickCount={driverIDSet.length} reversed={true} /> 
+          tickCount={driverIDSet.length} reversed={true} dot={false} /> 
         }
       </div>
     </div>
