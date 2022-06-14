@@ -19,11 +19,12 @@ interface GenericTraceProps {
   tickCount: number,
   formatter?: (value: number) => string,
   reversed?: boolean,
-  dot?: boolean
+  dot?: boolean,
+  interval?: number
 };
 const genericFormatter = (value: number) => value + '';
 
-export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, width, height, chartTitle, scale, domain, tickCount, formatter, reversed, dot }) => {
+export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, width, height, chartTitle, scale, domain, tickCount, formatter, reversed, dot, interval }) => {
   const [getPng, { ref, isLoading }] = useCurrentPng();
   const handleDownload = useCallback(async () => {
     const png = await getPng();
@@ -45,7 +46,7 @@ export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, w
           </text>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="lapNum" interval={1} />
-          <YAxis scale={scale || scaleLinear()} type="number" domain={domain} interval={0} tickFormatter={formatter || genericFormatter} width={100} tickCount={tickCount} reversed={reversed || false} />
+          <YAxis scale={scale || scaleLinear()} type="number" domain={domain} interval={interval !== undefined ? interval : 0} tickFormatter={formatter || genericFormatter} width={100} tickCount={tickCount} reversed={reversed || false} />
           <Tooltip itemSorter={(item) => {
             return item.value as number;
           }} formatter={formatter || genericFormatter} position={{ y: -100 }} />

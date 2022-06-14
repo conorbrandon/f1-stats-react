@@ -41,4 +41,12 @@ export class TimeHelper {
     raceTime += `${String(mss).padStart(3, '0')}`;
     return raceTime;
   }
+  static logMsToMs(logMs: number, minDomain: number, maxDomain: number): number {
+    return logMs;
+    return Math.pow(logMs, 2);
+    return Math.pow(logMs / 10, 10);
+  }
+  static logBase(val: number, base: number) {  
+    return Math.log(val) / (base ? Math.log(base) : 1);  
+  }
 }

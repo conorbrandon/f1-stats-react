@@ -9,6 +9,7 @@ import { RaceHeader } from "../RaceHeader/RaceHeader";
 import { DriverIDSet, lapTime } from "../RaceLapTimes/RaceLapTimes";
 import { interpolateRainbow } from 'd3-scale-chromatic';
 import styles from "./Race.module.css";
+import { scaleLog, ScaleLogarithmic } from "d3-scale";
 
 export interface RaceOutletContext {
   race?: ErgastRace,
@@ -18,10 +19,13 @@ export interface RaceOutletContext {
   drivers: ErgastDriver[],
   driverIDSetSimple: string[],
   lapTimes: lapTime[],
+  logLapTimes: lapTime[],
   driverIDSet: DriverIDSet,
   scaleDomain: ScaleDomain,
   setDriverIDSet: React.Dispatch<React.SetStateAction<DriverIDSet>>,
-  positionTrace: lapTime[]
+  positionTrace: lapTime[],
+  logLapFormatterMap: { [ms: number]: string }, 
+  logScaleFunction: {theFunc: ScaleLogarithmic<number, number>}
 }
 interface ScaleDomain { min: number, max: number };
 
@@ -50,9 +54,12 @@ export const Race = ({ }) => {
   const [drivers, setDrivers] = useState<ErgastDriver[]>();
   const [driverIDSetSimple, setDriverIDSetSimple] = useState<string[]>();
   const [lapTimes, setLapTimes] = useState<lapTime[]>();
+  const [logLapTimes, setLogLapTimes] = useState<lapTime[]>();
   const [driverIDSet, setDriverIDSet] = useState<DriverIDSet>([]);
   const [scaleDomain, setScaleDomain] = useState<ScaleDomain>();
   const [positionTrace, setPositionTrace] = useState<lapTime[]>();
+  const [logLapFormatterMap, setLogLapFormatterMap] = useState<{ [ms: number]: string }>();
+  const [logScaleFunction, setLogScaleFunction] = useState<{theFunc: ScaleLogarithmic<number, number>}>();
 
   useEffect(() => {
     ErgastAPI.getRaceResult(year || '', round || '')
@@ -103,6 +110,19 @@ export const Race = ({ }) => {
             });
             return driverIDLapMap;
           });
+          const logScaleFunction = scaleLog().domain([minLapTime, maxLapTime]).range([1, 100]).base(10);
+          let logLapFormatterMap: { [ms: number]: string } = {};
+          let transformedLogLaps: lapTime[] = (response.Laps as ErgastLap[]).map((lap, lapNum) => {
+            let driverIDLapMap: lapTime = { lapNum: lapNum + 1 };
+            lap.Timings.forEach(timing => {
+              const lapTime = TimeHelper.raceTimeToMs(timing.time);
+              const logLapTime = logScaleFunction ? logScaleFunction(lapTime) : lapTime;
+              console.log({ lapTime, logLapTime, inverted: logScaleFunction.invert(logLapTime) });
+              driverIDLapMap[timing.driverId] = logLapTime;
+              logLapFormatterMap[logLapTime] = timing.time;
+            });
+            return driverIDLapMap;
+          });
           let transformedPositions: lapTime[] = (response.Laps as ErgastLap[]).map((lap, lapNum) => {
             let driverIDPositionMap: lapTime = { lapNum: lapNum + 1 };
             lap.Timings.forEach(timing => {
@@ -114,12 +134,16 @@ export const Race = ({ }) => {
           console.log({ raceQualifying });
           raceQualifying?.QualifyingResults?.forEach(result => {
             lap0Position[result.Driver.driverId] = parseInt(result.position);
-            console.log({ lap0Position });
           })
           transformedPositions.unshift(lap0Position);
-          setScaleDomain({ min: minLapTime, max: maxLapTime });
           // console.log({ transformedLaps, transformedPositions });
+          console.log({ transformedLaps: transformedLaps.slice(0, 3), transformedLogLaps: transformedLogLaps.slice(0, 3) });
+          
+          setScaleDomain({ min: minLapTime, max: maxLapTime });
+          setLogLapFormatterMap(logLapFormatterMap);
+          setLogScaleFunction({theFunc: logScaleFunction});
           setLapTimes(transformedLaps);
+          setLogLapTimes(transformedLogLaps)
           setPositionTrace(transformedPositions);
           setDriverIDSet(driverIDSet);
         })
@@ -130,7 +154,7 @@ export const Race = ({ }) => {
   return (
     <>
       <RaceHeader race={race} />
-      <Outlet context={{ year, round, race, raceQualifying, drivers, driverIDSetSimple, driverIDSet, lapTimes, scaleDomain, setDriverIDSet, positionTrace }} />
+      <Outlet context={{ year, round, race, raceQualifying, drivers, driverIDSetSimple, driverIDSet, lapTimes, logLapTimes, scaleDomain, setDriverIDSet, positionTrace, logLapFormatterMap, logScaleFunction }} />
     </>
   );
 };
