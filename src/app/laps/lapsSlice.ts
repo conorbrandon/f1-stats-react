@@ -43,7 +43,7 @@ export const lapsSlice = createSlice({
       })
       .addCase(fetchLaps.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        const Laps: ErgastLap[] = action.payload.Laps || [];
+        const Laps: ErgastLap[] = action.payload?.Laps || [];
         state.laps = Laps;
         // // Extras
         // const numDrivers = Laps[0].Timings.length;

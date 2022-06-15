@@ -19,7 +19,7 @@ export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templa
   const resultStatus = useAppSelector(selectResultStatus);
   const resultError = useAppSelector(selectResultError);
   const template = templateParam || ['Position', 'Driver', 'Constructor', 'Points', 'Fastest Lap', 'Finishing Status', 'Laps'];
-  const raceResultsContent = race ? <><SortableTable
+  const raceResultsContent = <><SortableTable
     items={limit ? race?.Results?.slice(0, limit) : race?.Results}
     caption={'Results'}
     template={template}
@@ -43,7 +43,7 @@ export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templa
     }}
   />{limit && <p>
       <Link to={`/${race?.season}/${race?.round}/results`}>See full results...</Link>
-    </p>}</> : <></>;
+    </p>}</>;
   return (
     <div className={noClass ? '' : "page-content padded"} style={{ width: '100%' }}>
       <UseReduxAsyncStatus status={resultStatus} successContent={raceResultsContent} error={resultError} loadingInterText={'Results'} />

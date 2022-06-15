@@ -5,7 +5,7 @@ import { ErgastLap } from "../model/ErgastLap";
 import { ErgastRace } from "../model/ErgastRace";
 import { ErgastRaceResponse } from "../model/ErgastRaceResponse";
 import { MockLapsResponse } from "./MockLapsResponse";
-import { EmptyScheduleResponse, MockResultsResponse, MockScheduleResponse, MockQualifyingResponse, MockDriverResponse, EmptyDriverResponse, MockDriversReponse } from "./MockResponse";
+import { EmptyScheduleResponse, MockResultsResponse, MockScheduleResponse, MockQualifyingResponse, MockDriverResponse, EmptyDriverResponse, MockDriversReponse, MockScheduleResponse_2008 } from "./MockResponse";
 
 const baseUrl = 'https://ergast.com/api/f1';  // URL to web api
 const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
@@ -15,6 +15,7 @@ export class ErgastAPI {
     console.log('getSchedule', year);
     await sleep(1000);
     if (year === '2012') return MockScheduleResponse.MRData.RaceTable.Races;
+    else if (year === '2008') return MockScheduleResponse_2008.MRData.RaceTable.Races;
     else return EmptyScheduleResponse.MRData.RaceTable.Races;
     const url = `${baseUrl}/${year}.json`;
     const data: Response = await fetch(url);

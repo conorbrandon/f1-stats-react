@@ -39,11 +39,11 @@ button {
 }
 .race-card-flag.card {
   width: 22%;
-height: auto;
-border: solid gray 1px;
-border-radius: 1px;
-float: right;
-margin-right: 15px;
+  height: auto;
+  border: solid gray 1px;
+  border-radius: 1px;
+  float: right;
+  margin-right: 15px;
 }
 
 .mapboxgl-popup-content {
