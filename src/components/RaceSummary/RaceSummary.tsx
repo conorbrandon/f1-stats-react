@@ -27,7 +27,7 @@ export const RaceSummary = ({ }) => {
           <p>
             <Link to={'results'}>See full results...</Link>
           </p>
-          { raceQualifying && <RaceQualifying noClass={true} limit={5} templateParam={['Position', 'Driver', 'Constructor', 'Q1']} /> }
+          { raceQualifying && <RaceQualifying noClass={true} limit={5} templateParam={['Position', 'Driver', 'Constructor', 'Q3']} /> }
           <p>
             <Link to={'qualifying'}>See full qualifying results...</Link>
           </p>

@@ -12,12 +12,15 @@ import { RaceQualifying } from './components/RaceQualifying/RaceQualifying';
 import { Driver } from './components/Driver/Driver';
 import { Constructor } from './components/Constructor/Constructor';
 import { RaceLapTimes } from './components/RaceLapTimes/RaceLapTimes';
+import { store } from './app/store';
+import { Provider } from 'react-redux';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
+    <Provider store={store} >
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} >
@@ -33,6 +36,7 @@ root.render(
         </Route>
       </Routes>
     </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
 
