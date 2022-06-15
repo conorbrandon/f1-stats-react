@@ -7940,11 +7940,6 @@ react-switch@^7.0.0:
   dependencies:
     prop-types "^15.7.2"
 
-react-top-loading-bar@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/react-top-loading-bar/-/react-top-loading-bar-2.1.0.tgz#61198174e734606056f64262da312c02414b6f36"
-  integrity sha512-07IPCC4fThfkH5PHm7d49s9UAq2rpy4RAyD+5gtwtBbBrwxkvcff7ZlbCgzrBXq8AvcGafDkpjcGdntJ4F0O9A==
-
 react-transition-group@2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.9.0.tgz#df9cdb025796211151a436c69a8f3b97b5b07c8d"
@@ -9200,6 +9195,11 @@ use-sync-external-store@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
+
+usehooks-ts@^2.5.4:
+  version "2.5.4"
+  resolved "https://registry.yarnpkg.com/usehooks-ts/-/usehooks-ts-2.5.4.tgz#e28ce0c1140e3ae172d9b8d2fca07dff68a476ab"
+  integrity sha512-NG4XKLh7csTFFtUgtUuR72zlJ1Bpt4+nDAnKQqcQcpxYnwAZZv3RpksKvxBIusPCHUL3NuC0xLwwJCpPxIuknQ==
 
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"

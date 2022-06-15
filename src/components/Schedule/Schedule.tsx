@@ -9,7 +9,7 @@ import { RaceList } from "../RaceList/RaceList";
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { selectSchedule, selectScheduleStatus, selectScheduleError, fetchSchedule } from "../../app/schedule/scheduleSlice";
-import { loading, notLoading } from "../../app/loading/loadingSlice";
+import { UseReduxAsyncStatuses } from '../UseReduxAsyncStatuses/UseReduxAsyncStatuses';
 
 export interface ScheduleDisplayProps {
   races: ErgastRace[]
@@ -21,27 +21,11 @@ export const Schedule = ({ }) => {
   const [scheduleYear, setScheduleYear] = useState<string>(year || 'current');
   const [useCardLayout, setUseCardLayout] = useState<boolean>(false);
 
-  const [pageContent, setPageContent] = useState(<></>);
   const dispatch = useAppDispatch();
   const schedule = useAppSelector(selectSchedule);
   const scheduleStatus = useAppSelector(selectScheduleStatus);
   const scheduleError = useAppSelector(selectScheduleError);
 
-  useEffect(() => {
-    if (scheduleStatus === 'idle') {
-      dispatch(fetchSchedule(scheduleYear));
-    } else if (scheduleStatus === 'loading') {
-      dispatch(loading());
-      setPageContent(<></>);
-    } else {
-      dispatch(notLoading());
-      if (scheduleStatus === 'succeeded') {
-        setPageContent(useCardLayout ? <RaceCards races={schedule} /> : <RaceList races={schedule} />);
-      } else if (scheduleStatus === 'failed') {
-        setPageContent(<div>{scheduleError}</div>);
-      }
-    }
-  }, [scheduleStatus, dispatch]);
 
   const changeScheduleYear = (year: string) => {
     setScheduleYear(year);
@@ -53,7 +37,7 @@ export const Schedule = ({ }) => {
     <>
       <ScheduleHeader scheduleYear={scheduleYear} changeScheduleYear={changeScheduleYear} setUseCardLayout={setUseCardLayout} />
       <div className="page-content">
-        {pageContent}
+        <UseReduxAsyncStatuses status={scheduleStatus} successContent={useCardLayout ? <RaceCards races={schedule} /> : <RaceList races={schedule} />} error={scheduleError} fetchAction={fetchSchedule} fetchParams={scheduleYear} />
       </div>
     </>
   );
