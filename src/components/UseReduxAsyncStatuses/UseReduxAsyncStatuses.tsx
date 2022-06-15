@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../../app/hooks";
 import { ReduxAsyncErrorType, ReduxAsyncStatusType } from "../../app/types";
-import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner";
+import { LoadingColorType, LoadingSpinner } from "../LoadingSpinner/LoadingSpinner";
 import styles from "./UseReduxAsyncStatuses.module.css";
 
 interface UseReduxAsyncStatusesProps {
@@ -9,10 +9,11 @@ interface UseReduxAsyncStatusesProps {
   successContent: JSX.Element,
   error: ReduxAsyncErrorType,
   fetchAction?: any,
-  fetchParams?: any
+  fetchParams?: any,
+  loadingColor?: LoadingColorType
 };
 
-export const UseReduxAsyncStatuses: React.FC<UseReduxAsyncStatusesProps> = ({ status, successContent, error, fetchAction, fetchParams }) => {
+export const UseReduxAsyncStatuses: React.FC<UseReduxAsyncStatusesProps> = ({ status, successContent, error, fetchAction, fetchParams, loadingColor }) => {
   const dispatch = useAppDispatch();
   const [pageContent, setPageContent] = useState(<></>);
   useEffect(() => {
@@ -20,7 +21,7 @@ export const UseReduxAsyncStatuses: React.FC<UseReduxAsyncStatusesProps> = ({ st
     if (status === 'idle' && fetchAction) {
       dispatch(fetchAction(fetchParams));
     } else if (status === 'loading') {
-      setPageContent(<LoadingSpinner />);
+      setPageContent(<LoadingSpinner color={loadingColor} />);
     } else if (status === 'succeeded') {
       setPageContent(successContent);
     } else if (status === 'failed') {
@@ -28,6 +29,6 @@ export const UseReduxAsyncStatuses: React.FC<UseReduxAsyncStatusesProps> = ({ st
     }
   }, [status, dispatch, successContent]);
   return (
-    <div>{pageContent}</div>
+    <>{pageContent}</>
   );
 };

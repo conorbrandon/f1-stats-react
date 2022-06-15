@@ -10,6 +10,9 @@ import { DriverIDSet, lapTime } from "../RaceLapTimes/RaceLapTimes";
 import { interpolateRainbow } from 'd3-scale-chromatic';
 import styles from "./Race.module.css";
 import { scaleLog, ScaleLogarithmic } from "d3-scale";
+import { useAppDispatch } from "../../app/hooks";
+import { fetchResult } from "../../app/result/resultSlice";
+import { fetchQualifying } from "../../app/qualifying/qualifyingSlice";
 
 export interface RaceOutletContext {
   race?: ErgastRace,
@@ -61,16 +64,13 @@ export const Race = ({ }) => {
   const [logLapFormatterMap, setLogLapFormatterMap] = useState<{ [ms: number]: string }>();
   const [logScaleFunction, setLogScaleFunction] = useState<{theFunc: ScaleLogarithmic<number, number>}>();
 
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    ErgastAPI.getRaceResult(year || '', round || '')
-      .then(response => setRace(response))
-      .catch(error => console.log("couldn't fetch race result", error));
-  }, [race]);
-  useEffect(() => {
-    ErgastAPI.getRaceQualifying(year || '', round || '')
-      .then(response => setRaceQualifying(response))
-      .catch(error => console.log("can't get qualifyingResult", error));
-  }, [raceQualifying]);
+    dispatch(fetchResult({ year: year || '', round: round || '' }));
+    dispatch(fetchQualifying({ year: year || '', round: round || '' }));
+  }, []);
+  
   useEffect(() => {
     ErgastAPI.getDriversByYear(year || '')
       .then(response => {
@@ -117,7 +117,7 @@ export const Race = ({ }) => {
             lap.Timings.forEach(timing => {
               const lapTime = TimeHelper.raceTimeToMs(timing.time);
               const logLapTime = logScaleFunction ? logScaleFunction(lapTime) : lapTime;
-              console.log({ lapTime, logLapTime, inverted: logScaleFunction.invert(logLapTime) });
+              // console.log({ lapTime, logLapTime, inverted: logScaleFunction.invert(logLapTime) });
               driverIDLapMap[timing.driverId] = logLapTime;
               logLapFormatterMap[logLapTime] = timing.time;
             });
@@ -153,7 +153,7 @@ export const Race = ({ }) => {
 
   return (
     <>
-      <RaceHeader race={race} />
+      <RaceHeader />
       <Outlet context={{ year, round, race, raceQualifying, drivers, driverIDSetSimple, driverIDSet, lapTimes, logLapTimes, scaleDomain, setDriverIDSet, positionTrace, logLapFormatterMap, logScaleFunction }} />
     </>
   );

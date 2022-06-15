@@ -4,8 +4,9 @@ import styles from "./LoadingSpinner.module.css";
 
 import { useInterval } from "usehooks-ts";
 
+export type LoadingColorType = string;
 interface LoadingSpinnerProps {
-  color?: string
+  color?: LoadingColorType
 };
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ color }) => {

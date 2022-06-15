@@ -48,5 +48,6 @@ export const scheduleSlice = createSlice({
 export const selectSchedule = (state: RootState) => state.schedule.schedule;
 export const selectScheduleStatus = (state: RootState) => state.schedule.status;
 export const selectScheduleError = (state: RootState) => state.schedule.error;
+export const selectScheduleWhole = (state: RootState) => state.schedule;
 
 export default scheduleSlice.reducer;
