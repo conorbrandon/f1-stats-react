@@ -12,9 +12,12 @@ interface LoadingSpinnerProps {
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ color }) => {
   const [progress, setProgress] = useState<number>(0);
   useInterval(() => {
-    if (progress === 100) setProgress(0);
-    else setProgress(progress + 1);
-  }, 5);
+    console.log({ progress });
+    if (progress >= 100) setProgress(0);
+    else if (progress < 50) setProgress(progress + 1.2);
+    else if (progress < 80) setProgress(progress + 1);
+    else if (progress < 100) setProgress(progress + .5);
+  }, 10);
   return (
     <>
       <div style={{width: '100%'}}>

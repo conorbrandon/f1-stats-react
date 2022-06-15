@@ -22,7 +22,7 @@ export class ErgastAPI {
     return json.MRData.RaceTable.Races;
   };
   static async getRaceResult(year: string, round: string): Promise<ErgastRace> {
-    await sleep(2000);
+    await sleep(1000);
     if (year === '2008' && round === '5') return MockResultsResponse.MRData.RaceTable.Races[0];
     else return EmptyScheduleResponse.MRData.RaceTable.Races[0];
     const url = `${baseUrl}/${year}/${round}/results.json`;

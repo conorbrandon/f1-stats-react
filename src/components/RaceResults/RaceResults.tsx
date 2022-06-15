@@ -45,8 +45,8 @@ export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templa
       <Link to={`/${race?.season}/${race?.round}/results`}>See full results...</Link>
     </p>}</> : <></>;
   return (
-    <div className={noClass ? '' : "page-content padded"}>
-      <UseReduxAsyncStatuses status={resultStatus} successContent={raceResultsContent} error={resultError} />
+    <div className={noClass ? '' : "page-content padded"} style={{ width: '100%' }}>
+      <UseReduxAsyncStatuses status={resultStatus} successContent={raceResultsContent} error={resultError} loadingInterText={'Results'} />
     </div>
   );
 };

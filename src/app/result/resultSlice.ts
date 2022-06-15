@@ -35,7 +35,6 @@ export const resultSlice = createSlice({
       })
       .addCase(fetchResult.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        // Add any fetched posts to the array
         state.race = action.payload;
       })
       .addCase(fetchResult.rejected, (state, action) => {

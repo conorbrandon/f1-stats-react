@@ -3,7 +3,6 @@ import { ErgastAPI } from '../../api/ErgastAPI';
 import type { RootState } from '../store';
 import { ErgastRace } from '../../model/ErgastRace';
 import { ReduxAsyncErrorType, ReduxAsyncStatusType } from '../types';
-import { useAppSelector } from '../hooks';
 
 interface QualifyingState {
   qualifying: ErgastRace | undefined,
@@ -36,7 +35,6 @@ export const qualifyingSlice = createSlice({
       })
       .addCase(fetchQualifying.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        // Add any fetched posts to the array
         state.qualifying = action.payload;
       })
       .addCase(fetchQualifying.rejected, (state, action) => {

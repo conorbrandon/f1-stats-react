@@ -10,10 +10,11 @@ interface UseReduxAsyncStatusesProps {
   error: ReduxAsyncErrorType,
   fetchAction?: any,
   fetchParams?: any,
-  loadingColor?: LoadingColorType
+  loadingColor?: LoadingColorType,
+  loadingInterText?: string
 };
 
-export const UseReduxAsyncStatuses: React.FC<UseReduxAsyncStatusesProps> = ({ status, successContent, error, fetchAction, fetchParams, loadingColor }) => {
+export const UseReduxAsyncStatuses: React.FC<UseReduxAsyncStatusesProps> = ({ status, successContent, error, fetchAction, fetchParams, loadingColor, loadingInterText }) => {
   const dispatch = useAppDispatch();
   const [pageContent, setPageContent] = useState(<></>);
   useEffect(() => {
@@ -21,7 +22,10 @@ export const UseReduxAsyncStatuses: React.FC<UseReduxAsyncStatusesProps> = ({ st
     if (status === 'idle' && fetchAction) {
       dispatch(fetchAction(fetchParams));
     } else if (status === 'loading') {
-      setPageContent(<LoadingSpinner color={loadingColor} />);
+      setPageContent(<>
+        <LoadingSpinner color={loadingColor} />
+        {loadingInterText ? `${loadingInterText} loading` : ''}
+      </>);
     } else if (status === 'succeeded') {
       setPageContent(successContent);
     } else if (status === 'failed') {

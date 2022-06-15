@@ -35,7 +35,6 @@ export const scheduleSlice = createSlice({
       })
       .addCase(fetchSchedule.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        // Add any fetched posts to the array
         state.schedule = action.payload;
       })
       .addCase(fetchSchedule.rejected, (state, action) => {
