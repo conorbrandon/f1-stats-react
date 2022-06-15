@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import { selectResult, selectResultError, selectResultStatus } from "../../app/result/resultSlice";
 import { FlagHelper } from "../../helpers/FlagHelper";
-import { UseReduxAsyncStatuses } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
+import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
 import styles from "./RaceHeader.module.css";
 
 export const RaceHeader = ({ }) => {
@@ -25,7 +25,7 @@ export const RaceHeader = ({ }) => {
   </> : <></>;
   return (
     <div className="page-header">
-      <UseReduxAsyncStatuses status={resultStatus} successContent={successContent} error={resultError} />
+      <UseReduxAsyncStatus status={resultStatus} successContent={successContent} error={resultError} />
       <span className={styles.links}>
         <Link to="">Summary</Link>
         <Link to="results">Results</Link>

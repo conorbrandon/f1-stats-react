@@ -9,7 +9,7 @@ import { RaceList } from "../RaceList/RaceList";
 
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { selectSchedule, selectScheduleStatus, selectScheduleError, fetchSchedule } from "../../app/schedule/scheduleSlice";
-import { UseReduxAsyncStatuses } from '../UseReduxAsyncStatuses/UseReduxAsyncStatuses';
+import { UseReduxAsyncStatus } from '../UseReduxAsyncStatuses/UseReduxAsyncStatuses';
 
 export interface ScheduleDisplayProps {
   races: ErgastRace[]
@@ -37,7 +37,7 @@ export const Schedule = ({ }) => {
     <>
       <ScheduleHeader scheduleYear={scheduleYear} changeScheduleYear={changeScheduleYear} setUseCardLayout={setUseCardLayout} />
       <div className="page-content">
-        <UseReduxAsyncStatuses status={scheduleStatus} successContent={useCardLayout ? <RaceCards races={schedule} /> : <RaceList races={schedule} />} error={scheduleError} fetchAction={fetchSchedule} fetchParams={scheduleYear} />
+        <UseReduxAsyncStatus status={scheduleStatus} successContent={useCardLayout ? <RaceCards races={schedule} /> : <RaceList races={schedule} />} error={scheduleError} fetchAction={fetchSchedule} fetchParams={scheduleYear} />
       </div>
     </>
   );

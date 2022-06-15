@@ -5,7 +5,7 @@ import { selectResult, selectResultError, selectResultStatus } from "../../app/r
 import { SortableTableHelper } from "../../helpers/SortableTableHelper";
 import { ErgastResult } from "../../model/ErgastResult";
 import { SortableTable } from "../SortableTable/SortableTable";
-import { UseReduxAsyncStatuses } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
+import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
 import styles from "./RaceResults.module.css";
 
 export interface RaceResultsProps {
@@ -46,7 +46,7 @@ export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templa
     </p>}</> : <></>;
   return (
     <div className={noClass ? '' : "page-content padded"} style={{ width: '100%' }}>
-      <UseReduxAsyncStatuses status={resultStatus} successContent={raceResultsContent} error={resultError} loadingInterText={'Results'} />
+      <UseReduxAsyncStatus status={resultStatus} successContent={raceResultsContent} error={resultError} loadingInterText={'Results'} />
     </div>
   );
 };

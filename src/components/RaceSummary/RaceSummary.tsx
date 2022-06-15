@@ -4,7 +4,7 @@ import { selectResult, selectResultError, selectResultStatus } from "../../app/r
 import { Mapbox } from "../Mapbox/Mapbox";
 import { RaceQualifying } from "../RaceQualifying/RaceQualifying";
 import { RaceResults } from "../RaceResults/RaceResults";
-import { UseReduxAsyncStatuses } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
+import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
 import styles from "./RaceSummary.module.css";
 
 export const RaceSummary = ({ }) => {
@@ -24,7 +24,7 @@ export const RaceSummary = ({ }) => {
   return (
     <div className={`page-content padded ${styles.raceSummaryLayout}`}>
       <div className={styles.raceSummaryLocation}>
-        <UseReduxAsyncStatuses status={resultStatus} successContent={raceSummaryLocationContent} error={resultError} />
+        <UseReduxAsyncStatus status={resultStatus} successContent={raceSummaryLocationContent} error={resultError} />
       </div>
       <div className={styles.raceSummaryTables}>
           <RaceResults noClass={true} limit={5} templateParam={['Position', 'Driver', 'Constructor', 'Points']} />

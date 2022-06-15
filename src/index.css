@@ -18,6 +18,12 @@ html, body {
 button, .cursor-pointer {
   cursor: pointer;
 }
+button {
+  color: white;
+  background-color: black;
+  border-radius: 5px;
+  font-family: 'Kdam Thmor Pro', sans-serif;
+}
 
 .white-bg {
   color: black;

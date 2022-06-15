@@ -6,7 +6,7 @@ import { SortableTableHelper } from "../../helpers/SortableTableHelper";
 import { ErgastQualifyingResult } from "../../model/ErgastQualifyingResult";
 import { RaceResultsProps } from "../RaceResults/RaceResults";
 import { SortableTable } from "../SortableTable/SortableTable";
-import { UseReduxAsyncStatuses } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
+import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
 import styles from "./RaceQualifying.module.css";
 
 export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam }) => {
@@ -47,7 +47,7 @@ export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, tem
   </>;
   return (
     <div className={noClass ? '' : "page-content padded"} style={{ width: '100%' }}>
-      <UseReduxAsyncStatuses status={qualifyingStatus} successContent={raceQualifyingContent} error={qualifyingError} loadingInterText={'Qualifying results'} />
+      <UseReduxAsyncStatus status={qualifyingStatus} successContent={raceQualifyingContent} error={qualifyingError} loadingInterText={'Qualifying results'} />
     </div>
   );
 };
