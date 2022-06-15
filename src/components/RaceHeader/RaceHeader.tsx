@@ -11,10 +11,14 @@ interface RaceHeaderProps {
 export const RaceHeader: React.FC<RaceHeaderProps> = ({ race }) => {
   return (
     <div className="page-header">
+      {race && <span className={`${styles.backToSeasonLink} material-icons-align`}><span className="material-icons">
+        arrow_back
+      </span><Link to={`/${race.season}`}>
+          {race.season} season</Link></span>}
       <span className={`material-icons-align ${styles.spaceEvenly}`}>
         {race && <><span className="x-large-font">{race.season} {race.raceName}</span>
-        <img className={styles.img} src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
-        <span className="medium-font">(Round {race.round})</span>
+          <img className={styles.img} src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
+          <span className="medium-font">(Round {race.round})</span>
         </>}
       </span>
       <span className={styles.links}>

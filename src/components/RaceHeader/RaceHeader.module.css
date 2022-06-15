@@ -10,3 +10,20 @@
 .spaceEvenly {
   justify-content: space-evenly;
 }
+
+.backToSeasonLink {
+  position: absolute;
+  margin-left: -8rem;
+  margin-top: -3rem;
+  font-size: medium;
+  border-bottom: solid white 1px;
+  border-right: solid white 1px;
+  padding-right: 5px;
+  border-radius: 4px;
+}
+.backToSeasonLink a {
+  text-decoration: none;
+}
+.backToSeasonLink a:hover {
+  text-decoration: underline;
+}
