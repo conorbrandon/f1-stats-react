@@ -46,7 +46,7 @@ export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, tem
     </p>}
   </>;
   return (
-    <div className={noClass ? '' : "page-content padded"} style={{ width: '100%' }}>
+    <div className={noClass ? '' : "page-content"} style={{ width: '100%' }}>
       <UseReduxAsyncStatus status={qualifyingStatus} successContent={raceQualifyingContent} error={qualifyingError} loadingInterText={'Qualifying results'} />
     </div>
   );

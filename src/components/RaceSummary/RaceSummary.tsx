@@ -22,7 +22,7 @@ export const RaceSummary = ({ }) => {
   <p><a href={race.url} target="_blank" rel="noopener">Wikipedia</a></p>
   </> : <></>;
   return (
-    <div className={`page-content padded ${styles.raceSummaryLayout}`}>
+    <div className={`page-content ${styles.raceSummaryLayout}`}>
       <div className={styles.raceSummaryLocation}>
         <UseReduxAsyncStatus status={resultStatus} successContent={raceSummaryLocationContent} error={resultError} />
       </div>

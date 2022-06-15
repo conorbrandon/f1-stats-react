@@ -19,7 +19,7 @@ const initialState: DriversState = {
   error: undefined
 };
 
-export const fetchDrivers = createAsyncThunk('drivers/fetchDriver', async (year: GetPayloadAction) => {
+export const fetchDrivers = createAsyncThunk('drivers/fetchDrivers', async (year: GetPayloadAction) => {
   const response = await ErgastAPI.getDriversByYear(year);
   return response;
 });

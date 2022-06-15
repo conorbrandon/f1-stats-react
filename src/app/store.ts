@@ -5,6 +5,7 @@ import scheduleReducer from './schedule/scheduleSlice';
 import resultReducer from './result/resultSlice';
 import qualifyingReducer from './qualifying/qualifyingSlice';
 import driversReducer from './drivers/driversSlice';
+import driverReducer from './driver/driverSlice';
 import lapsReducer from './laps/lapsSlice';
 
 const middleware = [logger]; // always put logger last
@@ -16,6 +17,7 @@ export const store =  configureStore({
     result: resultReducer,
     qualifying: qualifyingReducer,
     drivers: driversReducer,
+    driver: driverReducer,
     laps: lapsReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...middleware),

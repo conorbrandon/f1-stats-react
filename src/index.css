@@ -107,9 +107,9 @@ a {
   top: 22vh;
   width: 100vw;
 }
-/* .page-content.padded {
-  margin: 0 2%;
-} */
+.page-content.padded {
+  margin-left: 5rem;
+}
 
 .material-icons-align {
   display: flex;
