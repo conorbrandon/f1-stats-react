@@ -1,7 +1,5 @@
-import React from "react";
 import { ErgastDriver } from "../model/ErgastDriver";
 import { ErgastDriverResponse } from "../model/ErgastDriverResponse";
-import { ErgastLap } from "../model/ErgastLap";
 import { ErgastRace } from "../model/ErgastRace";
 import { ErgastRaceResponse } from "../model/ErgastRaceResponse";
 import { MockLapsResponse } from "./MockLapsResponse";

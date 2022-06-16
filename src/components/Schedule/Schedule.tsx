@@ -18,14 +18,13 @@ export interface ScheduleDisplayProps {
 export const Schedule = ({ }) => {
   const navigate = useNavigate();
   const { year } = useParams();
-  const [scheduleYear, setScheduleYear] = useState<string>(year || 'current');
-  const [useCardLayout, setUseCardLayout] = useState<boolean>(false);
-
   const dispatch = useAppDispatch();
   const schedule = useAppSelector(selectSchedule);
   const scheduleStatus = useAppSelector(selectScheduleStatus);
   const scheduleError = useAppSelector(selectScheduleError);
 
+  const [scheduleYear, setScheduleYear] = useState<string>(year || schedule[0].season || new Date().getUTCFullYear() + '');
+  const [useCardLayout, setUseCardLayout] = useState<boolean>(false);
 
   const changeScheduleYear = (year: string) => {
     setScheduleYear(year);

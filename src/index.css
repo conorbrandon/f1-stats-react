@@ -85,17 +85,20 @@ a {
   top: 0;
   width: 90vw;
   padding: 0 5vw;
-  height: 12vh;
+  height: 8vh;
   background-color: black;
   z-index: 5;
   border-bottom: solid white 3px;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
 }
 .page-header {
   overflow: hidden;
   position: fixed;
-  top: 12vh;
+  top: 8vh;
   width: 82vw;
-  height: 10vh;
+  height: 6vh;
   background-color: black;
   z-index: 5;
   padding: 0 9vw;
@@ -103,11 +106,12 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /* box-shadow: 0vh .3vh .5vh white; */
 }
 .page-content {
   position: absolute;
   overflow: scroll;
-  top: 22vh;
+  top: 14vh;
   width: 100vw;
 }
 .page-content.padded {
@@ -126,6 +130,22 @@ a {
 .gold {
   color: gold;
 }
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
+.lightRedBg {
+  background-color: rgb(239, 112, 112);
+  color: black;
+  width: fit-content;
+}
+.lightGreenBg {
+  background-color: lightgreen;
+  color: black;
+  width: fit-content;
+}
 
 .recharts-tooltip-wrapper {
   border: solid 3px black;
@@ -140,6 +160,7 @@ a {
 .recharts-responsive-container {
   background-color: white;
   margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 .VictoryContainer {
   background-color: white;

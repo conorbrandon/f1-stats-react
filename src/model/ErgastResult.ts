@@ -15,5 +15,6 @@ export interface ErgastResult {
   "laps": string,
   "status": ErgastResultStatus,
   "Time"?: ErgastTime,
-  "FastestLap"?: ErgastFastestLap
+  "FastestLap"?: ErgastFastestLap,
+  "posGained"?: number
 };

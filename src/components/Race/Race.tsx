@@ -12,8 +12,8 @@ import { store } from "../../app/store";
 export const initializeRace = (year: string, round: string) => {
   store.dispatch(fetchResult({year, round}));
   store.dispatch(fetchQualifying({year, round}));
-  store.dispatch(fetchDrivers(year));
-  store.dispatch(fetchLaps({year, round}));
+  // store.dispatch(fetchDrivers(year));
+  // store.dispatch(fetchLaps({year, round}));
   store.dispatch(fetchSchedule(year));
 };
 

@@ -2,11 +2,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
 }
 .floatRight {
-  margin-top: 2rem;
+  margin-top: 1rem;
   margin-right: 2rem;
-  display: flex;
+  /* display: flex;
   flex-direction: row;
-  justify-content: right;
+  justify-content: right; */
 }

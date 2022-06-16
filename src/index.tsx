@@ -24,6 +24,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} >
+          <Route path={""} element={<Schedule />} />
           <Route path={"/:year"} element={<Schedule />} />
           <Route path={"/:year/:round"} element={<Race />}>
             <Route path='' element={<RaceSummary />} />

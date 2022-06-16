@@ -7,12 +7,12 @@ import { GenericTrace } from "../GenericTrace/GenericTrace";
 import { scaleLog, ScaleLogarithmic } from 'd3-scale';
 import { TimeHelper } from "../../helpers/TimeHelper";
 import { useAppSelector } from "../../app/hooks";
-import { selectQualifying, selectQualifyingError, selectQualifyingStatus } from "../../app/qualifying/qualifyingSlice";
+import { fetchQualifying, selectQualifying, selectQualifyingError, selectQualifyingStatus } from "../../app/qualifying/qualifyingSlice";
 import { useParams } from "react-router-dom";
 import { interpolateRainbow } from 'd3-scale-chromatic';
 import { ErgastLap } from "../../model/ErgastLap";
-import { selectResult, selectResultError, selectResultStatus } from "../../app/result/resultSlice";
-import { selectLaps, selectLapsError, selectLapsStatus } from "../../app/laps/lapsSlice";
+import { fetchResult, selectResult, selectResultError, selectResultStatus } from "../../app/result/resultSlice";
+import { fetchLaps, selectLaps, selectLapsError, selectLapsStatus } from "../../app/laps/lapsSlice";
 import { shuffle } from "../../helpers/GenericHelpers";
 import { UseReduxAsyncStatuses } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
 
@@ -28,7 +28,7 @@ const customStyles: StylesConfig<DriverIDElement> = {
       color: 'black',
       border: `solid 5px ${state.data.driverColor}`,
       borderRadius: '5px',
-      padding: 5,
+      padding: 2,
       // marginBottom: 10
     };
   },
@@ -37,7 +37,7 @@ const customStyles: StylesConfig<DriverIDElement> = {
       ...provided,
       maxWidth: '80%',
       minWidth: '50%',
-      paddingTop: '2rem',
+      paddingTop: '1rem',
       paddingBottom: '1rem'
     }
   },
@@ -45,7 +45,9 @@ const customStyles: StylesConfig<DriverIDElement> = {
     return {
       ...provided,
       border: `solid 5px ${state.data.driverColor}`,
-      color: 'black'
+      color: 'black',
+      fontSize: 'small',
+      padding: 0
     }
   },
 };
@@ -173,10 +175,10 @@ export const RaceLapTimes = ({ }) => {
         <span>Show Position Trace:</span>
         <Switch checked={showPositions} onChange={handlePositionChange} />
       </span>
-      {!selectFirstLoad && <button onClick={selectAllDrivers}>Select all drivers</button>}
+      {!selectFirstLoad && <span><button onClick={selectAllDrivers}>Select all drivers</button></span>}
     </span>
 
-    <Select placeholder={'Select driver...'} options={driverIDSet} isMulti isSearchable onChange={onChange} styles={customStyles} value={selectFirstLoad ? [] : driverIDSet.filter(driver => driver.isSelected)} />
+    <Select placeholder={'Select drivers...'} options={driverIDSet} isMulti isSearchable onChange={onChange} styles={customStyles} value={selectFirstLoad ? [] : driverIDSet.filter(driver => driver.isSelected)} />
 
     {!useLogLaps && lapTimes && !showPositions && driverIDSet.find(driver => driver.isSelected) &&
       <GenericTrace driverIDSet={driverIDSet}
@@ -207,7 +209,7 @@ export const RaceLapTimes = ({ }) => {
   return (
     <div className="page-content">
       <div className={`${styles.centered}`}>
-        <UseReduxAsyncStatuses statuses={[raceStatus, raceQualifyingStatus, lapsStatus]} successContent={raceLapTimesContent} errors={[raceError, raceQualifyingError, lapsError]} loadingInterText={'Laps'} />
+        <UseReduxAsyncStatuses statuses={[raceStatus, raceQualifyingStatus, lapsStatus]} successContent={raceLapTimesContent} errors={[raceError, raceQualifyingError, lapsError]} loadingInterText={'Laps'} fetchActions={[fetchResult, fetchQualifying, fetchLaps]} fetchParamss={[{year: year || '', round: round || ''}, {year: year || '', round: round || ''}, {year: year || '', round: round || ''}]} />
       </div>
     </div>
   );

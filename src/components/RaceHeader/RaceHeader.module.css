@@ -3,7 +3,7 @@
 }
 
 .img {
-  width: 15%;
+  width: 10%;
   margin-left: 1rem;
 }
 
@@ -14,7 +14,7 @@
 .backToSeasonLink {
   position: absolute;
   margin-left: -8rem;
-  margin-top: -3rem;
+  margin-top: -1rem;
   font-size: medium;
   border-bottom: solid white 1px;
   border-right: solid white 1px;

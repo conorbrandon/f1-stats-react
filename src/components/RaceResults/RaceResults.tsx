@@ -18,7 +18,7 @@ export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templa
   const race = useAppSelector(selectResult);
   const resultStatus = useAppSelector(selectResultStatus);
   const resultError = useAppSelector(selectResultError);
-  const template = templateParam || ['Position', 'Driver', 'Constructor', 'Points', 'Fastest Lap', 'Finishing Status', 'Laps'];
+  const template = templateParam || ['Position', 'Driver', 'Constructor', 'Points', 'Fastest Lap', 'Pos. Gained', 'Finishing Status', 'Laps'];
   const raceResultsContent = <><SortableTable
     items={limit ? race?.Results?.slice(0, limit) : race?.Results}
     caption={'Results'}
@@ -29,6 +29,7 @@ export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templa
       Constructor: SortableTableHelper.comparators.Constructor,
       Points: SortableTableHelper.comparators.Points,
       'Fastest Lap': (a: ErgastResult, b: ErgastResult) => SortableTableHelper.comparators.LapTime(a, b, 'FastestLap.Time.time'),
+      'Pos. Gained': SortableTableHelper.comparators['Pos. Gained'],
       'Finishing Status': SortableTableHelper.comparators["Finishing Status"],
       Laps: SortableTableHelper.comparators.Laps,
     }}
@@ -38,6 +39,7 @@ export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templa
       Constructor: SortableTableHelper.transformers.Constructor,
       Points: SortableTableHelper.transformers.Points,
       'Fastest Lap': SortableTableHelper.transformers["Fastest Lap"],
+      'Pos. Gained': SortableTableHelper.transformers['Pos. Gained'],
       'Finishing Status': SortableTableHelper.transformers["Finishing Status"],
       Laps: SortableTableHelper.transformers.Laps,
     }}

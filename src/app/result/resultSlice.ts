@@ -35,6 +35,13 @@ export const resultSlice = createSlice({
       })
       .addCase(fetchResult.fulfilled, (state, action) => {
         state.status = 'succeeded';
+        const resultsWithPosGained = action.payload?.Results?.map(result => {
+          return {
+            ...result,
+            posGained: parseInt(result.grid) - parseInt(result.position)
+          }
+        }) || [];
+        if (action.payload) action.payload = {...action.payload, Results: resultsWithPosGained};
         state.race = action.payload;
       })
       .addCase(fetchResult.rejected, (state, action) => {

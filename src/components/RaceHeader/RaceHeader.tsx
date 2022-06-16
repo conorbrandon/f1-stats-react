@@ -1,5 +1,5 @@
 import React, { RefObject, useRef } from "react";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link, useOutletContext, useParams } from "react-router-dom";
 import { AppOutletContext } from "../../App";
 import { useAppSelector } from "../../app/hooks";
 import { selectResult, selectResultError, selectResultStatus } from "../../app/result/resultSlice";
@@ -12,6 +12,7 @@ import { UseReduxAsyncStatuses } from "../UseReduxAsyncStatuses/UseReduxAsyncSta
 import styles from "./RaceHeader.module.css";
 
 export const RaceHeader = ({ }) => {
+  const { year, round } = useParams();
   const race = useAppSelector(selectResult);
   const resultStatus = useAppSelector(selectResultStatus);
   const resultError = useAppSelector(selectResultError);
@@ -29,7 +30,7 @@ export const RaceHeader = ({ }) => {
     console.log({x, y, width, height});
     setTooltipPosition({ x: x + (width / 2), y: y + (height / 2) + 45 });
     console.log({schedule});
-    setTooltipChild(<TooltipRace race={schedule.find(race => race.round == targetRound)} previousRace={previousRace} />);
+    setTooltipChild(<TooltipRace race={schedule.find(race => race.round === targetRound)} previousRace={previousRace} />);
   };
   const handleMouseLeave = () => {
     setTooltipPosition(undefined);
@@ -40,29 +41,29 @@ export const RaceHeader = ({ }) => {
     initializeRace(year, round);
   };
 
-  const successContent = race ? <>
+  const successContent = (year && round) ? <>
     <span className={`${styles.backToSeasonLink} material-icons-align`}>
       <span className="material-icons">
         arrow_back
-      </span><Link to={`/${race.season}`}>
-        {race.season} season</Link>
+      </span><Link to={`/${year}`}>
+        {year} season</Link>
     </span>
     <span className={`material-icons-align ${styles.spaceEvenly}`}>
-      {parseInt(race.round) - 1 > 0 && <Link ref={backRef} onClick={() => handleGetNewRace(`${race.season}`, `${parseInt(race.round) - 1}`)}
-        to={`/${race.season}/${parseInt(race.round) - 1}`} 
-        onMouseEnter={() => handleMouseEnter(backRef, String(parseInt(race.round) - 1), true)}
+      {parseInt(round) - 1 > 0 && <Link ref={backRef} onClick={() => handleGetNewRace(`${year}`, `${parseInt(round) - 1}`)}
+        to={`/${year}/${parseInt(round) - 1}`} 
+        onMouseEnter={() => handleMouseEnter(backRef, String(parseInt(round) - 1), true)}
         onMouseLeave={() => handleMouseLeave()}>
         <span className="material-icons" style={{fontSize: 'medium'}}>arrow_back_ios_new</span>
       </Link>}
-      {parseInt(race.round) + 1 <= schedule.length && <Link ref={forwardRef} onClick={() => handleGetNewRace(`${race.season}`, `${parseInt(race.round) + 1}`)}
-        to={`/${race.season}/${parseInt(race.round) + 1}`} 
-        onMouseEnter={() => handleMouseEnter(forwardRef, String(parseInt(race.round) + 1), false)}
+      {parseInt(round) + 1 <= schedule.length && <Link ref={forwardRef} onClick={() => handleGetNewRace(`${year}`, `${parseInt(round) + 1}`)}
+        to={`/${year}/${parseInt(round) + 1}`} 
+        onMouseEnter={() => handleMouseEnter(forwardRef, String(parseInt(round) + 1), false)}
         onMouseLeave={() => handleMouseLeave()}>
         <span className="material-icons" style={{fontSize: 'medium'}}>arrow_forward_ios</span>
       </Link>}
-      <span className="x-large-font">{race.season} {race.raceName}</span>
+      {race ? <><span className="x-large-font">{year} {race.raceName}</span>
       <img className={styles.img} src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
-      <span className="medium-font">(Round {race.round})</span>
+      <span className="medium-font">(Round {round})</span></>: <></>}
     </span>
   </> : <></>;
   return (

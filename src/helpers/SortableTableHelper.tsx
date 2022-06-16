@@ -31,6 +31,11 @@ export const SortableTableHelper = {
         {result.FastestLap?.rank === "1" && <span className="material-icons gold">star</span>}
       </div>
     },
+    'Pos. Gained': (result: ErgastResult) => {
+      let { posGained } = result;
+      posGained = posGained || 0;
+      return <div className={`${posGained < 0 ? 'lightRedBg': posGained > 0 ? 'lightGreenBg' : ''}`}>{result.posGained}</div>
+    },
     'Finishing Status': (result: ErgastResult) => {
       return <div>{result.status}</div>
     },
@@ -53,6 +58,7 @@ export const SortableTableHelper = {
     Constructor: (a: ErgastResult, b: ErgastResult) => a.Constructor.name > b.Constructor.name ? 1 : -1,
     Points: (a: ErgastResult, b: ErgastResult) => parseInt(b.points) - parseInt(a.points),
     LapTime: (a: ErgastResult | ErgastQualifyingResult, b: ErgastResult | ErgastQualifyingResult, objectPath: string) => TimeHelper.raceTimeToMs(deep_value(a, objectPath)) - TimeHelper.raceTimeToMs(deep_value(b, objectPath)),
+    'Pos. Gained': (a: ErgastResult, b: ErgastResult) => (b.posGained || -Infinity) - (a.posGained || -Infinity),
     'Finishing Status': (a: ErgastResult, b: ErgastResult) => a.status > b.status ? 1 : -1,
     Laps: (a: ErgastResult, b: ErgastResult) => parseInt(a.laps) - parseInt(b.laps),
   },
