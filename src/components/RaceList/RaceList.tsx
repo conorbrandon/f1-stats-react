@@ -20,8 +20,8 @@ export const RaceList: React.FC<ScheduleDisplayProps> = ({ races }) => {
                 <span className="x-large-font">{race.raceName}
                   <img className="race-card-flag list" src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={race.Circuit.Location.country} /> 
                 </span><br />
-                <span className="large-font">
-                  {race.Circuit.circuitName}
+                <span className="medium-font">
+                  {race.Circuit.Location.locality}, {race.Circuit.Location.country} at {race.Circuit.circuitName}
                 </span><br />
               </li>
             </Link>

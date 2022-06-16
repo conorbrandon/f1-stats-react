@@ -6,7 +6,7 @@
 .raceListLayout li {
   border: solid black 1px;
   border-radius: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 1px;
   padding: 5px;
 }
 .raceListLayout li:hover {
