@@ -58,7 +58,7 @@ export class ErgastAPI {
     return json.MRData.DriverTable.Drivers;
   }
   static async getLapTimes(year: string, round: string): Promise<ErgastRace> {
-    await sleep(3500);
+    await sleep(35);
     if (year === "2008" && round === "5") return MockLapsResponse.MRData.RaceTable.Races[0];
     else return EmptyScheduleResponse.MRData.RaceTable.Races[0];
     const url = `${baseUrl}/${year}/${round}/laps.json?limit=200`;
