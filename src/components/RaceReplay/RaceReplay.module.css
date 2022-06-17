@@ -1,19 +1,73 @@
 .centered {
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.wrapper {
+.innerWrapper {
   /* width: 90%; */
   height: 500px;
   background-color: white;
-  margin-top: 2rem;
   position: relative;
   color: black;
+}
+.outerWrapper {
+  height: 550px;
+  background-color: white;
+  margin-top: 1rem;
+  width: 95%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
 }
 
 .object {
   position: absolute;
-  width: 20px;
+  /* width: 20px; */
   height: 20px;
+  z-index: 2;
+  background-color: white;
+}
+
+.lapAxis {
+  color: black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 90%;
+}
+.positionAxis {
+  position: absolute;
+  left: 4rem;
+  top: 0;
+  color: black;
+  display: flex;
+  flex-direction: column;
+}
+.positionAxisRight {
+  left: 98%;
+}
+
+.driverName {
+  /* margin-left: 21px; */
+  background-color: white;
+  display: flex;
+}
+.positionLines {
+  height: 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.replayHeader {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
 }

@@ -75,6 +75,7 @@ export const RaceHeader = ({ }) => {
           <Link to="results">Results</Link>
           <Link to="qualifying">Qualifying</Link>
           <Link to="laptimes">Lap/Position Trace</Link>
+          <Link to="racereplay">Race Replay</Link>
         </span>
       </div>
     </>
