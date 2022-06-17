@@ -11,7 +11,7 @@ import { ErgastLap } from '../../model/ErgastLap';
 // type SelectedDrivers = SelectedDriversElement[];
 
 interface LapTimesState {
-  laps: ErgastLap[],
+  laps?: ErgastLap[],
   status: ReduxAsyncStatusType,
   error: ReduxAsyncErrorType,
   // selectedDrivers: SelectedDrivers
@@ -19,7 +19,7 @@ interface LapTimesState {
 type GetPayloadAction = {year: string, round: string};
 
 const initialState: LapTimesState = {
-  laps: [],
+  laps: undefined,
   status: 'idle',
   error: undefined,
   // selectedDrivers: []
@@ -43,7 +43,7 @@ export const lapsSlice = createSlice({
       })
       .addCase(fetchLaps.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        const Laps: ErgastLap[] = action.payload?.Laps || [];
+        const Laps: ErgastLap[] | undefined = action.payload?.Laps;
         console.log({Laps});
         state.laps = Laps;
         // // Extras

@@ -3,6 +3,9 @@ import { DenonymCodes } from "./DenonymCodes";
 
 export class FlagHelper {
   static getFlag(country: string): string {
+    if (!country) {
+      return '';
+    }
     country = country.toLowerCase();
     if (country === 'usa') country = 'united states';
     else if (country === 'uk') country = 'united kingdom';

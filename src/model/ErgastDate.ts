@@ -1,3 +1,4 @@
 export interface ErgastDate {
-  date: string
+  date: string,
+  time?: string
 };

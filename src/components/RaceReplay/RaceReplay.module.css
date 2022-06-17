@@ -28,7 +28,7 @@
   /* width: 20px; */
   height: 20px;
   z-index: 2;
-  background-color: white;
+  /* background-color: white; */
 }
 
 .lapAxis {
@@ -36,7 +36,10 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  width: 90%;
+  /* width: 85%; */
+  margin-top: 45%;
+  position: relative;
+  z-index: 2;
 }
 .positionAxis {
   position: absolute;
@@ -45,14 +48,19 @@
   color: black;
   display: flex;
   flex-direction: column;
+  z-index: 2;
 }
 .positionAxisRight {
   left: 98%;
 }
 
+.pitStopMarker {
+  border-right: solid 5px gold;
+}
+
 .driverName {
   /* margin-left: 21px; */
-  background-color: white;
+  /* background-color: white; */
   display: flex;
 }
 .positionLines {
