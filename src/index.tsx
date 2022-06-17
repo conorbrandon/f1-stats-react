@@ -14,6 +14,7 @@ import { Constructor } from './components/Constructor/Constructor';
 import { RaceLapTimes } from './components/RaceLapTimes/RaceLapTimes';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
+import { RaceReplay } from './components/RaceReplay/RaceReplay';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -31,6 +32,7 @@ root.render(
             <Route path='results' element={<RaceResults />}/>
             <Route path='qualifying' element={<RaceQualifying />}/>
             <Route path='laptimes' element={<RaceLapTimes />}/>
+            <Route path='racereplay' element={<RaceReplay />}/>
           </Route>
           <Route path='/driver/:driverID' element={<Driver />}/>
           <Route path='/constructor/:constructorID' element={<Constructor />}/>
