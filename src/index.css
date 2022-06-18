@@ -113,6 +113,7 @@ a {
   overflow: scroll;
   top: 14vh;
   width: 100vw;
+  padding-bottom: 5rem;
 }
 .page-content.padded {
   margin-left: 5rem;

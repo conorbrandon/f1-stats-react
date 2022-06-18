@@ -1,34 +1,56 @@
 .centered {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  overflow-x: hidden;
+  display: grid;
+  grid-template-columns: 2.5% 95% 2.5%;
+  grid-template-rows: 2;
 }
 
-.innerWrapper {
-  /* width: 90%; */
-  height: 500px;
-  background-color: white;
-  position: relative;
-  color: black;
+.replayHeader {
+  margin-top: .2rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  grid-row: 1;
+  grid-column: 2;
 }
 .outerWrapper {
   height: 525px;
   background-color: white;
   margin-top: 1rem;
-  width: 95%;
   display: flex;
   align-items: center;
   flex-direction: column;
   position: relative;
+  grid-column: 2;
+  grid-row: 2;
+}
+.innerWrapper {
+  height: 500px;
+  background-color: white;
+  position: relative;
+  color: black;
+}
+.sidebar {
+  background-color: black;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+}
+.leftSidebar {
+  grid-column: 1;
+  grid-row: 2;
+}
+.rightSidebar {
+  grid-column: 3;
+  grid-row: 2;
 }
 
 .object {
   position: absolute;
-  /* width: 20px; */
   height: 20px;
   z-index: 2;
-  /* background-color: white; */
 }
 
 .lapAxis {
@@ -39,7 +61,7 @@
   /* width: 85%; */
   margin-top: 500px;
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 .positionAxis {
   position: absolute;
@@ -68,14 +90,5 @@
   border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
   left: 0;
   position: absolute;
-  width: 100%;
-}
-
-.replayHeader {
-  margin-top: .2rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
   width: 100%;
 }
