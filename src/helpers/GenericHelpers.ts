@@ -1,3 +1,7 @@
+import { ErgastLap } from "../model/ErgastLap";
+import { ErgastPitStop } from "../model/ErgastPitStop";
+import { ErgastRace } from "../model/ErgastRace";
+
 export const shuffle = (array: any[]) => {
   let currentIndex = array.length, randomIndex;
 
@@ -14,4 +18,4 @@ export const shuffle = (array: any[]) => {
   }
 
   return array;
-}
+};
