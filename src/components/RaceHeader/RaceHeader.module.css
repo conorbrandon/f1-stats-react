@@ -1,5 +1,15 @@
 .links a {
   margin-right: 2rem;
+  text-decoration: none;
+}
+.links a:hover {
+  text-decoration: underline;
+}
+.raceName {
+  text-decoration: none;
+}
+.raceName:hover {
+  text-decoration: underline;
 }
 
 .img {

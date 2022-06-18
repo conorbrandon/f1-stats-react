@@ -61,7 +61,7 @@ export const RaceHeader = ({ }) => {
         onMouseLeave={() => handleMouseLeave()}>
         <span className="material-icons" style={{fontSize: 'medium'}}>arrow_forward_ios</span>
       </Link>}
-      {race ? <><span className="x-large-font">{year} {race.raceName}</span>
+      {race ? <><span className="x-large-font"><Link to="" className={styles.raceName}>{year} {race.raceName}</Link></span>
       <img className={styles.img} src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
       <span className="medium-font">(Round {round})</span></>: <></>}
     </span>

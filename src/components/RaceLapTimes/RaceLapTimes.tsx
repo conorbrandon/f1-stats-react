@@ -53,6 +53,12 @@ const customStyles: StylesConfig<DriverIDElement> = {
 };
 
 interface ScaleDomain { min: number, max: number };
+type UseLapType = 'avg' | 'all' | 'log';
+const lapTypeFullName: { [lapTypeID: string]: string } = {
+  'avg': 'Remove outliers (Pit stops, Safety Car, etc...)',
+  'all': 'Show all laps',
+  'log': 'Use log scale'
+};
 
 export const RaceLapTimes = ({ }) => {
   const { year, round } = useParams();
@@ -65,7 +71,9 @@ export const RaceLapTimes = ({ }) => {
   const [logLapFormatterMap, setLogLapFormatterMap] = useState<{ [ms: number]: string }>();
   const [logScaleFunction, setLogScaleFunction] = useState<{ theFunc: ScaleLogarithmic<number, number> }>();
   const [showPositions, setShowPositions] = useState<boolean>(false);
-  const [useLogLaps, setUseLogLaps] = useState<boolean>(false);
+  const [useLapType, setUseLapType] = useState<UseLapType>('avg');
+  const [minimumLapTime, setMinimumLapTime] = useState<number>(0);
+  const [averageLapTime, setAverageLapTime] = useState<number>(0);
 
   const race = useAppSelector(selectResult);
   const raceStatus = useAppSelector(selectResultStatus);
@@ -97,16 +105,24 @@ export const RaceLapTimes = ({ }) => {
       // console.log({ driverIDSet });
       let minLapTime = Infinity;
       let maxLapTime = -Infinity;
+      let avgLapTime = 0;
+      let numTotalLaps = 0;
       let transformedLaps: lapTime[] = laps.map((lap, lapNum) => {
         let driverIDLapMap: lapTime = { lapNum: lapNum + 1 };
         lap.Timings.forEach(timing => {
           const lapTime = TimeHelper.raceTimeToMs(timing.time);
+          avgLapTime += lapTime;
+          numTotalLaps += 1;
           driverIDLapMap[timing.driverId] = lapTime;
           if (lapTime > maxLapTime) maxLapTime = lapTime;
           if (lapTime < minLapTime) minLapTime = lapTime;
         });
         return driverIDLapMap;
       });
+      setMinimumLapTime(minLapTime);
+      avgLapTime /= numTotalLaps;
+      setAverageLapTime(avgLapTime);
+      console.log({ avgLapTime, minLapTime, avgAsRaceTime: TimeHelper.msToRaceTime(avgLapTime) });
       const logScaleFunction = scaleLog().domain([minLapTime, maxLapTime]).range([1, 100]).base(10);
       let logLapFormatterMap: { [ms: number]: string } = {};
       let transformedLogLaps: lapTime[] = laps.map((lap, lapNum) => {
@@ -158,8 +174,8 @@ export const RaceLapTimes = ({ }) => {
   const handlePositionChange = (checked: boolean) => {
     setShowPositions(checked);
   }
-  const handleLogLapChange = (checked: boolean) => {
-    setUseLogLaps(checked);
+  const handleUseLapTypeChange = (value: UseLapType) => {
+    setUseLapType(value);
   }
   const selectAllDrivers = () => {
     setSelectFirstLoad(false);
@@ -168,8 +184,12 @@ export const RaceLapTimes = ({ }) => {
   const raceLapTimesContent = <>
     <span style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'baseline' }}>
       {!showPositions && <span className={`material-icons-align ${styles.floatRight}`}>
-        <span>Use Log Lap Times:</span>
-        <Switch checked={useLogLaps} onChange={handleLogLapChange} />
+        <span>Use Laps:</span>
+        <select name="lapType" id="lapType" onChange={(event) => handleUseLapTypeChange(event.target.value as UseLapType)} defaultValue={'avg'}>
+          <option value="avg">{lapTypeFullName['avg']}</option>
+          <option value="all">{lapTypeFullName['all']}</option>
+          <option value="log">{lapTypeFullName['log']}</option>
+        </select>
       </span>}
       <span className={`material-icons-align ${styles.floatRight}`}>
         <span>Show Position Trace:</span>
@@ -180,14 +200,14 @@ export const RaceLapTimes = ({ }) => {
 
     <Select placeholder={'Select drivers...'} options={driverIDSet} isMulti isSearchable onChange={onChange} styles={customStyles} value={selectFirstLoad ? [] : driverIDSet.filter(driver => driver.isSelected)} />
 
-    {!useLogLaps && lapTimes && !showPositions && driverIDSet.find(driver => driver.isSelected) &&
+    {(useLapType === 'all' || useLapType === 'avg') && lapTimes && !showPositions && driverIDSet.find(driver => driver.isSelected) &&
       <GenericTrace driverIDSet={driverIDSet}
-        domain={['dataMin - 100', 'dataMax + 100']} data={lapTimes}
+        domain={useLapType === 'all' ? ['dataMin - 100', 'dataMax + 100']: [minimumLapTime, averageLapTime]} data={lapTimes}
         width={1200} height={450}
-        chartTitle={`${year} ${race?.raceName} Lap Comparison`}
-        tickCount={10} formatter={(ms: number) => TimeHelper.msToRaceTime(ms)} dot={true} />
+        chartTitle={`${year} ${race?.raceName} Lap Comparison ${useLapType === 'avg' ? '(outlier laps removed)' : ''}`}
+        tickCount={10} formatter={(ms: number) => TimeHelper.msToRaceTime(ms)} dot={false} />
     }
-    {logScaleFunction && useLogLaps && logLapTimes && !showPositions && driverIDSet.find(driver => driver.isSelected) &&
+    {useLapType == 'log' && logScaleFunction && logLapTimes && !showPositions && driverIDSet.find(driver => driver.isSelected) &&
       <GenericTrace driverIDSet={driverIDSet}
         domain={['dataMin', 'dataMax']} data={logLapTimes}
         width={1200} height={450}
@@ -195,14 +215,14 @@ export const RaceLapTimes = ({ }) => {
         scale={logScaleFunction.theFunc}
         tickCount={2} interval={1}
         formatter={(ms: number) => (logLapFormatterMap && logLapFormatterMap[ms]) || TimeHelper.msToRaceTime(logScaleFunction.theFunc.invert(ms))}
-        dot={true} />
+        dot={false} />
     }
     {showPositions && driverIDSet.find(driver => driver.isSelected) &&
       <GenericTrace driverIDSet={driverIDSet}
         data={positionTrace} domain={[1, driverIDSet.length + 1]}
         width={1200} height={450}
         chartTitle={`${year} ${race?.raceName} Position Trace`}
-        tickCount={driverIDSet.length} reversed={true} dot={false} />
+        tickCount={driverIDSet.length} reversed={true} dot={false} strokeWidth={3} />
     }
     {!driverIDSet.find(driver => driver.isSelected) && <div style={{height: '450px'}}></div>}
   </>;
