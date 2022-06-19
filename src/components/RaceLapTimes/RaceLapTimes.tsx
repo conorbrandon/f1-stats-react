@@ -3,7 +3,7 @@ import styles from "./RaceLapTimes.module.css";
 
 import Select, { MultiValue, StylesConfig } from 'react-select';
 import Switch from "react-switch";
-import { GenericTrace } from "../GenericTrace/GenericTrace";
+import { PitStopLapMap, GenericTrace } from "../GenericTrace/GenericTrace";
 import { scaleLog, ScaleLogarithmic } from 'd3-scale';
 import { TimeHelper } from "../../helpers/TimeHelper";
 import { useAppSelector } from "../../app/hooks";
@@ -15,6 +15,7 @@ import { fetchResult, selectResult, selectResultError, selectResultStatus } from
 import { fetchLaps, selectLaps, selectLapsError, selectLapsStatus } from "../../app/laps/lapsSlice";
 import { shuffle } from "../../helpers/GenericHelpers";
 import { UseReduxAsyncStatuses } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
+import { fetchPitStops, selectPitStops, selectPitStopsError, selectPitStopsStatus } from "../../app/pitstops/pitStopsSlice";
 
 type DriverIDElement = { driverID: string, isSelected: boolean, driverColor: string, value: string, label: string };
 export type DriverIDSet = DriverIDElement[];
@@ -55,8 +56,8 @@ const customStyles: StylesConfig<DriverIDElement> = {
 interface ScaleDomain { min: number, max: number };
 type UseLapType = 'avg' | 'all' | 'log';
 const lapTypeFullName: { [lapTypeID: string]: string } = {
-  'avg': 'Remove outliers (Pit stops, Safety Car, etc...)',
-  'all': 'Show all laps',
+  'avg': 'Remove outliers (Pit stops, Safety Cars, etc...)',
+  'all': 'Show all lap times (Pit stops, Safety Cars, etc... included)',
   'log': 'Use log scale'
 };
 
@@ -68,10 +69,11 @@ export const RaceLapTimes = ({ }) => {
   const [driverIDSet, setDriverIDSet] = useState<DriverIDSet>([]);
   const [scaleDomain, setScaleDomain] = useState<ScaleDomain>();
   const [positionTrace, setPositionTrace] = useState<lapTime[]>();
+  const [pitstopLapMap, setPitstopLapMap] = useState<PitStopLapMap>();
   const [logLapFormatterMap, setLogLapFormatterMap] = useState<{ [ms: number]: string }>();
   const [logScaleFunction, setLogScaleFunction] = useState<{ theFunc: ScaleLogarithmic<number, number> }>();
   const [showPositions, setShowPositions] = useState<boolean>(false);
-  const [useLapType, setUseLapType] = useState<UseLapType>('avg');
+  const [useLapType, setUseLapType] = useState<UseLapType>('all');
   const [minimumLapTime, setMinimumLapTime] = useState<number>(0);
   const [averageLapTime, setAverageLapTime] = useState<number>(0);
 
@@ -84,6 +86,9 @@ export const RaceLapTimes = ({ }) => {
   const laps = useAppSelector(selectLaps);
   const lapsStatus = useAppSelector(selectLapsStatus);
   const lapsError = useAppSelector(selectLapsError);
+  const pitstops = useAppSelector(selectPitStops);
+  const pitstopsStatus = useAppSelector(selectPitStopsStatus);
+  const pitstopsError = useAppSelector(selectPitStopsError);
   const [selectFirstLoad, setSelectFirstLoad] = useState(true);
 
   useEffect(() => {
@@ -94,10 +99,11 @@ export const RaceLapTimes = ({ }) => {
       const randomColorIndexSet: number[] = shuffle(Array.from({ length: numDrivers }, (_, i: number) => i));
       // console.log({randomColorIndexSet});
       laps[0].Timings.forEach((timing, _i) => {
+      const driverColor = interpolateRainbow(randomColorIndexSet[_i] / numDrivers);
         driverIDSet.push({
           driverID: timing.driverId,
           isSelected: true,
-          driverColor: interpolateRainbow(randomColorIndexSet[_i] / numDrivers),
+          driverColor,
           value: timing.driverId,
           label: timing.driverId
         });
@@ -136,13 +142,21 @@ export const RaceLapTimes = ({ }) => {
         });
         return driverIDLapMap;
       });
+      let myPitstopLapMap: PitStopLapMap = {};
+      pitstops?.forEach(pitstop => {
+        if (!myPitstopLapMap[pitstop.lap]) myPitstopLapMap[pitstop.lap] = {};
+        myPitstopLapMap[pitstop.lap][pitstop.driverId] = 'pitstop';
+      });
+      // let customCirclesPositions: CustomCircle[] = [];
       let transformedPositions: lapTime[] = laps.map((lap, lapNum) => {
         let driverIDPositionMap: lapTime = { lapNum: lapNum + 1 };
         lap.Timings.forEach(timing => {
           driverIDPositionMap[timing.driverId] = parseInt(timing.position);
+          // if (pitstopLapMap[lapNum + 1] && pitstopLapMap[lapNum + 1][timing.driverId]) customCirclesPositions.push({cx: lapNum + 1, cy: parseInt(timing.position)});
         });
         return driverIDPositionMap;
       });
+      // console.log({ customCirclesPositions });
       let lap0Position: lapTime = { lapNum: 0 };
       console.log({ raceQualifying });
       raceQualifying?.QualifyingResults?.forEach(result => {
@@ -158,6 +172,7 @@ export const RaceLapTimes = ({ }) => {
       setLapTimes(transformedLaps);
       setLogLapTimes(transformedLogLaps)
       setPositionTrace(transformedPositions);
+      setPitstopLapMap(myPitstopLapMap);
       setDriverIDSet(driverIDSet);
     }
   }, [raceQualifying, laps]);
@@ -185,7 +200,7 @@ export const RaceLapTimes = ({ }) => {
     <span style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'baseline' }}>
       {!showPositions && <span className={`material-icons-align ${styles.floatRight}`}>
         <span>Use Laps:</span>
-        <select name="lapType" id="lapType" onChange={(event) => handleUseLapTypeChange(event.target.value as UseLapType)} defaultValue={'avg'}>
+        <select name="lapType" id="lapType" onChange={(event) => handleUseLapTypeChange(event.target.value as UseLapType)} defaultValue={'all'}>
           <option value="avg">{lapTypeFullName['avg']}</option>
           <option value="all">{lapTypeFullName['all']}</option>
           <option value="log">{lapTypeFullName['log']}</option>
@@ -202,10 +217,10 @@ export const RaceLapTimes = ({ }) => {
 
     {(useLapType === 'all' || useLapType === 'avg') && lapTimes && !showPositions && driverIDSet.find(driver => driver.isSelected) &&
       <GenericTrace driverIDSet={driverIDSet}
-        domain={useLapType === 'all' ? ['dataMin - 100', 'dataMax + 100']: [minimumLapTime, averageLapTime]} data={lapTimes}
+        domain={useLapType === 'all' ? ['dataMin - 1000', 'dataMax + 2000']: [minimumLapTime, averageLapTime]} data={lapTimes}
         width={1200} height={450}
         chartTitle={`${year} ${race?.raceName} Lap Comparison ${useLapType === 'avg' ? '(outlier laps removed)' : ''}`}
-        tickCount={10} formatter={(ms: number) => TimeHelper.msToRaceTime(ms)} dot={false} />
+        tickCount={10} formatter={(ms: number) => TimeHelper.msToRaceTime(ms)} dot={false} pitstopLapMap={pitstopLapMap} />
     }
     {useLapType == 'log' && logScaleFunction && logLapTimes && !showPositions && driverIDSet.find(driver => driver.isSelected) &&
       <GenericTrace driverIDSet={driverIDSet}
@@ -215,21 +230,28 @@ export const RaceLapTimes = ({ }) => {
         scale={logScaleFunction.theFunc}
         tickCount={2} interval={1}
         formatter={(ms: number) => (logLapFormatterMap && logLapFormatterMap[ms]) || TimeHelper.msToRaceTime(logScaleFunction.theFunc.invert(ms))}
-        dot={false} />
+        dot={false} pitstopLapMap={pitstopLapMap} />
     }
     {showPositions && driverIDSet.find(driver => driver.isSelected) &&
       <GenericTrace driverIDSet={driverIDSet}
-        data={positionTrace} domain={[1, driverIDSet.length + 1]}
+        data={positionTrace || []} domain={[0.5, driverIDSet.length + .5]}
         width={1200} height={450}
         chartTitle={`${year} ${race?.raceName} Position Trace`}
-        tickCount={driverIDSet.length} reversed={true} dot={false} strokeWidth={3} />
+        tickCount={driverIDSet.length} reversed={true} dot={false} strokeWidth={3}
+        pitstopLapMap={pitstopLapMap} />
     }
     {!driverIDSet.find(driver => driver.isSelected) && <div style={{height: '450px'}}></div>}
   </>;
   return (
     <div className="page-content">
       <div className={`${styles.centered}`}>
-        <UseReduxAsyncStatuses statuses={[raceStatus, raceQualifyingStatus, lapsStatus]} successContent={raceLapTimesContent} errors={[raceError, raceQualifyingError, lapsError]} loadingInterText={'Laps'} fetchActions={[fetchResult, fetchQualifying, fetchLaps]} fetchParamss={[{year: year || '', round: round || ''}, {year: year || '', round: round || ''}, {year: year || '', round: round || ''}]} />
+        <UseReduxAsyncStatuses 
+          statuses={[raceStatus, raceQualifyingStatus, lapsStatus, pitstopsStatus]} 
+          successContent={raceLapTimesContent} 
+          errors={[raceError, raceQualifyingError, lapsError, pitstopsError]} 
+          loadingInterText={'Laps'} 
+          fetchActions={[fetchResult, fetchQualifying, fetchLaps, fetchPitStops]} 
+          fetchParamss={[{year: year || '', round: round || ''}, {year: year || '', round: round || ''}, {year: year || '', round: round || ''}, {year: year || '', round: round || ''}]} />
       </div>
     </div>
   );

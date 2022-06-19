@@ -22,7 +22,8 @@ interface TotalTimeDriverMap {
     driverColor: string,
     driverLastName?: string,
     pitStopStyles: string[],
-    displaySettings?: string[] // for drivers that started in the pitlane
+    displaySettings?: string[] // for drivers that started in the pitlane,
+    constructorID: string
   }
 };
 
@@ -71,8 +72,8 @@ export const RaceReplay = ({ }) => {
 
       // set driver colors, stateful for repeatability when changing duration
       const numDrivers = result.Results.length;
-      const myRandomColorIndexSet: number[] = randomColorIndexSet || shuffle(Array.from({ length: numDrivers }, (_, i: number) => i));
-      if (!randomColorIndexSet) setRandomColorIndexSet(myRandomColorIndexSet);
+      // const myRandomColorIndexSet: number[] = randomColorIndexSet || shuffle(Array.from({ length: numDrivers }, (_, i: number) => i));
+      // if (!randomColorIndexSet) setRandomColorIndexSet(myRandomColorIndexSet);
 
       // height of driver markers
       const myDriverObjectHeight = CANVAS_HEIGHT / numDrivers;
@@ -93,9 +94,10 @@ export const RaceReplay = ({ }) => {
               timePercentages: [0],
               cumTimePercentage: 0,
               positions: [0], // will fill in from results in next loop
-              driverColor: interpolateRainbow(myRandomColorIndexSet[j] / numDrivers),
+              driverColor: '',//interpolateRainbow(myRandomColorIndexSet[j] / numDrivers),
               driverLastName: undefined,
-              pitStopStyles: []
+              pitStopStyles: [],
+              constructorID: ''
             };
           }
           // add to total time
@@ -109,6 +111,7 @@ export const RaceReplay = ({ }) => {
       setWinningDriver(myWinningDriver);
       setSlowestDriver(mySlowestDriver);
 
+      const constructorIDSet: Set<string> = new Set();
       // set starting position on grid and final finishing position from results
       result.Results.forEach(_result => {
         // fill in starting position for drivers that crashed on first lap
@@ -119,18 +122,32 @@ export const RaceReplay = ({ }) => {
             timePercentages: [1],
             cumTimePercentage: 0,
             positions: [(parseInt(_result.position) - 1) * myDriverObjectHeight],
-            driverColor: 'black',
+            driverColor: '',//'black',
             driverLastName: _result.Driver.familyName,
-            pitStopStyles: []
+            pitStopStyles: [],
+            constructorID: ''
           };
           return;
         }
+        // add constructorIDs to set
+        constructorIDSet.add(_result.Constructor.constructorId);
+        // add driver's last name for display
         myTotalTimeDriverMap[_result.Driver.driverId].driverLastName = _result.Driver.familyName;
+        // calculate starting position top offset
         const len = myTotalTimeDriverMap[_result.Driver.driverId].positions.length;
-        myTotalTimeDriverMap[_result.Driver.driverId].positions[0] = (parseInt(_result.grid) - 1) * myDriverObjectHeight; // pitlane start will have 0 grid position, will result in a negative top position
+        myTotalTimeDriverMap[_result.Driver.driverId].positions[0] = (parseInt(_result.grid) - 1) * myDriverObjectHeight;
+         // pitlane start will have 0 grid position, will result in a negative top position
         if (myTotalTimeDriverMap[_result.Driver.driverId].positions[0] < 0) myTotalTimeDriverMap[_result.Driver.driverId].positions[0] = CANVAS_HEIGHT;
+        // calculate final top position offset based on finishing position
         myTotalTimeDriverMap[_result.Driver.driverId].positions[len - 1] = (parseInt(_result.position) - 1) * myDriverObjectHeight;
+        myTotalTimeDriverMap[_result.Driver.driverId].constructorID = _result.Constructor.constructorId;
       });
+      const numConstructors = constructorIDSet.size;
+      const randomColorConstructorIndexSet = randomColorIndexSet || shuffle(Array.from({ length: numConstructors }, (_, i: number) => i));
+      if (!randomColorConstructorIndexSet) setRandomColorIndexSet(randomColorConstructorIndexSet);
+      const constructorColorKeyObject: { [constructorID: string]: string } = {};
+      Array.from(constructorIDSet).forEach((id, i) => constructorColorKeyObject[id] = interpolateRainbow(randomColorConstructorIndexSet[i] / numConstructors));
+      console.log({ constructorColorKeyObject });
 
       // use total time to find fractional then cumulative time slice for each lap
       for (let i = 0; i < laps.length; i++) {
@@ -141,8 +158,10 @@ export const RaceReplay = ({ }) => {
           // console.log({timePercentage});
           myTotalTimeDriverMap[timing.driverId].cumTimePercentage += timePercentage;
           myTotalTimeDriverMap[timing.driverId].timePercentages.push(myTotalTimeDriverMap[timing.driverId].cumTimePercentage);
+          myTotalTimeDriverMap[timing.driverId].driverColor = constructorColorKeyObject[myTotalTimeDriverMap[timing.driverId].constructorID];
         }
-      }
+      }      
+      console.log({ constructorColorKeyObject });
 
       // add pitstops if they exist for this race
       if (pitstops && pitstops.length) {

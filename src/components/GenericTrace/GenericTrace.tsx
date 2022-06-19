@@ -8,10 +8,11 @@ import { scaleLinear } from 'd3-scale';
 import { useCurrentPng } from "recharts-to-png";
 import { saveAs } from 'file-saver';
 
+export interface PitStopLapMap {[lap: string]: {[driverID: string] : any}};
 interface GenericTraceProps {
-  data?: lapTime[],
+  data: lapTime[],
   driverIDSet: DriverIDSet,
-  width?: number,
+  width: number,
   height: number,
   chartTitle?: string,
   scale?: any
@@ -21,11 +22,12 @@ interface GenericTraceProps {
   reversed?: boolean,
   dot?: boolean,
   interval?: number,
-  strokeWidth?: number
+  strokeWidth?: number,
+  pitstopLapMap?: PitStopLapMap
 };
 const genericFormatter = (value: number) => value + '';
 
-export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, width, height, chartTitle, scale, domain, tickCount, formatter, reversed, dot, interval, strokeWidth }) => {
+export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, width, height, chartTitle, scale, domain, tickCount, formatter, reversed, dot, interval, strokeWidth, pitstopLapMap }) => {
   const [getPng, { ref, isLoading }] = useCurrentPng();
   const handleDownload = useCallback(async () => {
     const png = await getPng();
@@ -35,13 +37,37 @@ export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, w
       saveAs(png, `${chartTitle}.png`);
     }
   }, [getPng]);
+
+  const pitStopIcon = (cx: number, cy: number) => <g>
+  <circle cx={cx} cy={cy} r={7} fill='green'></circle>
+  <circle cx={cx} cy={cy} r={5} fill='yellow'></circle>
+  <circle cx={cx} cy={cy} r={3} fill='red'></circle>
+  <circle cx={cx} cy={cy} r={1} fill='white'></circle>
+</g>;
+  const renderDot = (event: any) => {
+    if (!pitstopLapMap) return <></>;
+    if (pitstopLapMap[event.index + ''] && pitstopLapMap[event.index + ''][event.dataKey]) {
+      console.log(pitstopLapMap[event.index + ''][event.dataKey], { event });
+      return pitStopIcon(event.cx, event.cy);
+    };
+    return <></>;
+  };
+  const renderActiveDot = (event: any) => {
+    if (!pitstopLapMap) return <></>;
+    if (pitstopLapMap[event.index + ''] && pitstopLapMap[event.index + ''][event.dataKey]) {
+      console.log(pitstopLapMap[event.index + ''][event.dataKey], { event });
+      return pitStopIcon(event.cx, event.cy);
+    };
+    if (event.cy > 0) return <circle cx={event.cx} cy={event.cy} r={5} fill={event.fill}></circle>;
+    else return <></>;
+  };
   return (
     <div>
       <button onClick={handleDownload} style={{ fontSize: 'medium' }}>
         {isLoading ? 'Downloading...' : 'Download Chart'}
       </button>
       <ResponsiveContainer width={width || '90%'} height={height}>
-        <LineChart margin={{ top: 50, left: 30, right: 30, bottom: 30 }} data={data} ref={ref}>
+        <LineChart margin={{ top: 50, left: -10, right: 30, bottom: 30 }} data={data} ref={ref}>
           <text x={(width || 0) / 2} y={20} fill="black" textAnchor="middle" dominantBaseline="central">
             <tspan fontSize="14">{chartTitle || ''}</tspan>
           </text>
@@ -53,7 +79,11 @@ export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, w
           }} formatter={formatter || genericFormatter} position={{ y: -100 }} />
           <Legend />
           {driverIDSet?.filter(driver => driver.isSelected).map((driver, _i) => {
-            return <Line key={driver.driverID} type="linear" dataKey={driver.driverID} stroke={driver.driverColor} strokeWidth={strokeWidth || 2} dot={dot !== undefined ? dot : true} />;
+            return <Line key={driver.driverID} type="linear" 
+              dataKey={driver.driverID} stroke={driver.driverColor} strokeWidth={strokeWidth || 2} 
+              dot={pitstopLapMap ? renderDot : dot !== undefined ? dot : true} 
+              activeDot={pitstopLapMap ? renderActiveDot : true}
+            />;
           })}
         </LineChart>
       </ResponsiveContainer>
