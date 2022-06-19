@@ -5,13 +5,14 @@ import { motion, useAnimation } from "framer-motion";
 
 import { TimeHelper } from "../../helpers/TimeHelper";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { fetchLaps, selectLaps } from "../../app/laps/lapsSlice";
+import { fetchLaps, selectLaps, selectLapsError, selectLapsStatus } from "../../app/laps/lapsSlice";
 import { useParams } from "react-router-dom";
 import Switch from "react-switch";
 import { selectResult } from "../../app/result/resultSlice";
 import { shuffle } from "../../helpers/GenericHelpers";
 import { interpolateRainbow } from "d3-scale-chromatic";
-import { fetchPitStops, selectPitStops } from "../../app/pitstops/pitStopsSlice";
+import { fetchPitStops, selectPitStops, selectPitStopsError, selectPitStopsStatus } from "../../app/pitstops/pitStopsSlice";
+import { UseReduxAsyncStatuses } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
 
 interface TotalTimeDriverMap {
   [driverID: string]: {
@@ -52,18 +53,19 @@ export const RaceReplay = ({ }) => {
   // required data for the component
   const dispatch = useAppDispatch();
   const laps = useAppSelector(selectLaps);
+  const lapsStatus = useAppSelector(selectLapsStatus);
+  const lapsError = useAppSelector(selectLapsError);
   const result = useAppSelector(selectResult);  // fetched in the race component overall
   // optional data for the component
   const pitstops = useAppSelector(selectPitStops);
+  const pitstopsStatus = useAppSelector(selectPitStopsStatus);
+  const pitstopsError = useAppSelector(selectPitStopsError);
 
   // timing of scrolling motion.div to match lead driver position
   const [followLeadDriverTimes, setFollowLeadDriverTimes] = useState<number[]>();
 
   useEffect(() => {
-    if (!laps?.length) dispatch(fetchLaps({ year: year || '', round: round || '' }));
-    if (!pitstops?.length) dispatch(fetchPitStops({ year: year || '', round: round || '' }));
-
-    if (laps?.length && result?.Results?.length) {
+    if (laps?.length && result?.Results?.length && pitstops !== undefined) {
       // set left intervals
       const leftInterval = (width - 20) / laps.length; // width of squares
       const myLeftIntervals: any = laps.map((_, i) => leftInterval * (i + 1));
@@ -136,7 +138,7 @@ export const RaceReplay = ({ }) => {
         // calculate starting position top offset
         const len = myTotalTimeDriverMap[_result.Driver.driverId].positions.length;
         myTotalTimeDriverMap[_result.Driver.driverId].positions[0] = (parseInt(_result.grid) - 1) * myDriverObjectHeight;
-         // pitlane start will have 0 grid position, will result in a negative top position
+        // pitlane start will have 0 grid position, will result in a negative top position
         if (myTotalTimeDriverMap[_result.Driver.driverId].positions[0] < 0) myTotalTimeDriverMap[_result.Driver.driverId].positions[0] = CANVAS_HEIGHT;
         // calculate final top position offset based on finishing position
         myTotalTimeDriverMap[_result.Driver.driverId].positions[len - 1] = (parseInt(_result.position) - 1) * myDriverObjectHeight;
@@ -160,7 +162,7 @@ export const RaceReplay = ({ }) => {
           myTotalTimeDriverMap[timing.driverId].timePercentages.push(myTotalTimeDriverMap[timing.driverId].cumTimePercentage);
           myTotalTimeDriverMap[timing.driverId].driverColor = constructorColorKeyObject[myTotalTimeDriverMap[timing.driverId].constructorID];
         }
-      }      
+      }
       console.log({ constructorColorKeyObject });
 
       // add pitstops if they exist for this race
@@ -214,13 +216,13 @@ export const RaceReplay = ({ }) => {
   };
 
   const preparedDriverObjects = <>
-  {totalTimeDriverMap && leftIntervals && bestTotalTime && laps && Object.keys(totalTimeDriverMap).map((driverID: string, _i) => {
-        const positions = totalTimeDriverMap[driverID].positions;
-        const driverLastName = totalTimeDriverMap[driverID].driverLastName?.replaceAll(" ", "_");
-        const durationForEachDriver = (totalTimeDriverMap[driverID].totalTime / bestTotalTime) * duration;
-        // drivers that crashed on the first lap
-        if (!durationForEachDriver) {
-          return <div
+    {totalTimeDriverMap && leftIntervals && bestTotalTime && laps && Object.keys(totalTimeDriverMap).map((driverID: string, _i) => {
+      const positions = totalTimeDriverMap[driverID].positions;
+      const driverLastName = totalTimeDriverMap[driverID].driverLastName?.replaceAll(" ", "_");
+      const durationForEachDriver = (totalTimeDriverMap[driverID].totalTime / bestTotalTime) * duration;
+      // drivers that crashed on the first lap
+      if (!durationForEachDriver) {
+        return <div
           key={_i} id={driverID} className={styles.object}
           style={{
             left: 0,
@@ -230,44 +232,44 @@ export const RaceReplay = ({ }) => {
           }}>
           <span className={styles.driverName}><span className="material-icons">directions_car</span>{driverLastName || driverID}</span>
         </div>;
+      }
+      const lapsCompleted = totalTimeDriverMap[driverID].timePercentages.length;
+      const leftIntervalsForEachDriver = [...leftIntervals].splice(0, lapsCompleted > laps.length ? lapsCompleted + 1 : lapsCompleted);
+      const pitLaneStart = positions[0] >= CANVAS_HEIGHT && durationForEachDriver;
+      let display = Array.from({ length: lapsCompleted }, (_) => 'block');
+      if (pitLaneStart) {
+        display[0] = 'none';
+      }
+      const times = totalTimeDriverMap[driverID].timePercentages;
+      const pitstops = totalTimeDriverMap[driverID].pitStopStyles;
+      // console.log({ driverID, leftIntervalsForEachDriver, durationForEachDriver, times, positions, pitstops });
+      const variant = {
+        animate: {
+          left: leftIntervalsForEachDriver,
+          top: positions,
+          borderRight: pitstops,
+          display,
+          transition: { duration: durationForEachDriver, times, ease: 'linear' }
         }
-        const lapsCompleted = totalTimeDriverMap[driverID].timePercentages.length;
-        const leftIntervalsForEachDriver = [...leftIntervals].splice(0, lapsCompleted > laps.length ? lapsCompleted + 1 : lapsCompleted);
-        const pitLaneStart = positions[0] >= CANVAS_HEIGHT && durationForEachDriver;
-        let display = Array.from({ length: lapsCompleted }, (_) => 'block');
-        if (pitLaneStart) {
-          display[0] = 'none';
-        }
-        const times = totalTimeDriverMap[driverID].timePercentages;
-        const pitstops = totalTimeDriverMap[driverID].pitStopStyles;
-        // console.log({ driverID, leftIntervalsForEachDriver, durationForEachDriver, times, positions, pitstops });
-        const variant = {
-          animate: {
-            left: leftIntervalsForEachDriver,
-            top: positions,
-            borderRight: pitstops,
-            display,
-            transition: { duration: durationForEachDriver, times, ease: 'linear' }
-          }
-        };
-        // animated drivers
-        return (<motion.div key={_i} id={driverID}
-            className={styles.object}
-            style={{
-              color: totalTimeDriverMap[driverID].driverColor,
-              height: `${driverObjectHeight - 5}px`
-            }}
-            initial={{ left: leftIntervalsForEachDriver[0], top: positions[0], display: display[0] }}
-            variants={variant}
-            animate={carControls}
-            ref={(ref) => {
-              refArray.current[_i] = ref;
-            }}
-            onAnimationComplete={(definition) => handleAnimationComplete(driverID)}
-          >
-            <span className={styles.driverName}><span className="material-icons">directions_car</span>{driverLastName || driverID}</span>
-          </motion.div>);
-      })}
+      };
+      // animated drivers
+      return (<motion.div key={_i} id={driverID}
+        className={styles.object}
+        style={{
+          color: totalTimeDriverMap[driverID].driverColor,
+          height: `${driverObjectHeight - 5}px`
+        }}
+        initial={{ left: leftIntervalsForEachDriver[0], top: positions[0], display: display[0] }}
+        variants={variant}
+        animate={carControls}
+        ref={(ref) => {
+          refArray.current[_i] = ref;
+        }}
+        onAnimationComplete={() => handleAnimationComplete(driverID)}
+      >
+        <span className={styles.driverName}><span className="material-icons">directions_car</span>{driverLastName || driverID}</span>
+      </motion.div>);
+    })}
   </>;
 
   const innerWrapperForDisplayAllLaps = <>
@@ -331,41 +333,49 @@ export const RaceReplay = ({ }) => {
     </motion.div>
   }</>;
 
+  const successContent = <>
+    <div className={styles.replayHeader}>
+      <button style={{ width: '10%' }} onClick={() => handlePause()}>{isPaused ? 'play' : 'pause'}</button><br />
+      <span className='material-icons-align'>
+        Select duration: <input type="range" min="15" max="120"
+          onChange={(event) => handleDurationChange(event.target.valueAsNumber)}
+          defaultValue={duration}
+        />
+        Current: {duration} seconds
+      </span>
+      <span className="material-icons-align">
+        {'Display all laps'}
+        <Switch checked={displayAllLaps} onChange={handleDisplayAllLapsChange} />
+      </span>
+      <span>
+        <span style={{ textDecoration: 'underline' }}>Legend</span><br />
+        <span style={{ borderRight: PIT_STOP_STYLE, paddingRight: '1rem' }}>Pitstop:</span><br />
+        Empty grid slots indicate a Pit Lane start
+      </span>
+    </div>
+
+    <div className={`${styles.sidebar} ${styles.leftSidebar}`}></div>
+    <div className={`${styles.sidebar} ${styles.rightSidebar}`}></div>
+
+    <div className={styles.outerWrapper}>
+      {totalTimeDriverMap && <div className={styles.positionAxis}>
+        {Object.keys(totalTimeDriverMap).map((_, i) => <div key={i}>{i + 1}</div>)}
+      </div>}
+      {totalTimeDriverMap && <div className={`${styles.positionAxis} ${styles.positionAxisRight}`}>
+        {Object.keys(totalTimeDriverMap).map((_, i) => <div key={i}>{i + 1}</div>)}
+      </div>}
+      {displayAllLaps ? innerWrapperForDisplayAllLaps : innerWrapperForFollowLeadDriver}
+    </div>
+  </>;
+
   return (
-    <div className={`page-content ${styles.centered}`}>
-
-      <div className={styles.replayHeader}>
-        <button style={{ width: '10%' }} onClick={() => handlePause()}>{isPaused ? 'play' : 'pause'}</button><br />
-        <span className='material-icons-align'>
-          Select duration: <input type="range" min="15" max="120"
-            onChange={(event) => handleDurationChange(event.target.valueAsNumber)}
-            defaultValue={duration}
-          />
-          Current: {duration} seconds
-        </span>
-        <span className="material-icons-align">
-          {'Display all laps'}
-          <Switch checked={displayAllLaps} onChange={handleDisplayAllLapsChange} />
-        </span>
-        <span>
-          <span style={{ textDecoration: 'underline' }}>Legend</span><br />
-          <span style={{ borderRight: PIT_STOP_STYLE, paddingRight: '1rem' }}>Pitstop:</span><br />
-          Empty grid slots indicate Pit Lane start
-        </span>
-      </div>
-
-      <div className={`${styles.sidebar} ${styles.leftSidebar}`}></div>
-      <div className={`${styles.sidebar} ${styles.rightSidebar}`}></div>
-
-      <div className={styles.outerWrapper}>
-        {totalTimeDriverMap && <div className={styles.positionAxis}>
-          {Object.keys(totalTimeDriverMap).map((_, i) => <div key={i}>{i + 1}</div>)}
-        </div>}
-        {totalTimeDriverMap && <div className={`${styles.positionAxis} ${styles.positionAxisRight}`}>
-          {Object.keys(totalTimeDriverMap).map((_, i) => <div key={i}>{i + 1}</div>)}
-        </div>}
-        {displayAllLaps ? innerWrapperForDisplayAllLaps : innerWrapperForFollowLeadDriver}
-      </div>
+    <div className={`page-content ${laps?.length && result?.Results?.length && pitstops !== undefined ? styles.centered: ''}`}>
+      <UseReduxAsyncStatuses statuses={[lapsStatus, pitstopsStatus]} 
+      errors={[lapsError, pitstopsError]}
+      fetchActions={[fetchLaps, fetchPitStops]}
+      fetchParamss={[{ year: year || '', round: round || '' }, { year: year || '', round: round || '' }]}
+      successContent={successContent}
+      loadingInterText={'Laps and Pitstops'} />
     </div>
   );
 };

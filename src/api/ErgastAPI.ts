@@ -61,7 +61,7 @@ export class ErgastAPI {
     return json.MRData.DriverTable.Drivers;
   }
   static async getLapTimes(year: string, round: string): Promise<ErgastRace> {
-    await sleep(35);
+    await sleep(350);
     if (year === "2008" && round === "5") return MockLapsResponse.MRData.RaceTable.Races[0];
     else if (year === "2022" && round === "5") return MockLapsResponse2022.MRData.RaceTable.Races[0];
     else return EmptyScheduleResponse.MRData.RaceTable.Races[0];
@@ -71,7 +71,7 @@ export class ErgastAPI {
     return json.MRData.RaceTable.Races[0];
   }
   static async getPitStops(year: string, round: string): Promise<ErgastRace> {
-    await sleep(35);
+    await sleep(1000);
     if (year === "2022" && round === "5") return MockPitStopResponse2022.MRData.RaceTable.Races[0];
     else return EmptyScheduleResponse.MRData.RaceTable.Races[0];
     const url = `${baseUrl}/${year}/${round}/pitstops.json?limit=200`;

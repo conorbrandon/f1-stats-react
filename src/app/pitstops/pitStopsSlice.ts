@@ -35,7 +35,7 @@ export const pitStopsSlice = createSlice({
       })
       .addCase(fetchPitStops.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        const PitStops: ErgastPitStop[] | undefined = action.payload?.PitStops || undefined;
+        const PitStops: ErgastPitStop[] | undefined = action.payload?.PitStops || [];
         state.pitstops = PitStops;
       })
       .addCase(fetchPitStops.rejected, (state, action) => {
