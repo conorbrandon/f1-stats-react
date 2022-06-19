@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { ConstructorLogoType } from "../app/constructorLogos/constructorLogosSlice";
 import { ErgastQualifyingResult } from "../model/ErgastQualifyingResult";
 import { ErgastResult } from "../model/ErgastResult";
 import { FlagHelper } from "./FlagHelper";
@@ -14,16 +15,15 @@ export const SortableTableHelper = {
       </div>;
     },
     Driver: (result: ErgastResult) => {
-      return <div className="material-icons-align">
-        <img src={FlagHelper.getFlagFromDenonym(result.Driver.nationality)} alt={`${result.Driver.nationality} flag`} />
+      return <div className="material-icons-align" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
         <Link to={`/driver/${result.Driver.driverId}`}>{result.Driver.givenName} {result.Driver.familyName}</Link>
+        <img src={FlagHelper.getFlagFromDenonym(result.Driver.nationality)} alt={`${result.Driver.nationality} flag`} />
       </div>
     },
-    Constructor: (result: ErgastResult) => {
-      return <Link to={`/constructor/${result.Constructor.constructorId}`}>{result.Constructor.name}</Link>
-    },
-    Points: (result: ErgastResult) => {
-      return <div>{result.points}</div>
+    Constructor: (result: ErgastResult | ErgastQualifyingResult, constructorLogos: ConstructorLogoType) => {
+      return <span className="material-icons-align" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}><Link to={`/constructor/${result.Constructor.constructorId}`}>{result.Constructor.name}
+      </Link>
+        <img src={constructorLogos ? constructorLogos[result.Constructor.constructorId] : ''}/></span>
     },
     'Fastest Lap': (result: ErgastResult) => {
       return <div className="material-icons-align">
@@ -36,38 +36,33 @@ export const SortableTableHelper = {
       posGained = posGained || 0;
       return <div className={`${posGained < 0 ? 'lightRedBg': posGained > 0 ? 'lightGreenBg' : ''}`}>{result.posGained}</div>
     },
-    'Finishing Status': (result: ErgastResult) => {
-      return <div>{result.status}</div>
+    RawFromDeepValue: (result: ErgastResult | ErgastQualifyingResult, objectPath: string) => {
+      return <div>{deep_value(result, objectPath)}</div>
     },
-    Laps: (result: ErgastResult) => {
-      return <div>{result.laps}</div>
-    },
-    Q1: (result: ErgastQualifyingResult) => {
-      return <div>{result.Q1}</div>
-    },
-    Q2: (result: ErgastQualifyingResult) => {
-      return <div>{result.Q2}</div>
-    },
-    Q3: (result: ErgastQualifyingResult) => {
-      return <div>{result.Q3}</div>
-    },
+    FinishingTime: (result: ErgastResult) => {
+      const millis = parseInt(result.Time?.millis || '');
+      return <div>{TimeHelper.msToRaceTime(millis)}</div>
+    }
   },
   comparators: {
     Position: (a: ErgastResult, b: ErgastResult) => parseInt(a.position) - parseInt(b.position),
     Driver: (a: ErgastResult, b: ErgastResult) => a.Driver.familyName > b.Driver.familyName ? 1 : -1,
     Constructor: (a: ErgastResult, b: ErgastResult) => a.Constructor.name > b.Constructor.name ? 1 : -1,
     Points: (a: ErgastResult, b: ErgastResult) => parseInt(b.points) - parseInt(a.points),
-    LapTime: (a: ErgastResult | ErgastQualifyingResult, b: ErgastResult | ErgastQualifyingResult, objectPath: string) => TimeHelper.raceTimeToMs(deep_value(a, objectPath)) - TimeHelper.raceTimeToMs(deep_value(b, objectPath)),
-    'Pos. Gained': (a: ErgastResult, b: ErgastResult) => (b.posGained || -Infinity) - (a.posGained || -Infinity),
+    LapTime: (a: ErgastResult | ErgastQualifyingResult, b: ErgastResult | ErgastQualifyingResult, objectPath: string) => {
+      return TimeHelper.raceTimeToMs(deep_value(a, objectPath)) - TimeHelper.raceTimeToMs(deep_value(b, objectPath))
+    },
+    'Pos. Gained': (a: ErgastResult, b: ErgastResult) => (b.posGained !== undefined ? b.posGained : -Infinity) - (a.posGained !== undefined ? a.posGained : -Infinity),
     'Finishing Status': (a: ErgastResult, b: ErgastResult) => a.status > b.status ? 1 : -1,
     Laps: (a: ErgastResult, b: ErgastResult) => parseInt(a.laps) - parseInt(b.laps),
+    FinishingTime: (a: ErgastResult, b: ErgastResult) => parseInt(a.Time?.millis || '') - parseInt(b.Time?.millis || ''),    
   },
 };
 
 export const deep_value = (obj: any, path: string) => {
   const pathParts = path.split('.');
   for (let i = 0; i < pathParts.length; i++) {
-    console.log({ obj });
+    // console.log({ obj });
     if (obj === undefined) return obj;
     obj = obj[pathParts[i] as keyof typeof obj];
   }

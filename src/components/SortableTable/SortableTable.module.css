@@ -10,9 +10,12 @@
 .centeredTable {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 .centeredTable img {
-  width: 5%;
+  height: 20px;
+  background-color: white;
+  max-width: 85px;
 }
 /* .centeredTable table {
   min-width: 80%;

@@ -3,4 +3,5 @@ export interface ErgastConstructor {
   "url": string,
   "name": string,
   "nationality": string,
+  "logoUrl"?: string
 };

@@ -8,6 +8,7 @@ import driversReducer from './drivers/driversSlice';
 import driverReducer from './driver/driverSlice';
 import lapsReducer from './laps/lapsSlice';
 import pitStopsReducer from './pitstops/pitStopsSlice';
+import constructorLogosReducer from './constructorLogos/constructorLogosSlice';
 
 const middleware = [logger]; // always put logger last
 
@@ -20,7 +21,8 @@ export const store =  configureStore({
     drivers: driversReducer,
     driver: driverReducer,
     laps: lapsReducer,
-    pitstops: pitStopsReducer
+    pitstops: pitStopsReducer,
+    constructorLogos: constructorLogosReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...middleware),
   devTools: true

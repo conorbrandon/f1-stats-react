@@ -27,7 +27,7 @@ export const RaceSummary = ({ }) => {
         <UseReduxAsyncStatus status={resultStatus} successContent={raceSummaryLocationContent} error={resultError} />
       </div>
       <div className={styles.raceSummaryTables}>
-          <RaceResults noClass={true} limit={5} templateParam={['Position', 'Driver', 'Constructor', 'Points', 'Pos. Gained']} />
+          <RaceResults noClass={true} limit={5} templateParam={['Position', 'Driver', 'Constructor', 'Points', 'Interval', 'Pos. Gained']} />
           <RaceQualifying noClass={true} limit={5} templateParam={['Position', 'Driver', 'Constructor', 'Q3']} />
       </div>
     </div>

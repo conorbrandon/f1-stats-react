@@ -64,16 +64,18 @@ export const SortableTable: React.FC<SortableTableProps> = ({ items, template, c
   };
   return (
     <div className={styles.centeredTable}>
-      <table>
+      <table style={{ width: '90%' }}>
         {caption && <caption className="xx-large-font">{caption}</caption>}
         <thead>
           <tr>
-            {template?.map((t, i) => {
+            {template?.map((key, i) => {
               return (
                 <th key={i}>
-                  <button className={styles.button} type="button" onClick={() => requestSort(t)}>
+                  <button className={styles.button} type="button" 
+                  onClick={comparators && comparators[key] ? () => requestSort(key) : () => {}}>
                     <div className="material-icons-align center">
-                      <span>{t}</span><span className='material-icons'>{getClassNamesFor(t)}</span>
+                      <span>{key}</span>
+                      {comparators && comparators[key] && <span className='material-icons'>{getClassNamesFor(key)}</span>}
                     </div>
                   </button>
                 </th>
