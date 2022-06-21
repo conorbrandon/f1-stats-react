@@ -23,7 +23,7 @@ export const Schedule = ({ }) => {
   const scheduleStatus = useAppSelector(selectScheduleStatus);
   const scheduleError = useAppSelector(selectScheduleError);
 
-  const [scheduleYear, setScheduleYear] = useState<string>(year || schedule[0].season || new Date().getUTCFullYear() + '');
+  const [scheduleYear, setScheduleYear] = useState<string>(year || new Date().getUTCFullYear() + '' || schedule[0].season);
   const [useCardLayout, setUseCardLayout] = useState<boolean>(false);
 
   const changeScheduleYear = (year: string) => {
