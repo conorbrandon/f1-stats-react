@@ -46,7 +46,7 @@ button {
   margin-right: 15px;
 }
 
-.mapboxgl-popup-content {
+.mapboxgl-popup-content, .mapboxgl-popup-close-button {
   color: black;
 }
 

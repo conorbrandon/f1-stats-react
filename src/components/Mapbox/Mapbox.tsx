@@ -3,6 +3,7 @@ import styles from "./Mapbox.module.css";
 
 import { ErgastRace } from "../../model/ErgastRace";
 import mapboxgl from 'mapbox-gl';
+import { FlagHelper } from "../../helpers/FlagHelper";
 
 interface MapboxProps {
   races: ErgastRace[],
@@ -44,6 +45,7 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType, zoo
           <h2>${race.raceName}</h2> 
           <h4>${race.Circuit.circuitName}</h4>
           <p>${race.Circuit.Location.locality}, ${race.Circuit.Location.country}</p>
+          <img src='${FlagHelper.getFlag(race.Circuit.Location.country)}' />
         </a></div>`)
         )
         .addTo(map as mapboxgl.Map);
