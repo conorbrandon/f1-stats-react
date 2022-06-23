@@ -9,7 +9,9 @@ import styles from "./$1.module.css";
 
 export const $1 = ({ }) => {
   return (
-    <div></div>
+    <div className="page-content">
+      hi $1!
+    </div>
   );
 };
 EOF
