@@ -34,6 +34,7 @@ root.render(
             <Route path='qualifying' element={<RaceQualifying />}/>
             <Route path='laptimes' element={<RaceLapTimes />}/>
             <Route path='racereplay' element={<RaceReplayReMotion />}/>
+            <Route path='racereplay2' element={<RaceReplay />}/>
           </Route>
           <Route path='/driver/:driverID' element={<Driver />}/>
           <Route path='/constructor/:constructorID' element={<Constructor />}/>
