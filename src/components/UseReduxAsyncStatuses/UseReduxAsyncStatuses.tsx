@@ -51,7 +51,7 @@ export const UseReduxAsyncStatuses: React.FC<UseReduxAsyncStatusesProps> = ({ st
   const dispatch = useAppDispatch();
   const [pageContent, setPageContent] = useState(<></>);
   useEffect(() => {
-    console.log({ statuses, fetchActions, fetchParamss });
+    // console.log({ statuses, fetchActions, fetchParamss });
     const statusesMap: {[statusID: string]: number} = {'idle': 0, 'loading': 0, 'succeeded': 0, 'failed': 0};
     statuses.forEach(status => statusesMap[status]++);
     if (statusesMap['idle'] && fetchActions && fetchParamss) {

@@ -32,11 +32,13 @@ export interface TotalTimeDriverMap {
 export const RaceReplayReMotion = ({ }) => {
   const { year, round } = useParams();
 
-  const [duration, setDuration] = useState<number>(30);
+  const [duration, setDuration] = useState<number>(60);
+  const [speed, setSpeed] = useState<number>(1);
   const [isPaused, setPaused] = useState<boolean>(true);
   const [displayAllLaps, setDisplayAllLaps] = useState<boolean>(false);
+  const THIRD_OF_AVG_NUM_LAPS = 40;
+  const [width, setWidth] = useState((document.body.clientWidth * .80) * THIRD_OF_AVG_NUM_LAPS);
   const fps = 60;
-  const width = document.body.clientWidth * .95;
   const height = 550;
 
   const [totalTimeDriverMap, setTotalTimeDriverMap] = useState<TotalTimeDriverMap>();
@@ -140,7 +142,6 @@ export const RaceReplayReMotion = ({ }) => {
       if (!randomColorIndexSet) setRandomColorIndexSet(randomColorConstructorIndexSet);
       const constructorColorKeyObject: { [constructorID: string]: string } = {};
       Array.from(constructorIDSet).forEach((id, i) => constructorColorKeyObject[id] = interpolateRainbow(randomColorConstructorIndexSet[i] / numConstructors));
-      console.log({ constructorColorKeyObject });
 
       for (let i = 0; i < laps.length; i++) {
         const lap = laps[i];
@@ -168,14 +169,26 @@ export const RaceReplayReMotion = ({ }) => {
         }
       }
 
-      console.log(myTotalTimeDriverMap);
       setTotalTimeDriverMap(myTotalTimeDriverMap);
-
       // the winning driver had the baseline total race time to use for duration calculations
       const myBestTotalTime = myTotalTimeDriverMap[winningDriver].totalTime;
       setBestTotalTime(myBestTotalTime);
     }
-  }, [laps, results, pitstops, duration, dispatch]);
+  }, [laps, results, pitstops, duration, width, dispatch]);
+
+  // prepare followLeadDriverTimes
+  useEffect(() => {
+    if (!displayAllLaps && totalTimeDriverMap && laps && results?.Results) {
+      let myFollowLeadDriverTimes = laps.map((lap, i) => {
+        const leadDriverTimePercentage = totalTimeDriverMap[lap.Timings[0].driverId].keyFrames[i];
+        return leadDriverTimePercentage;
+      }) || [];
+      const winningDriverCumKeyframes = totalTimeDriverMap[results.Results[0].Driver.driverId].cumkeyFrames;
+      myFollowLeadDriverTimes.push(winningDriverCumKeyframes);
+      setFollowLeadDriverTimes(myFollowLeadDriverTimes);
+      // console.log({ myFollowLeadDriverTimes });
+    }
+  }, [displayAllLaps, totalTimeDriverMap, laps, results]);
 
   const playerRef = useRef<PlayerRef>(null);
   const pausePlayWrapper = useCallback((playState: boolean) => {
@@ -187,22 +200,23 @@ export const RaceReplayReMotion = ({ }) => {
     else current.play();
   }, []);
   useEffect(() => {
-    // console.log('playerRef', JSON.stringify(playerRef), playerRef.current);
     if (playerRef.current && !setTheEndedEventListener) {
-      console.log({ playerRef });
+      // console.log({ playerRef });
       playerRef.current.addEventListener("ended", (e) => {
-        console.log("ended");
-        playerRef.current?.seekTo((duration * fps) - 2);
+        console.log("ended", e, isPaused);
+        // playerRef.current?.seekTo(3598);
+        setPaused(true);
       });
       setSetEndedTheEventListener(true);
     }
   }, [playerRef.current]);
 
-  const handleDurationChange = (newValue: number) => {
-    setDuration(newValue);
+  const handleSpeedChange = (newValue: number) => {
+    setSpeed(newValue);
   };
   const handleDisplayAllLapsChange = (checked: boolean) => {
     setDisplayAllLaps(checked);
+    setWidth(checked ? document.body.clientWidth * .95 : (document.body.clientWidth * .95) * THIRD_OF_AVG_NUM_LAPS);
   };
   const handlePause = () => {
     setPaused(!isPaused);
@@ -213,15 +227,15 @@ export const RaceReplayReMotion = ({ }) => {
     <div className={styles.replayHeader}>
       <button style={{ width: '10%' }} onClick={() => handlePause()}>{isPaused ? 'play' : 'pause'}</button>
       <span className='material-icons-align'>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'end' }}>
-          <span>Select duration</span>
-          <span>(will reset animation):</span>
+        <div>
+          <span>Select speed</span>
         </div>
-        <input type="range" min="15" max="120"
-          onChange={(event) => handleDurationChange(event.target.valueAsNumber)}
-          defaultValue={duration}
+        <input type="range" min="0.5" max="4" step={0.1}
+          onChange={(event) => handleSpeedChange(event.target.valueAsNumber)}
+          defaultValue={speed}
         />
-        Current: {duration} seconds
+        Current speed: {Math.round(speed * 100) / 100} <br></br>
+        Total duration: {Math.round(duration / speed)} seconds
       </span>
       <span className="material-icons-align">
         {'Display all laps'}
@@ -242,7 +256,7 @@ export const RaceReplayReMotion = ({ }) => {
         fps={fps}
         controls
         style={{
-          width,
+          width: document.body.clientWidth * .95,
           height
         }}
         ref={playerRef}
@@ -252,8 +266,14 @@ export const RaceReplayReMotion = ({ }) => {
           totalTimeDriverMap,
           numLaps: laps?.length,
           leftIntervals: leftIntervals,
-          driverObjectHeight: driverObjectHeight
+          driverObjectHeight: driverObjectHeight,
+          leftOffset: leftOffset,
+          rightOffset: rightOffset,
+          displayAllLaps: displayAllLaps,
+          innerWrapperWidth: width,
+          followLeadDriverTimes: followLeadDriverTimes
         }}
+        playbackRate={speed}
       />
     </div>
   </>;

@@ -10,7 +10,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   width: 100%;
   grid-row: 1;
   grid-column: 2;
@@ -39,4 +39,53 @@
 .tireBig {
   width: 30px;
   height: 30px;
+}
+
+.positionLines {
+  height: 0;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+  left: 0;
+  position: absolute;
+  /* width: 100%; */
+}
+
+.lapAxis {
+  color: black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 500px;
+  position: relative;
+  z-index: 1;
+}
+.positionAxis {
+  position: absolute;
+  left: 4rem;
+  top: 0;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+.positionAxisLeft {
+  left: 1%;
+}
+.positionAxisRight {
+  left: 98%;
+}
+
+.bigLapCounter {
+  position: absolute;
+  top: 0%;
+  /* left: 10%; */
+  /* font-size: x-large; */
+  border: solid 2px black;
+  padding: 0px 5px;
+  border-radius: 10px;
+  width: 5rem;
+  text-align: center;
+}
+
+.fivePercentTop {
+  top: 5%;
 }
