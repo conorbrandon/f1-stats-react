@@ -2,8 +2,12 @@ import { ErgastDriver } from "../model/ErgastDriver";
 import { ErgastDriverResponse } from "../model/ErgastDriverResponse";
 import { ErgastRace } from "../model/ErgastRace";
 import { ErgastRaceResponse } from "../model/ErgastRaceResponse";
+import { ErgastStanding } from "../model/ErgastStanding";
+import { ErgastStandingList } from "../model/ErgastStandingList";
+import { ErgastStandingsResponse } from "../model/ErgastStandingsResponse";
 import { MockLapsResponse, MockLapsResponse2022, MockPitStopResponse2022, MockResultsResponse2022 } from "./MockLapsResponse";
 import { EmptyScheduleResponse, MockResultsResponse, MockScheduleResponse, MockQualifyingResponse, MockDriverResponse, EmptyDriverResponse, MockDriversReponse, MockScheduleResponse_2008, MockQualifyingResponse2022, MockScheduleResponse2022, MockNextRace, MockRace2022, MockRace } from "./MockResponse";
+import { EmptyDriverStandingsResponse, MockDriversStandings2022 } from "./MockStandingsResponse";
 import { getTimeZoneFromLatLng } from "./TimeZones";
 
 const baseUrl = 'https://ergast.com/api/f1';  // URL to web api
@@ -101,5 +105,14 @@ export class ErgastAPI {
     const data: Response = await fetch(url);
     const json: ErgastRaceResponse = await data.json();
     return json.MRData.RaceTable.Races[0];
+  }
+  static async getDriverStandings(year: string): Promise<ErgastStandingList> {
+    await sleep(500);
+    if (year === "2022" || year === 'current') return MockDriversStandings2022.MRData.StandingsTable.StandingsLists[0];
+    else return EmptyDriverStandingsResponse.MRData.StandingsTable.StandingsLists[0];
+    const url = `${baseUrl}/${year}/driverStandings.json`;
+    const data: Response = await fetch(url);
+    const json: ErgastStandingsResponse = await data.json();
+    return json.MRData.StandingsTable.StandingsLists[0];
   }
 }

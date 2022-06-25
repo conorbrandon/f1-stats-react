@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ConstructorLogoType } from "../app/constructorLogos/constructorLogosSlice";
+import { ErgastConstructor } from "../model/ErgastConstructor";
 import { ErgastQualifyingResult } from "../model/ErgastQualifyingResult";
 import { ErgastResult } from "../model/ErgastResult";
+import { ErgastStanding } from "../model/ErgastStanding";
 import { FlagHelper } from "./FlagHelper";
 import { TimeHelper } from "./TimeHelper";
 
@@ -25,6 +27,11 @@ export const SortableTableHelper = {
       </Link>
         <img src={constructorLogos ? constructorLogos[result.Constructor.constructorId] : ''}/></span>
     },
+    ConstructorRaw: (constructor: ErgastConstructor, constructorLogos: ConstructorLogoType) => {
+      return <span className="material-icons-align" style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}><Link to={`/constructor/${constructor.constructorId}`}>{constructor.name}
+      </Link>
+        <img src={constructorLogos ? constructorLogos[constructor.constructorId] : ''}/></span>
+    },
     'Fastest Lap': (result: ErgastResult) => {
       return <div className="material-icons-align">
         {result.FastestLap?.Time.time}
@@ -36,7 +43,7 @@ export const SortableTableHelper = {
       posGained = posGained || 0;
       return <div className={`${posGained < 0 ? 'lightRedBg': posGained > 0 ? 'lightGreenBg' : ''}`}>{result.posGained}</div>
     },
-    RawFromDeepValue: (result: ErgastResult | ErgastQualifyingResult, objectPath: string) => {
+    RawFromDeepValue: (result: ErgastResult | ErgastQualifyingResult | ErgastStanding, objectPath: string) => {
       return <div>{deep_value(result, objectPath)}</div>
     },
     FinishingTime: (result: ErgastResult) => {
@@ -48,7 +55,8 @@ export const SortableTableHelper = {
     Position: (a: ErgastResult, b: ErgastResult) => parseInt(a.position) - parseInt(b.position),
     Driver: (a: ErgastResult, b: ErgastResult) => a.Driver.familyName > b.Driver.familyName ? 1 : -1,
     Constructor: (a: ErgastResult, b: ErgastResult) => a.Constructor.name > b.Constructor.name ? 1 : -1,
-    Points: (a: ErgastResult, b: ErgastResult) => parseInt(b.points) - parseInt(a.points),
+    ConstructorRaw: (a: ErgastStanding, b: ErgastStanding) => a.Constructors[0].name > b.Constructors[0].name ? 1 : -1,
+    Points: (a: ErgastResult | ErgastStanding, b: ErgastResult | ErgastStanding) => parseInt(b.points) - parseInt(a.points),
     LapTime: (a: ErgastResult | ErgastQualifyingResult, b: ErgastResult | ErgastQualifyingResult, objectPath: string) => {
       return TimeHelper.raceTimeToMs(deep_value(a, objectPath)) - TimeHelper.raceTimeToMs(deep_value(b, objectPath))
     },
@@ -56,6 +64,7 @@ export const SortableTableHelper = {
     'Finishing Status': (a: ErgastResult, b: ErgastResult) => a.status > b.status ? 1 : -1,
     Laps: (a: ErgastResult, b: ErgastResult) => parseInt(a.laps) - parseInt(b.laps),
     FinishingTime: (a: ErgastResult, b: ErgastResult) => parseInt(a.Time?.millis || '') - parseInt(b.Time?.millis || ''),    
+    Wins: (a: ErgastStanding, b: ErgastStanding) => parseInt(b.wins) - parseInt(a.wins)
   },
 };
 
