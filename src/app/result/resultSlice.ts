@@ -19,6 +19,7 @@ const initialState: ResultState = {
 };
 
 export const fetchResult = createAsyncThunk('result/fetchResult', async ({year, round}: GetPayloadAction) => {
+  console.log('fetchResult', { year, round });
   const response = await ErgastAPI.getRaceResult(year, round);
   const raceResponse = await ErgastAPI.getRace(year, round);
   const timeZone = (await getTimeZoneFromLatLng(response?.Circuit.Location.lat, response?.Circuit.Location.long));
@@ -38,6 +39,7 @@ export const resultSlice = createSlice({
       })
       .addCase(fetchResult.fulfilled, (state, action) => {
         state.status = 'succeeded';
+        console.log('thing', {action});
         const resultsWithPosGained = action.payload?.response?.Results?.map(result => {
           return {
             ...result,
@@ -46,9 +48,16 @@ export const resultSlice = createSlice({
         }) || [];
         if (action.payload?.response) {
           action.payload.response = {...action.payload.response, Results: resultsWithPosGained};
-          action.payload.response.Circuit.Location.timeZone = action.payload.timeZone;
+          action.payload.response = { ...action.payload.response, Circuit: {
+            ...action.payload.response.Circuit,
+            Location: {
+              ...action.payload.response.Circuit.Location,
+              timeZone: action.payload.timeZone
+            }
+          } }
         };
         if (action.payload && action.payload.response && action.payload.raceResponse) state.race = {...action.payload.raceResponse, ...action.payload.response};
+        else state.race = undefined;
       })
       .addCase(fetchResult.rejected, (state, action) => {
         state.status = 'failed';

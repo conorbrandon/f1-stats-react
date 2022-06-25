@@ -9,7 +9,7 @@ THIS IS A CSS RESET SO WE DON'T HAVE TO DEAL WITH DUMB CSS STYLES THAT ARE SET A
 /* You can add global styles to this file, and also import other style files */
 
 html, body {
-  background-color: black;
+  background-color: rgb(20, 20, 20);
   color: white;
   font-family: 'Kdam Thmor Pro', sans-serif;
   overflow-x: hidden;
@@ -93,6 +93,8 @@ a {
   display: flex;
   flex-direction: row;
   align-items: baseline;
+  left: 0;
+  justify-content: center;
 }
 .page-header {
   overflow: hidden;
@@ -107,12 +109,13 @@ a {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* box-shadow: 0vh .3vh .5vh white; */
+  box-shadow: 0vh .3vh .5vh white;
+  left: 0;
 }
 .page-content {
   position: absolute;
   overflow: scroll;
-  top: 14vh;
+  top: 16vh;
   width: 100vw;
   padding-bottom: 5rem;
 }

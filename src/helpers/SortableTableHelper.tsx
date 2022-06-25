@@ -4,9 +4,10 @@ import { ConstructorLogoType } from "../app/constructorLogos/constructorLogosSli
 import { ErgastConstructor } from "../model/ErgastConstructor";
 import { ErgastQualifyingResult } from "../model/ErgastQualifyingResult";
 import { ErgastResult } from "../model/ErgastResult";
-import { ErgastStanding } from "../model/ErgastStanding";
+import { ErgastDriverStanding } from "../model/ErgastDriverStanding";
 import { FlagHelper } from "./FlagHelper";
 import { TimeHelper } from "./TimeHelper";
+import { ErgastConstructorStanding } from "../model/ErgastConstructorStanding";
 
 export const SortableTableHelper = {
   transformers: {
@@ -43,7 +44,7 @@ export const SortableTableHelper = {
       posGained = posGained || 0;
       return <div className={`${posGained < 0 ? 'lightRedBg': posGained > 0 ? 'lightGreenBg' : ''}`}>{result.posGained}</div>
     },
-    RawFromDeepValue: (result: ErgastResult | ErgastQualifyingResult | ErgastStanding, objectPath: string) => {
+    RawFromDeepValue: (result: ErgastResult | ErgastQualifyingResult | ErgastDriverStanding | ErgastConstructorStanding, objectPath: string) => {
       return <div>{deep_value(result, objectPath)}</div>
     },
     FinishingTime: (result: ErgastResult) => {
@@ -55,8 +56,8 @@ export const SortableTableHelper = {
     Position: (a: ErgastResult, b: ErgastResult) => parseInt(a.position) - parseInt(b.position),
     Driver: (a: ErgastResult, b: ErgastResult) => a.Driver.familyName > b.Driver.familyName ? 1 : -1,
     Constructor: (a: ErgastResult, b: ErgastResult) => a.Constructor.name > b.Constructor.name ? 1 : -1,
-    ConstructorRaw: (a: ErgastStanding, b: ErgastStanding) => a.Constructors[0].name > b.Constructors[0].name ? 1 : -1,
-    Points: (a: ErgastResult | ErgastStanding, b: ErgastResult | ErgastStanding) => parseInt(b.points) - parseInt(a.points),
+    ConstructorRaw: (a: ErgastDriverStanding, b: ErgastDriverStanding) => a.Constructors[0].name > b.Constructors[0].name ? 1 : -1,
+    Points: (a: ErgastResult | ErgastDriverStanding, b: ErgastResult | ErgastDriverStanding) => parseInt(b.points) - parseInt(a.points),
     LapTime: (a: ErgastResult | ErgastQualifyingResult, b: ErgastResult | ErgastQualifyingResult, objectPath: string) => {
       return TimeHelper.raceTimeToMs(deep_value(a, objectPath)) - TimeHelper.raceTimeToMs(deep_value(b, objectPath))
     },
@@ -64,7 +65,7 @@ export const SortableTableHelper = {
     'Finishing Status': (a: ErgastResult, b: ErgastResult) => a.status > b.status ? 1 : -1,
     Laps: (a: ErgastResult, b: ErgastResult) => parseInt(a.laps) - parseInt(b.laps),
     FinishingTime: (a: ErgastResult, b: ErgastResult) => parseInt(a.Time?.millis || '') - parseInt(b.Time?.millis || ''),    
-    Wins: (a: ErgastStanding, b: ErgastStanding) => parseInt(b.wins) - parseInt(a.wins)
+    Wins: (a: ErgastDriverStanding | ErgastConstructorStanding, b: ErgastDriverStanding | ErgastConstructorStanding) => parseInt(b.wins) - parseInt(a.wins)
   },
 };
 

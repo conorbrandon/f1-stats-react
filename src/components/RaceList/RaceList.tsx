@@ -18,7 +18,7 @@ export const RaceList: React.FC<ScheduleDisplayProps> = ({ races }) => {
         {races.map((race, i) => {
           return (
             <Link key={i} to={`/${race.season}/${race.round}`} className="no-underline">
-              <motion.li whileHover={{ scale: 1.1 }} className="cursor-pointer" onMouseEnter={() => setActivePopup(i)} onMouseLeave={() => setActivePopup(undefined)}>
+              <motion.li whileHover={{ scale: 1.05 }} className="cursor-pointer" onMouseEnter={() => setActivePopup(i)} onMouseLeave={() => setActivePopup(undefined)}>
                 <span className="x-large-font">{race.raceName}
                   <img className="race-card-flag list" src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={race.Circuit.Location.country} /> 
                 </span><br />

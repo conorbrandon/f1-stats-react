@@ -1,7 +1,7 @@
 import { ErgastConstructor } from "./ErgastConstructor";
 import { ErgastDriver } from "./ErgastDriver";
 
-export interface ErgastStanding {
+export interface ErgastDriverStanding {
   position: string,
   positionText: string,
   points: string,

@@ -1,3 +1,4 @@
+import { ErgastConstructorsResponse } from "../model/ErgastConstructorsResponse";
 import { ErgastDriverResponse } from "../model/ErgastDriverResponse";
 import { ErgastRaceResponse } from "../model/ErgastRaceResponse";
 
@@ -3648,6 +3649,43 @@ export const MockRace2022: ErgastRaceResponse = {
                   }
               }
           ]
+      }
+  }
+};
+
+export const MockConstructorsResponse: ErgastConstructorsResponse = {
+  "MRData": {
+      "xmlns": "http://ergast.com/mrd/1.5",
+      "series": "f1",
+      "url": "http://ergast.com/api/f1/constructors/ferrari.json",
+      "limit": "30",
+      "offset": "0",
+      "total": "1",
+      "ConstructorTable": {
+          "constructorId": "ferrari",
+          "Constructors": [
+              {
+                  "constructorId": "ferrari",
+                  "url": "http://en.wikipedia.org/wiki/Scuderia_Ferrari",
+                  "name": "Ferrari",
+                  "nationality": "Italian"
+              }
+          ]
+      }
+  }
+};
+
+export const EmptyConstructorsResponse: ErgastConstructorsResponse = {
+  "MRData": {
+      "xmlns": "http://ergast.com/mrd/1.5",
+      "series": "f1",
+      "url": "http://ergast.com/api/f1/constructors/ferrari.json",
+      "limit": "30",
+      "offset": "0",
+      "total": "1",
+      "ConstructorTable": {
+          "constructorId": "",
+          "Constructors": []
       }
   }
 };

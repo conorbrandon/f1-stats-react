@@ -2,13 +2,15 @@ import { ErgastDriver } from "../model/ErgastDriver";
 import { ErgastDriverResponse } from "../model/ErgastDriverResponse";
 import { ErgastRace } from "../model/ErgastRace";
 import { ErgastRaceResponse } from "../model/ErgastRaceResponse";
-import { ErgastStanding } from "../model/ErgastStanding";
+import { ErgastDriverStanding } from "../model/ErgastDriverStanding";
 import { ErgastStandingList } from "../model/ErgastStandingList";
 import { ErgastStandingsResponse } from "../model/ErgastStandingsResponse";
 import { MockLapsResponse, MockLapsResponse2022, MockPitStopResponse2022, MockResultsResponse2022 } from "./MockLapsResponse";
-import { EmptyScheduleResponse, MockResultsResponse, MockScheduleResponse, MockQualifyingResponse, MockDriverResponse, EmptyDriverResponse, MockDriversReponse, MockScheduleResponse_2008, MockQualifyingResponse2022, MockScheduleResponse2022, MockNextRace, MockRace2022, MockRace } from "./MockResponse";
-import { EmptyDriverStandingsResponse, MockDriversStandings2022 } from "./MockStandingsResponse";
+import { EmptyScheduleResponse, MockResultsResponse, MockScheduleResponse, MockQualifyingResponse, MockDriverResponse, EmptyDriverResponse, MockDriversReponse, MockScheduleResponse_2008, MockQualifyingResponse2022, MockScheduleResponse2022, MockNextRace, MockRace2022, MockRace, MockConstructorsResponse, EmptyConstructorsResponse } from "./MockResponse";
+import { EmptyDriverStandingsResponse, MockConstructorStandings2022, MockDriversStandings2022 } from "./MockStandingsResponse";
 import { getTimeZoneFromLatLng } from "./TimeZones";
+import { ErgastConstructor } from "../model/ErgastConstructor";
+import { ErgastConstructorsResponse } from "../model/ErgastConstructorsResponse";
 
 const baseUrl = 'https://ergast.com/api/f1';  // URL to web api
 export const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
@@ -78,6 +80,17 @@ export class ErgastAPI {
     const json: ErgastDriverResponse = await data.json();
     return json.MRData.DriverTable.Drivers[0];
   }
+  static async getConstructor(constructorID: string | undefined): Promise<ErgastConstructor> {
+    await sleep(2500);
+    if (!constructorID) return EmptyConstructorsResponse.MRData.ConstructorTable.Constructors[0];
+    console.log({ ferrari: MockConstructorsResponse.MRData.ConstructorTable.Constructors[0] })
+    if (constructorID === "ferrari") return MockConstructorsResponse.MRData.ConstructorTable.Constructors[0];
+    else return EmptyConstructorsResponse.MRData.ConstructorTable.Constructors[0];
+    const url = `${baseUrl}/constructors/${constructorID}.json`;
+    const data: Response = await fetch(url);
+    const json: ErgastConstructorsResponse = await data.json();
+    return json.MRData.ConstructorTable.Constructors[0];
+  }
   static async getDriversByYear(year: string): Promise<ErgastDriver[]> {
     await sleep(4000);
     if (year === "2008") return MockDriversReponse.MRData.DriverTable.Drivers;
@@ -111,6 +124,15 @@ export class ErgastAPI {
     if (year === "2022" || year === 'current') return MockDriversStandings2022.MRData.StandingsTable.StandingsLists[0];
     else return EmptyDriverStandingsResponse.MRData.StandingsTable.StandingsLists[0];
     const url = `${baseUrl}/${year}/driverStandings.json`;
+    const data: Response = await fetch(url);
+    const json: ErgastStandingsResponse = await data.json();
+    return json.MRData.StandingsTable.StandingsLists[0];
+  }
+  static async getConstructorStandings(year: string): Promise<ErgastStandingList> {
+    await sleep(500);
+    if (year === "2022" || year === 'current') return MockConstructorStandings2022.MRData.StandingsTable.StandingsLists[0];
+    else return EmptyDriverStandingsResponse.MRData.StandingsTable.StandingsLists[0];
+    const url = `${baseUrl}/${year}/constructorStandings.json`;
     const data: Response = await fetch(url);
     const json: ErgastStandingsResponse = await data.json();
     return json.MRData.StandingsTable.StandingsLists[0];

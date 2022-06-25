@@ -64,7 +64,7 @@ export const SortableTable: React.FC<SortableTableProps> = ({ items, template, c
   };
   return (
     <div className={styles.centeredTable}>
-      <table style={{ width: '90%' }}>
+      <table style={{ width: '100%' }}>
         {caption && <caption className="xx-large-font">{caption}</caption>}
         <thead>
           <tr>

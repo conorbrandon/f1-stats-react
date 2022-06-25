@@ -1,0 +1,9 @@
+.standingsGrid {
+  display: grid;
+  grid-template-columns: 2% 48% 48% 2%;
+}
+.standingsHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

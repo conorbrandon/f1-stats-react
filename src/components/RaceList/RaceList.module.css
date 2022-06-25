@@ -4,12 +4,12 @@
   grid-template-columns: 50% 50%;
 }
 .raceListLayout li {
-  border: solid black 1px;
+  /* border: solid rgb(20, 20, 20) 1px; */
   border-radius: 5px;
   margin-bottom: 1px;
   padding: 5px;
 }
 .raceListLayout li:hover {
   background-color: white;
-  color: black;
+  color: rgb(20, 20, 20);
 }

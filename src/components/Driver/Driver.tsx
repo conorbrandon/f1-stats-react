@@ -1,18 +1,17 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { ErgastAPI } from "../../api/ErgastAPI";
 import { fetchDriver, selectDriver, selectDriverError, selectDriverStatus } from "../../app/driver/driverSlice";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../app/hooks";
+import { FlagHelper } from "../../helpers/FlagHelper";
 import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
 import styles from "./Driver.module.css";
-
-
 
 export const Driver = ({ }) => {
   const { driverID } = useParams();
   const driver = useAppSelector(selectDriver);
   const driverStatus = useAppSelector(selectDriverStatus);
   const driverError = useAppSelector(selectDriverError);
+  console.log({ driverID, driverStatus });
   const driverHeaderContent = driver ?
       <span>
         <span className="xx-large-font">
@@ -25,6 +24,7 @@ export const Driver = ({ }) => {
       : <></>;
   const driverBodyContent = driver ? <>
     <div>Nationality: {driver.nationality}</div>
+    <img src={FlagHelper.getFlagFromDenonym(driver.nationality)} alt={`${driver.nationality} flag`} />
     <div>Date of birth: {new Date(driver.dateOfBirth).toLocaleDateString()}</div>
     <div><a href={driver.url} target="_blank">Wikipedia</a></div>
   </> : <></>;

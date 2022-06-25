@@ -8,10 +8,11 @@ interface RaceTimesContainerProps {
   date: string,
   time: string,
   timeZone?: string,
-  open?: boolean
+  open?: boolean,
+  useMyTime: boolean
 }
 
-export const RaceTimesContainer: React.FC<RaceTimesContainerProps> = ({ sessionText, date, time, timeZone, open }) => {
+export const RaceTimesContainer: React.FC<RaceTimesContainerProps> = ({ sessionText, date, time, timeZone, open, useMyTime }) => {
   const [myIsOpen, setMyIsOpen] = useState(open);
   return (
     <motion.div whileHover={{ scale: 1.05 }} className={`${styles.timesContainer}`}>
@@ -29,11 +30,11 @@ export const RaceTimesContainer: React.FC<RaceTimesContainerProps> = ({ sessionT
       >
         <table style={{ width: '100%' }} onClick={() => { console.log({ myIsOpen }); setMyIsOpen(!myIsOpen); }}>
           <tbody>
-            <tr>
+            {useMyTime && <tr>
               <td style={{ width: '30%' }}>My time</td>
               <td>{new Date(date + 'T' + time).toLocaleString()}</td>
-            </tr>
-            {timeZone && <tr>
+            </tr>}
+            {timeZone && !useMyTime && <tr>
               <td style={{ width: '30%' }}>Track time:</td>
               <td> {new Date(date + 'T' + time).toLocaleString([], { timeZone })}</td>
             </tr>}

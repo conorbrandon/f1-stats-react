@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import styles from "./GenericBarChart.module.css";
-import { interpolateRainbow } from "d3-scale-chromatic";
 import { Bar, BarChart, Cell, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { useCurrentPng } from "recharts-to-png";
 import { saveAs } from 'file-saver';
@@ -22,8 +21,9 @@ const CustomLabel: React.FC<any> = (props) => {
 };
 
 export interface GenericBarChartData {
-  driverID: string,
+  ID: string,
   points: number
+  fillColor: string
 };
 interface GenericBarChartProps {
   data: GenericBarChartData[],
@@ -42,17 +42,17 @@ export const GenericBarChart: React.FC<GenericBarChartProps> = ({ data, chartTit
   }, [getPng]);
   return (
     <div className="displayFlex flexJustContentCenter">
-      <ResponsiveContainer width={'90%'} height={400}>
-        <BarChart data={data} margin={{ bottom: 50, top: 50 }} ref={ref}>
+      <ResponsiveContainer width={'100%'} height={400}>
+        <BarChart data={data} margin={{ bottom: 60, top: 50 }} ref={ref}>
           <text x={'50%'} y={20} fill="black" textAnchor="middle" dominantBaseline="central">
             <tspan fontSize="25">{chartTitle}</tspan>
           </text>
           <Bar dataKey="points" label={<CustomLabel />}>
             {data?.map((_, i) => {
-              return <Cell fill={interpolateRainbow(i / data.length)}></Cell>
+              return <Cell key={_.fillColor + i} fill={_.fillColor}></Cell>
             })}
           </Bar>
-          <XAxis dataKey="driverID" angle={-45} textAnchor='end' interval={0} />
+          <XAxis dataKey="ID" angle={-45} tick={{fontSize: 15}} textAnchor='end' interval={0} />
           <YAxis />
         </BarChart>
       </ResponsiveContainer>

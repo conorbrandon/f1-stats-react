@@ -16,6 +16,7 @@ import { store } from './app/store';
 import { Provider } from 'react-redux';
 import { RaceReplayReMotion } from './components/RaceReplayReMotion/RaceReplayReMotion';
 import { Dashboard } from './components/Dashboard/Dashboard';
+import { Standings } from './components/Standings/Standings';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -27,7 +28,8 @@ root.render(
       <Routes>
         <Route path="/" element={<App />} >
           <Route path={""} element={<Dashboard />} />
-          <Route path={"/:year"} element={<Schedule />} />
+          <Route path={"/:year/"} element={<Schedule />} />
+          <Route path={"/:year/standings"} element={<Standings />} />
           <Route path={"/:year/:round"} element={<Race />}>
             <Route path='' element={<RaceSummary />} />
             <Route path='results' element={<RaceResults />}/>

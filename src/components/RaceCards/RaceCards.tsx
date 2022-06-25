@@ -15,7 +15,7 @@ export const RaceCards: React.FC<ScheduleDisplayProps> = ({ races }) => {
         <div className={styles.raceCardLayout}>
           {races.map(race => {
             return (
-              <motion.div whileHover={{ scale: 1.1 }} className={`${styles.raceCard} cursor-pointer`}>
+              <motion.div whileHover={{ scale: 1.05 }} className={`${styles.raceCard} cursor-pointer`}>
                 <Link to={`/${race.season}/${race.round}`} className="no-underline">
                   <span>
                     <h3>{race.raceName}</h3>
