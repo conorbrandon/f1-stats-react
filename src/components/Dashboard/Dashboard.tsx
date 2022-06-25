@@ -15,6 +15,7 @@ import styles from "./Dashboard.module.css";
 
 export const Dashboard = ({ }) => {
   const [nextRace, setNextRace] = useState<ErgastRace>();
+  const [nextRaceTimeZone, setNextRaceTimeZone] = useState<string>();
   const driverStandings = useAppSelector(selectDriverStandings);
   const driverStandingsStatus = useAppSelector(selectDriverStandingsStatus);
   const driverStandingsError = useAppSelector(selectDriverStandingsError);
@@ -25,7 +26,11 @@ export const Dashboard = ({ }) => {
   useEffect(() => {
     if (!nextRace) {
       ErgastAPI.getNextRace()
-        .then(response => setNextRace(response));
+        .then(response => {
+          const { nextRace, timeZone } = response;
+          setNextRace(nextRace);
+          setNextRaceTimeZone(timeZone);
+        });
     }
   }, []);
 
@@ -37,7 +42,7 @@ export const Dashboard = ({ }) => {
         <img className={styles.dashboardImg} src={FlagHelper.getFlag(nextRace.Circuit.Location.country)} alt={`${nextRace.Circuit.Location.country} flag`} />
       </Link>
     </span>
-    <RaceSummaryCard race={nextRace} /></>
+    <RaceSummaryCard race={nextRace} timeZone={nextRaceTimeZone || ''} /></>
     : <><LoadingSpinner />Next race loading...</>;
 
   return (

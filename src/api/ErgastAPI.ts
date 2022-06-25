@@ -31,27 +31,28 @@ export class ErgastAPI {
     const json: ErgastRaceResponse = await data.json();
     return json.MRData.RaceTable.Races;
   };
-  static async getNextRace(): Promise<ErgastRace> {
+  static async getNextRace(): Promise<{nextRace: ErgastRace, timeZone: string}> {
     let json: ErgastRaceResponse;
     if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
       await sleep(1000);
       json = MockNextRace;
       const { lat, long } = json.MRData.RaceTable.Races[0].Circuit.Location;
-      json.MRData.RaceTable.Races[0].Circuit.Location.timeZone = await getTimeZoneFromLatLng(lat, long);
-      return json.MRData.RaceTable.Races[0];
+      const timeZone = await getTimeZoneFromLatLng(lat, long);
+      return {nextRace: json.MRData.RaceTable.Races[0], timeZone};
     }
     const url = `${baseUrl}/current/next.json`;
     const data: Response = await fetch(url);
     json = await data.json();
     const { lat, long } = json.MRData.RaceTable.Races[0].Circuit.Location;
-    json.MRData.RaceTable.Races[0].Circuit.Location.timeZone = await getTimeZoneFromLatLng(lat, long);
-    return json.MRData.RaceTable.Races[0];
+    const timeZone = await getTimeZoneFromLatLng(lat, long);
+    return {nextRace: json.MRData.RaceTable.Races[0], timeZone};
   }
   static async getRace(year: string, round: string): Promise<ErgastRace> {
     if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
       await sleep(1000);
       if (year === '2008' && round === '5') return MockRace.MRData.RaceTable.Races[0];
       else if (year === "2022" && round === "5") return MockRace2022.MRData.RaceTable.Races[0];
+      else if (year === '2022' && round === '11') return MockNextRace.MRData.RaceTable.Races[0];
       else return EmptyScheduleResponse.MRData.RaceTable.Races[0];
     }
     const url = `${baseUrl}/${year}/${round}.json`;

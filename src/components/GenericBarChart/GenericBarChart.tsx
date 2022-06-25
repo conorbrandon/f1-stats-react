@@ -47,7 +47,7 @@ export const GenericBarChart: React.FC<GenericBarChartProps> = ({ data, chartTit
           <text x={'50%'} y={20} fill="black" textAnchor="middle" dominantBaseline="central">
             <tspan fontSize="25">{chartTitle}</tspan>
           </text>
-          <Bar dataKey="points" label={<CustomLabel />}>
+          <Bar dataKey="points" label={<CustomLabel />} animationDuration={5000}>
             {data?.map((_, i) => {
               return <Cell key={_.fillColor + i} fill={_.fillColor}></Cell>
             })}
