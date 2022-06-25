@@ -2,6 +2,7 @@ import React, { RefObject, useRef } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
 import { AppOutletContext } from "../../App";
 import { useAppSelector } from "../../app/hooks";
+import { selectQualifying } from "../../app/qualifying/qualifyingSlice";
 import { selectResult, selectResultError, selectResultStatus } from "../../app/result/resultSlice";
 import { selectSchedule } from "../../app/schedule/scheduleSlice";
 import { store } from "../../app/store";
@@ -19,6 +20,7 @@ export const RaceHeader = ({ }) => {
   const schedule = useAppSelector(selectSchedule);
   const scheduleStatus = useAppSelector(selectResultStatus);
   const scheduleError = useAppSelector(selectResultError);
+  const qualifying = useAppSelector(selectQualifying);
   const backRef = useRef<HTMLAnchorElement>(null);
   const forwardRef = useRef<HTMLAnchorElement>(null);
 
@@ -64,7 +66,7 @@ export const RaceHeader = ({ }) => {
         </Link>}
       </span>
       {race ? <><span className="x-large-font"><Link to="" className={styles.raceName}>{year} {race.raceName}</Link></span>
-      <img className={styles.img} src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
+      <img style={{ border: 'solid white 1px' }} className={styles.img} src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
       <span className="medium-font">(Round {round})</span></>: <></>}
     </span>
   </> : <></>;
@@ -77,11 +79,11 @@ export const RaceHeader = ({ }) => {
           errors={[resultError, scheduleError]}
           loadingWidth={'50%'} />
         <span className={styles.links}>
-          <Link to="">Summary</Link>
-          <Link to="results">Results</Link>
-          <Link to="qualifying">Qualifying</Link>
+          {race?.Results?.length && <><Link to="">Summary</Link>
+          <Link to="results">Results</Link></>}
+          {qualifying && <><Link to="qualifying">Qualifying</Link>
           <Link to="laptimes">Lap/Position Trace</Link>
-          <Link to="racereplay">Race Replay</Link>
+          <Link to="racereplay">Race Replay</Link></>}
         </span>
       </div>
     </>

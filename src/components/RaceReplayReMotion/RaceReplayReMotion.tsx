@@ -12,7 +12,7 @@ import { interpolateRainbow } from "d3-scale-chromatic";
 import { fetchPitStops, selectPitStops, selectPitStopsError, selectPitStopsStatus } from "../../app/pitstops/pitStopsSlice";
 import { UseReduxAsyncStatuses } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
 import { MyComposition } from "./MyComposition";
-import { Player, PlayerRef, RenderLoading } from "@remotion/player";
+import { Player, PlayerRef } from "@remotion/player";
 import PirelliTyre from "./pirelliTire.png";
 
 export interface TotalTimeDriverMap {
@@ -67,6 +67,7 @@ export const RaceReplayReMotion = ({ }) => {
   const pitstopsError = useAppSelector(selectPitStopsError);
 
   useEffect(() => {
+    console.log({ laps, results, pitstops });
     if (laps?.length && results?.Results?.length && pitstops !== undefined) {
       const durationInFrames = duration * fps;
       // set left intervals
@@ -162,13 +163,15 @@ export const RaceReplayReMotion = ({ }) => {
 
       // add pitstops if they exist for this race
       if (pitstops && pitstops.length) {
-        for (let i = 0; i < pitstops.length; i++) {
+        for (let i = 0; i < pitstops.length; i++) {          
           const pitstop = pitstops[i];
+          if (parseInt(pitstop.lap) >= myTotalTimeDriverMap[pitstop.driverId].pitStopStyles.length) continue;
           // set the indices of the laps they actually took a pitstop on to our pitstop indicator style
           myTotalTimeDriverMap[pitstop.driverId].pitStopStyles[parseInt(pitstop.lap)] /* or - 1? play around with this*/ = 30;
         }
       }
 
+      console.log({ myTotalTimeDriverMap });
       setTotalTimeDriverMap(myTotalTimeDriverMap);
       // the winning driver had the baseline total race time to use for duration calculations
       const myBestTotalTime = myTotalTimeDriverMap[winningDriver].totalTime;

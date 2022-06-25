@@ -371,6 +371,7 @@ export const DenonymCodes: DenonymCodesType = {
     "New Caledonian": "New Caledonia",
     "New Caledonians": "New Caledonia",
     "New Zealand": "New Zealand",
+    "New Zealander": "New Zealand",
     "New Zealanders": "New Zealand",
     "Nicaraguan": "Nicaragua",
     "Nicaraguans": "Nicaragua",

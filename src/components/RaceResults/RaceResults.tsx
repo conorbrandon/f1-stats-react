@@ -38,6 +38,10 @@ export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templa
   const raceResultsContent = <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
     <SortableTable
       items={limit ? race?.Results?.slice(0, limit) : race?.Results}
+      limit={limit}
+      limitComponent={<p>
+        <Link to={`/${race?.season}/${race?.round}/results`}>See full results...</Link>
+      </p>}
       caption={'Results'}
       template={template}
       comparators={{
@@ -63,9 +67,7 @@ export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templa
         'Finishing Status': (result: ErgastResult) => SortableTableHelper.transformers.RawFromDeepValue(result, 'status'),
         Laps: (result: ErgastResult) => SortableTableHelper.transformers.RawFromDeepValue(result, 'laps'),
       }}
-    />{limit && <p>
-      <Link to={`/${race?.season}/${race?.round}/results`}>See full results...</Link>
-    </p>}</div>;
+    /></div>;
   return (
     <div className={noClass ? '' : "page-content"} style={{ width: '99%' }}>
       <UseReduxAsyncStatus status={resultStatus} successContent={raceResultsContent} error={resultError} loadingInterText={'Results'} />

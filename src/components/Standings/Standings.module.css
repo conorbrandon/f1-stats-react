@@ -2,6 +2,10 @@
   display: grid;
   grid-template-columns: 2% 48% 48% 2%;
 }
+.noConstructorGrid {
+  display: grid;
+  grid-template-columns: 2% 76% 20% 2%;
+}
 .standingsHeader {
   display: flex;
   flex-direction: row;

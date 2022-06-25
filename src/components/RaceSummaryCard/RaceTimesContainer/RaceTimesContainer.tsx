@@ -32,11 +32,11 @@ export const RaceTimesContainer: React.FC<RaceTimesContainerProps> = ({ sessionT
           <tbody>
             {useMyTime && <tr>
               <td style={{ width: '30%' }}>My time</td>
-              <td>{new Date(date + 'T' + time).toLocaleString()}</td>
+              {time ? <td>{new Date(date + 'T' + time).toLocaleString()}</td>: <td>{new Date(date).toLocaleDateString()}</td>}
             </tr>}
             {timeZone && !useMyTime && <tr>
               <td style={{ width: '30%' }}>Track time:</td>
-              <td> {new Date(date + 'T' + time).toLocaleString([], { timeZone })}</td>
+              {time ? <td>{new Date(date + 'T' + time).toLocaleString([], { timeZone })}</td> : <td>{new Date(date).toLocaleDateString([], { timeZone })}</td>}
             </tr>}
           </tbody>
         </table>

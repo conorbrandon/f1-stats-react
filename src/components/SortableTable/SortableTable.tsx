@@ -8,7 +8,9 @@ interface SortableTableProps {
   transformers?: {
     [key: string]: (data: any) => JSX.Element
   }
-  comparators?: Comparators
+  comparators?: Comparators,
+  limit?: number,
+  limitComponent?: JSX.Element
 }
 type SortDirection = "asc" | "desc";
 interface Comparators {
@@ -54,7 +56,7 @@ const useSortableData = (items: any[], config?: SortConfig, comparators?: Compar
   return { sortedItems, requestSort, sortConfig };
 };
 
-export const SortableTable: React.FC<SortableTableProps> = ({ items, template, caption, transformers, comparators }) => {
+export const SortableTable: React.FC<SortableTableProps> = ({ items, template, caption, transformers, comparators, limit, limitComponent }) => {
   const { sortedItems, requestSort, sortConfig } = useSortableData(items || [], undefined, comparators);
   const getClassNamesFor = (name: string) => {
     if (!sortConfig) {
@@ -62,8 +64,8 @@ export const SortableTable: React.FC<SortableTableProps> = ({ items, template, c
     }
     return sortConfig.key === name ? sortConfig.direction === 'asc' ? 'expand_more' : 'expand_less' : '';
   };
-  return (
-    <div className={styles.centeredTable}>
+  return items?.length ? (
+    <><div className={styles.centeredTable}>
       <table style={{ width: '100%' }}>
         {caption && <caption className="xx-large-font">{caption}</caption>}
         <thead>
@@ -95,6 +97,8 @@ export const SortableTable: React.FC<SortableTableProps> = ({ items, template, c
           ))}
         </tbody>
       </table>
-    </div>
-  );
+    </div>{limit && limitComponent ? limitComponent : <></>}</>
+  ) : <div style={{ textAlign: 'center' }}>
+      {caption ? caption : 'Data'} are not available for this event. It's probably very much in the past or sometime soon in the future.
+    </div>;
 };

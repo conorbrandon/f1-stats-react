@@ -8,7 +8,7 @@ import { scaleLinear } from 'd3-scale';
 import { useCurrentPng } from "recharts-to-png";
 import { saveAs } from 'file-saver';
 
-export interface PitStopLapMap {[lap: string]: {[driverID: string] : any}};
+export interface PitStopLapMap { [lap: string]: { [driverID: string]: any } };
 interface GenericTraceProps {
   data: lapTime[],
   driverIDSet: DriverIDSet,
@@ -39,11 +39,11 @@ export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, w
   }, [getPng]);
 
   const pitStopIcon = (cx: number, cy: number) => <g>
-  <circle cx={cx} cy={cy} r={7} fill='green'></circle>
-  <circle cx={cx} cy={cy} r={5} fill='yellow'></circle>
-  <circle cx={cx} cy={cy} r={3} fill='red'></circle>
-  <circle cx={cx} cy={cy} r={1} fill='white'></circle>
-</g>;
+    <circle cx={cx} cy={cy} r={7} fill='green'></circle>
+    <circle cx={cx} cy={cy} r={5} fill='yellow'></circle>
+    <circle cx={cx} cy={cy} r={3} fill='red'></circle>
+    <circle cx={cx} cy={cy} r={1} fill='white'></circle>
+  </g>;
   const renderDot = (event: any) => {
     if (!pitstopLapMap) return <></>;
     if (pitstopLapMap[event.index + ''] && pitstopLapMap[event.index + ''][event.dataKey]) {
@@ -79,12 +79,22 @@ export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, w
           }} formatter={formatter || genericFormatter} position={{ y: -100 }} />
           <Legend />
           {driverIDSet?.filter(driver => driver.isSelected).map((driver, _i) => {
-            return <Line key={driver.driverID} type="linear" 
-              dataKey={driver.driverID} stroke={driver.driverColor} strokeWidth={strokeWidth || 2} 
-              dot={pitstopLapMap ? renderDot : dot !== undefined ? dot : true} 
+            return <Line key={driver.driverID} type="linear"
+              dataKey={driver.driverID} stroke={driver.driverColor} strokeWidth={strokeWidth || 2}
+              dot={pitstopLapMap ? renderDot : dot !== undefined ? dot : true}
               activeDot={pitstopLapMap ? renderActiveDot : true}
             />;
           })}
+          {/* pitstop legend */}
+          <g>
+            <circle cx={'90%'} cy={'5%'} r={7} fill='green'></circle>
+            <circle cx={'90%'} cy={'5%'} r={5} fill='yellow'></circle>
+            <circle cx={'90%'} cy={'5%'} r={3} fill='red'></circle>
+            <circle cx={'90%'} cy={'5%'} r={1} fill='white'></circle>
+          </g>
+          <text x={'91%'} y={'5%'} fill='black' dominantBaseline={'central'}>
+            <tspan fontSize={'14'}>Pit stop</tspan>
+          </text>
         </LineChart>
       </ResponsiveContainer>
     </div>

@@ -53,6 +53,10 @@ export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, tem
   const raceQualifyingContent = <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
     <SortableTable
       items={limit ? qualifying?.QualifyingResults?.slice(0, limit) : qualifying?.QualifyingResults}
+      limit={limit}
+      limitComponent={<p>
+        <Link to={`/${qualifying?.season}/${qualifying?.round}/qualifying`}>See full qualifying results...</Link>
+      </p>}
       caption={"Qualifying Results"}
       template={template}
       comparators={{
@@ -75,9 +79,6 @@ export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, tem
         'Q3 Interval': (result: ErgastQualifyingResult) => <div>{result["Q3 Interval"] ? `+${TimeHelper.msToRaceTime(result["Q3 Interval"])}`: ''}</div>,
       }}
     />
-    {limit && <p>
-      <Link to={`/${qualifying?.season}/${qualifying?.round}/qualifying`}>See full qualifying results...</Link>
-    </p>}
   </div>;
   return (
     <div className={noClass ? '' : "page-content"} style={{ width: '99%' }}>

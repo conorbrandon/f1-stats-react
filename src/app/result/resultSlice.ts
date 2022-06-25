@@ -56,8 +56,9 @@ export const resultSlice = createSlice({
             }
           } }
         };
-        if (action.payload && action.payload.response && action.payload.raceResponse) state.race = {...action.payload.raceResponse, ...action.payload.response};
-        else state.race = undefined;
+        if (action.payload && action.payload.response) state.race = {...action.payload.response};
+        if (action.payload && action.payload.raceResponse) state.race = {...action.payload.raceResponse, ...action.payload.response};
+        // else state.race = undefined;
       })
       .addCase(fetchResult.rejected, (state, action) => {
         state.status = 'failed';

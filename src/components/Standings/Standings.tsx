@@ -43,7 +43,7 @@ export const Standings = ({ }) => {
           </span>
         </span>
       </div>
-      <div className={`page-content ${styles.standingsGrid}`}>
+      <div className={`page-content ${constructorStandingsStatus === 'succeeded' && constructorStandings ?  styles.standingsGrid : styles.noConstructorGrid}`}>
         <div style={{ gridColumn: 2 }} className='displayFlex flexDirCol flexAlignItemsCenter'>
           <UseReduxAsyncStatus
             status={driverStandingsStatus}
