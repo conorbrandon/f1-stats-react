@@ -24,27 +24,35 @@ export const Dashboard = ({ }) => {
     }
   }, []);
 
-  const raceSummaryCardContent = <div style={{ gridColumn: 1, gridRow: 1 }}>
-    {nextRace ? <><span className="xx-large-font">Next race:</span><br></br>
-      <span className="material-icons-align">
-        <Link to={`/${nextRace.season}/${nextRace.round}`}>
-          <span className="x-large-font">{nextRace.season} {nextRace.raceName} (Round {nextRace.round})</span>
-          <img className={styles.dashboardImg} src={FlagHelper.getFlag(nextRace.Circuit.Location.country)} alt={`${nextRace.Circuit.Location.country} flag`} />
-        </Link>
-      </span>
-      <RaceSummaryCard race={nextRace} /></>
-      : <><LoadingSpinner />Next race loading...</>}
-  </div>;
+  const raceSummaryCardContent = nextRace ? <><span className="xx-large-font">Next race:</span><br></br>
+    <span className="material-icons-align">
+      <Link to={`/${nextRace.season}/${nextRace.round}`}>
+        <span className="x-large-font">{nextRace.season} {nextRace.raceName} (Round {nextRace.round})</span>
+        <img className={styles.dashboardImg} src={FlagHelper.getFlag(nextRace.Circuit.Location.country)} alt={`${nextRace.Circuit.Location.country} flag`} />
+      </Link>
+    </span>
+    <RaceSummaryCard race={nextRace} /></>
+    : <><LoadingSpinner />Next race loading...</>;
 
   return (
     <>
-      <div className={`page-header xx-large-font ${styles.centeredHeader}`}>
-        <span>Dashboard</span>
+      <div className={`page-header x-large-font ${styles.centeredHeader}`}>
+        <span className="material-icons-align">Dashboard<span className="material-icons">
+          calendar_view_month
+        </span></span>
       </div>
       <div className={`page-content padded ${styles.dashboardGridLayout}`}>
-        {raceSummaryCardContent}
+        <div style={{ gridColumn: 1, gridRow: 1 }}>
+          {raceSummaryCardContent}
+        </div>
         <div style={{ gridColumn: 2, gridRow: 1 }}>
-          <UseReduxAsyncStatus status={driverStandingsStatus} error={driverStandingsError} successContent={<DriverStandings driverStandings={driverStandings} />} fetchAction={fetchDriverStandings} fetchParams={'current'} loadingInterText={'Driver standings'} />
+          <UseReduxAsyncStatus
+            status={driverStandingsStatus}
+            error={driverStandingsError}
+            successContent={<DriverStandings driverStandings={driverStandings} tableLimit={5} />}
+            fetchAction={fetchDriverStandings}
+            fetchParams={'current'}
+            loadingInterText={'Driver standings'} />
         </div>
       </div>
     </>

@@ -172,3 +172,19 @@ a {
 .Collapsible__trigger:hover {
   cursor: pointer;
 }
+
+.displayFlex {
+  display: flex;
+}
+.flexDirRow {
+  flex-direction: row;
+}
+.flexDirCol {
+  flex-direction: column;
+}
+.flexJustContentCenter {
+  justify-content: center;
+}
+.flexAlignItemsCenter {
+  align-items: center;
+}

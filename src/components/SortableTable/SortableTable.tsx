@@ -4,7 +4,7 @@ import styles from "./SortableTable.module.css";
 interface SortableTableProps {
   items?: any[],
   template?: string[],
-  caption?: string,
+  caption?: string | JSX.Element,
   transformers?: {
     [key: string]: (data: any) => JSX.Element
   }

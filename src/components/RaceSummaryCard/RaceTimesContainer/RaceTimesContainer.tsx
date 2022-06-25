@@ -14,7 +14,7 @@ interface RaceTimesContainerProps {
 export const RaceTimesContainer: React.FC<RaceTimesContainerProps> = ({ sessionText, date, time, timeZone, open }) => {
   const [myIsOpen, setMyIsOpen] = useState(open);
   return (
-    <motion.div whileHover={{ scale: 1.1 }} className={`${styles.timesContainer}`}>
+    <motion.div whileHover={{ scale: 1.05 }} className={`${styles.timesContainer}`}>
       <Collapsible
         triggerClassName={styles.trigger} triggerOpenedClassName={`${styles.trigger} ${styles.opened}`}
         trigger={<>

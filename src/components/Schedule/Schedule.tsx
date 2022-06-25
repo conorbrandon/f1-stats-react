@@ -34,7 +34,7 @@ export const Schedule = ({ }) => {
 
   return (
     <>
-      <ScheduleHeader scheduleYear={scheduleYear} changeScheduleYear={changeScheduleYear} setUseCardLayout={setUseCardLayout} />
+      <ScheduleHeader schedule={schedule} scheduleYear={scheduleYear} changeScheduleYear={changeScheduleYear} setUseCardLayout={setUseCardLayout} />
       <div className="page-content">
         <UseReduxAsyncStatus status={scheduleStatus} successContent={useCardLayout ? <RaceCards races={schedule} /> : <RaceList races={schedule} />} error={scheduleError} fetchAction={fetchSchedule} fetchParams={scheduleYear} />
       </div>

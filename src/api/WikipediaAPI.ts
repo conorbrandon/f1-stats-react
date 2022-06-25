@@ -66,7 +66,7 @@ export async function getThumbnailLinkFromPage(pageUrl: string): Promise<string>
     text = await data.text();
     CACHE[url] = text;
   }
-  console.log({ wikipediaResponse: text });
+  // console.log({ wikipediaResponse: text });
   const root = parse(text);
   const firstInfoboxImage = root.querySelectorAll('.infobox-image')[0];
   let infoboxImageSrc;
