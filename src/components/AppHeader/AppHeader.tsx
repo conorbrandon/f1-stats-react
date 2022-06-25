@@ -8,7 +8,7 @@ export const AppHeader = ({ }) => {
     <div className="app-header">
       <Link to=""><h1 className={styles.centered}><span className='red'>F1</span> Stats</h1></Link>
       <nav className={styles.paddedLink}>
-        <Link to="">seasons</Link>
+        <Link to={`${new Date().getUTCFullYear()}`}>seasons</Link>
         <Link to="2008/5">test race</Link>
         <Link to="driver/massa">test driver</Link>
       </nav>

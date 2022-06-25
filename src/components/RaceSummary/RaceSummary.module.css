@@ -11,4 +11,5 @@
 .raceSummaryLocation {
   grid-column: 1;
   padding-left: 5rem;
+  padding-top: 2.5rem;
 }

@@ -11,10 +11,11 @@ interface UseReduxAsyncStatusProps {
   fetchAction?: any,
   fetchParams?: any,
   loadingColor?: LoadingColorType,
-  loadingInterText?: string
+  loadingInterText?: string,
+  loadingWidth?: string
 };
 
-export const UseReduxAsyncStatus: React.FC<UseReduxAsyncStatusProps> = ({ status, successContent, error, fetchAction, fetchParams, loadingColor, loadingInterText }) => {
+export const UseReduxAsyncStatus: React.FC<UseReduxAsyncStatusProps> = ({ status, successContent, error, fetchAction, fetchParams, loadingColor, loadingInterText, loadingWidth }) => {
   const dispatch = useAppDispatch();
   const [pageContent, setPageContent] = useState(<></>);
   useEffect(() => {
@@ -23,7 +24,7 @@ export const UseReduxAsyncStatus: React.FC<UseReduxAsyncStatusProps> = ({ status
       dispatch(fetchAction(fetchParams));
     } else if (status === 'loading') {
       setPageContent(<>
-        <LoadingSpinner color={loadingColor} />
+        <LoadingSpinner color={loadingColor} width={loadingWidth} />
         {loadingInterText ? `${loadingInterText} loading...` : ''}
       </>);
     } else if (status === 'succeeded') {
@@ -44,10 +45,11 @@ interface UseReduxAsyncStatusesProps {
   fetchActions?: any[],
   fetchParamss?: any[],
   loadingColor?: LoadingColorType,
-  loadingInterText?: string
+  loadingInterText?: string,
+  loadingWidth?: string
 };
 
-export const UseReduxAsyncStatuses: React.FC<UseReduxAsyncStatusesProps> = ({ statuses, successContent, errors, fetchActions, fetchParamss, loadingColor, loadingInterText }) => {
+export const UseReduxAsyncStatuses: React.FC<UseReduxAsyncStatusesProps> = ({ statuses, successContent, errors, fetchActions, fetchParamss, loadingColor, loadingInterText, loadingWidth }) => {
   const dispatch = useAppDispatch();
   const [pageContent, setPageContent] = useState(<></>);
   useEffect(() => {
@@ -60,7 +62,7 @@ export const UseReduxAsyncStatuses: React.FC<UseReduxAsyncStatusesProps> = ({ st
       });
     } else if (statusesMap['loading']) {
       setPageContent(<>
-        <LoadingSpinner color={loadingColor} />
+        <LoadingSpinner color={loadingColor} width={loadingWidth} />
         {loadingInterText ? `${loadingInterText} loading...` : ''}
       </>);
     } else if (statusesMap['succeeded'] === statuses.length) {

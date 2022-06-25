@@ -1,0 +1,17 @@
+.timesContainer {
+  margin-top: 1rem;
+  border: solid white 2px;
+  border-radius: 5px;
+  width: 90%;
+}
+.header {
+  display: flex;
+  justify-content: center;
+}
+.timesContainer:hover {
+  cursor: pointer;
+}
+.opened {
+  border-bottom: solid 1px gray;
+  color: rgb(255, 150, 150);
+}

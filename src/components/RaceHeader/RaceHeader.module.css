@@ -19,11 +19,12 @@
 
 .spaceEvenly {
   justify-content: space-evenly;
+  width: 45%;
 }
 
 .backToSeasonLink {
   position: absolute;
-  margin-left: -8rem;
+  margin-left: -5rem;
   margin-top: -1rem;
   font-size: medium;
   border-bottom: solid white 1px;

@@ -6,6 +6,8 @@ import { ScheduleDisplayProps } from "../Schedule/Schedule";
 import { FlagHelper } from "../../helpers/FlagHelper";
 import { Mapbox } from "../Mapbox/Mapbox";
 
+import { motion } from "framer-motion";
+
 export const RaceList: React.FC<ScheduleDisplayProps> = ({ races }) => {
   const [activePopup, setActivePopup] = useState<number | undefined>();
 
@@ -16,14 +18,14 @@ export const RaceList: React.FC<ScheduleDisplayProps> = ({ races }) => {
         {races.map((race, i) => {
           return (
             <Link key={i} to={`/${race.season}/${race.round}`} className="no-underline">
-              <li className="cursor-pointer" onMouseEnter={() => setActivePopup(i)} onMouseLeave={() => setActivePopup(undefined)}>
+              <motion.li whileHover={{ scale: 1.1 }} className="cursor-pointer" onMouseEnter={() => setActivePopup(i)} onMouseLeave={() => setActivePopup(undefined)}>
                 <span className="x-large-font">{race.raceName}
                   <img className="race-card-flag list" src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={race.Circuit.Location.country} /> 
                 </span><br />
                 <span className="medium-font">
                   {race.Circuit.Location.locality}, {race.Circuit.Location.country} at {race.Circuit.circuitName}
                 </span><br />
-              </li>
+              </motion.li>
             </Link>
           );
         })}

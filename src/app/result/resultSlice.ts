@@ -3,6 +3,7 @@ import { ErgastAPI } from '../../api/ErgastAPI';
 import type { RootState } from '../store';
 import { ErgastRace } from '../../model/ErgastRace';
 import { ReduxAsyncErrorType, ReduxAsyncStatusType } from '../types';
+import { getTimeZoneFromLatLng } from '../../api/TimeZones';
 
 interface ResultState {
   race: ErgastRace | undefined,
@@ -19,7 +20,9 @@ const initialState: ResultState = {
 
 export const fetchResult = createAsyncThunk('result/fetchResult', async ({year, round}: GetPayloadAction) => {
   const response = await ErgastAPI.getRaceResult(year, round);
-  return response;
+  const raceResponse = await ErgastAPI.getRace(year, round);
+  const timeZone = (await getTimeZoneFromLatLng(response?.Circuit.Location.lat, response?.Circuit.Location.long));
+  return {response, timeZone, raceResponse};
 });
 
 export const resultSlice = createSlice({
@@ -35,14 +38,17 @@ export const resultSlice = createSlice({
       })
       .addCase(fetchResult.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        const resultsWithPosGained = action.payload?.Results?.map(result => {
+        const resultsWithPosGained = action.payload?.response?.Results?.map(result => {
           return {
             ...result,
             posGained: parseInt(result.grid) - parseInt(result.position)
           }
         }) || [];
-        if (action.payload) action.payload = {...action.payload, Results: resultsWithPosGained};
-        state.race = action.payload;
+        if (action.payload?.response) {
+          action.payload.response = {...action.payload.response, Results: resultsWithPosGained};
+          action.payload.response.Circuit.Location.timeZone = action.payload.timeZone;
+        };
+        if (action.payload && action.payload.response && action.payload.raceResponse) state.race = {...action.payload.raceResponse, ...action.payload.response};
       })
       .addCase(fetchResult.rejected, (state, action) => {
         state.status = 'failed';

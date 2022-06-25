@@ -48,6 +48,7 @@ button {
 
 .mapboxgl-popup-content, .mapboxgl-popup-close-button {
   color: black;
+  border-radius: 10px;
 }
 
 a {
@@ -101,7 +102,7 @@ a {
   height: 6vh;
   background-color: black;
   z-index: 5;
-  padding: 0 9vw;
+  padding: 0 6vw;
   border-top: solid white 3px;
   display: flex;
   align-items: center;

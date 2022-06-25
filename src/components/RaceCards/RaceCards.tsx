@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ScheduleDisplayProps } from "../Schedule/Schedule";
 import { FlagHelper } from "../../helpers/FlagHelper";
 import { Mapbox } from "../Mapbox/Mapbox";
+import { motion } from "framer-motion";
 
 export const RaceCards: React.FC<ScheduleDisplayProps> = ({ races }) => {
   return (
@@ -14,7 +15,7 @@ export const RaceCards: React.FC<ScheduleDisplayProps> = ({ races }) => {
         <div className={styles.raceCardLayout}>
           {races.map(race => {
             return (
-              <div className={`${styles.raceCard} cursor-pointer`}>
+              <motion.div whileHover={{ scale: 1.1 }} className={`${styles.raceCard} cursor-pointer`}>
                 <Link to={`/${race.season}/${race.round}`} className="no-underline">
                   <span>
                     <h3>{race.raceName}</h3>
@@ -26,7 +27,7 @@ export const RaceCards: React.FC<ScheduleDisplayProps> = ({ races }) => {
                   </div>
                   <div className={styles.raceCardRoundCounter}>{race.round}</div>
                 </Link>
-              </div>
+              </motion.div>
             );
           })}
         </div>

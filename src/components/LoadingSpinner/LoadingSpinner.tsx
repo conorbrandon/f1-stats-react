@@ -7,10 +7,11 @@ import { useInterval } from "usehooks-ts";
 
 export type LoadingColorType = string;
 interface LoadingSpinnerProps {
-  color?: LoadingColorType
+  color?: LoadingColorType,
+  width?: string
 };
 
-export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ color }) => {
+export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ color, width }) => {
   const [progress, setProgress] = useState<number>(0);
   useInterval(() => {
     // console.log({ progress });
@@ -22,7 +23,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ color }) => {
   const myColor = Color(color || 'red');
   return (
     <>
-      <div style={{width: '100%'}}>
+      <div style={{width: width || '100%'}}>
         <div style={{
           width: `${progress}%`, 
           border: `3px solid`,

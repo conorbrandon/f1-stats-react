@@ -49,18 +49,20 @@ export const RaceHeader = ({ }) => {
         {year} season</Link>
     </span>
     <span className={`material-icons-align ${styles.spaceEvenly}`}>
-      {parseInt(round) - 1 > 0 && <Link ref={backRef} onClick={() => handleGetNewRace(`${year}`, `${parseInt(round) - 1}`)}
-        to={`/${year}/${parseInt(round) - 1}`} 
-        onMouseEnter={() => handleMouseEnter(backRef, String(parseInt(round) - 1), true)}
-        onMouseLeave={() => handleMouseLeave()}>
-        <span className="material-icons" style={{fontSize: 'medium'}}>arrow_back_ios_new</span>
-      </Link>}
-      {parseInt(round) + 1 <= schedule.length && <Link ref={forwardRef} onClick={() => handleGetNewRace(`${year}`, `${parseInt(round) + 1}`)}
-        to={`/${year}/${parseInt(round) + 1}`} 
-        onMouseEnter={() => handleMouseEnter(forwardRef, String(parseInt(round) + 1), false)}
-        onMouseLeave={() => handleMouseLeave()}>
-        <span className="material-icons" style={{fontSize: 'medium'}}>arrow_forward_ios</span>
-      </Link>}
+      <span style={{ marginLeft: '3rem' }}>
+        {parseInt(round) - 1 > 0 && <Link ref={backRef} onClick={() => handleGetNewRace(`${year}`, `${parseInt(round) - 1}`)}
+          to={`/${year}/${parseInt(round) - 1}`}
+          onMouseEnter={() => handleMouseEnter(backRef, String(parseInt(round) - 1), true)}
+          onMouseLeave={() => handleMouseLeave()}>
+          <span className="material-icons" style={{fontSize: 'medium'}}>arrow_back_ios_new</span>
+        </Link>}
+        {parseInt(round) + 1 <= schedule.length && <Link ref={forwardRef} onClick={() => handleGetNewRace(`${year}`, `${parseInt(round) + 1}`)}
+          to={`/${year}/${parseInt(round) + 1}`}
+          onMouseEnter={() => handleMouseEnter(forwardRef, String(parseInt(round) + 1), false)}
+          onMouseLeave={() => handleMouseLeave()}>
+          <span className="material-icons" style={{fontSize: 'medium'}}>arrow_forward_ios</span>
+        </Link>}
+      </span>
       {race ? <><span className="x-large-font"><Link to="" className={styles.raceName}>{year} {race.raceName}</Link></span>
       <img className={styles.img} src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
       <span className="medium-font">(Round {round})</span></>: <></>}
@@ -69,7 +71,11 @@ export const RaceHeader = ({ }) => {
   return (
     <>
       <div className="page-header">
-        <UseReduxAsyncStatuses statuses={[resultStatus, scheduleStatus]} successContent={successContent} errors={[resultError, scheduleError]} />
+        <UseReduxAsyncStatuses 
+          statuses={[resultStatus, scheduleStatus]} 
+          successContent={successContent} 
+          errors={[resultError, scheduleError]}
+          loadingWidth={'50%'} />
         <span className={styles.links}>
           <Link to="">Summary</Link>
           <Link to="results">Results</Link>
