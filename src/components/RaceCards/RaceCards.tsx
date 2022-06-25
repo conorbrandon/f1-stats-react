@@ -17,12 +17,11 @@ export const RaceCards: React.FC<ScheduleDisplayProps> = ({ races }) => {
             return (
               <motion.div whileHover={{ scale: 1.05 }} className={`${styles.raceCard} cursor-pointer`}>
                 <Link to={`/${race.season}/${race.round}`} className="no-underline">
-                  <span>
-                    <h3>{race.raceName}</h3>
-                  </span>
-                  <h4>{race.Circuit.circuitName}</h4>
-                  <div className={styles.row}>
-                    <p className={styles.label}>{race.Circuit.Location.locality}, {race.Circuit.Location.country}</p>
+                  <span className="x-large-font" style={{ paddingRight: '10%' }}>{race.raceName}</span><br></br>
+                  <span className="large-font">{race.Circuit.circuitName}</span>
+                  <div>
+                    <span>{race.Circuit.Location.locality}, {race.Circuit.Location.country}</span><br></br>
+                    <span>{new Date(race.date).toLocaleDateString()}</span>
                     <img src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} className="race-card-flag card" />
                   </div>
                   <div className={styles.raceCardRoundCounter}>{race.round}</div>

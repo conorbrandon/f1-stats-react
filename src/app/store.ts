@@ -11,6 +11,7 @@ import pitStopsReducer from './pitstops/pitStopsSlice';
 import constructorLogosReducer from './constructorLogos/constructorLogosSlice';
 import driverStandingsReducer from './driverStandings/driverStandingsSlice';
 import constructorStandingsReducer from './constructorStandings/constructorStandingsSlice';
+import constructorReducer from './constructor/constructorSlice';
 
 const middleware = [logger]; // always put logger last
 
@@ -27,6 +28,7 @@ export const store =  configureStore({
     constructorLogos: constructorLogosReducer,
     driverStandings: driverStandingsReducer,
     constructorStandings: constructorStandingsReducer,
+    myConstructor: constructorReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...middleware),
   devTools: true

@@ -32,7 +32,7 @@ export const Dashboard = ({ }) => {
   const raceSummaryCardContent = nextRace ? <>
     <span className="displayFlex flexJustContentCenter xx-large-font">Next race:</span>
     <span className="material-icons-align">
-      <Link to={`/${nextRace.season}/${nextRace.round}`}>
+      <Link className="material-icons-align" to={`/${nextRace.season}/${nextRace.round}`}>
         <span className="x-large-font">{nextRace.season} {nextRace.raceName} (Round {nextRace.round})</span>
         <img className={styles.dashboardImg} src={FlagHelper.getFlag(nextRace.Circuit.Location.country)} alt={`${nextRace.Circuit.Location.country} flag`} />
       </Link>

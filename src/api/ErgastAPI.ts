@@ -10,6 +10,9 @@ import { EmptyDriverStandingsResponse, MockConstructorStandings2022, MockDrivers
 import { getTimeZoneFromLatLng } from "./TimeZones";
 import { ErgastConstructor } from "../model/ErgastConstructor";
 import { ErgastConstructorsResponse } from "../model/ErgastConstructorsResponse";
+import { EmptySeasonsResponse, MockConstructorsSeasonsResponse, MockDriversSeasonsResponse } from "./MockBySeason";
+import { ErgastSeasonResponse } from "../model/ErgastSeasonResponse";
+import { ErgastSeason } from "../model/ErgastSeason";
 
 const baseUrl = 'https://ergast.com/api/f1';  // URL to web api
 export const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
@@ -80,17 +83,29 @@ export class ErgastAPI {
     const json: ErgastRaceResponse = await data.json();
     return json.MRData.RaceTable.Races[0];
   }
-  static async getDriver(driverId: string | undefined): Promise<ErgastDriver> {
+  static async getDriver(driverID: string | undefined): Promise<ErgastDriver> {
     if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
       await sleep(2500);
-      if (!driverId) return EmptyDriverResponse.MRData.DriverTable.Drivers[0];
-      if (driverId === "massa") return MockDriverResponse.MRData.DriverTable.Drivers[0];
+      if (!driverID) return EmptyDriverResponse.MRData.DriverTable.Drivers[0];
+      if (driverID === "massa") return MockDriverResponse.MRData.DriverTable.Drivers[0];
       else return EmptyDriverResponse.MRData.DriverTable.Drivers[0];
     }
-    const url = `${baseUrl}/drivers/${driverId}.json`;
+    const url = `${baseUrl}/drivers/${driverID}.json`;
     const data: Response = await fetch(url);
     const json: ErgastDriverResponse = await data.json();
     return json.MRData.DriverTable.Drivers[0];
+  }
+  static async getDriverSeasons(driverID: string): Promise<ErgastSeason[]> {
+    if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
+      await sleep(2500);
+      if (!driverID) return EmptySeasonsResponse.MRData.SeasonTable.Seasons;
+      if (driverID === "massa") return MockDriversSeasonsResponse.MRData.SeasonTable.Seasons;
+      else return EmptySeasonsResponse.MRData.SeasonTable.Seasons;
+    }
+    const url = `${baseUrl}/drivers/${driverID}/seasons.json?limit=1000`;
+    const data: Response = await fetch(url);
+    const json: ErgastSeasonResponse = await data.json();
+    return json.MRData.SeasonTable.Seasons;
   }
   static async getConstructor(constructorID: string | undefined): Promise<ErgastConstructor> {
     if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
@@ -104,6 +119,18 @@ export class ErgastAPI {
     const data: Response = await fetch(url);
     const json: ErgastConstructorsResponse = await data.json();
     return json.MRData.ConstructorTable.Constructors[0];
+  }
+  static async getConstructorSeasons(constructorID: string): Promise<ErgastSeason[]> {
+    if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
+      await sleep(2500);
+      if (!constructorID) return EmptySeasonsResponse.MRData.SeasonTable.Seasons;
+      if (constructorID === "ferrari") return MockConstructorsSeasonsResponse.MRData.SeasonTable.Seasons;
+      else return EmptySeasonsResponse.MRData.SeasonTable.Seasons;
+    }
+    const url = `${baseUrl}/constructors/${constructorID}/seasons.json?limit=1000`;
+    const data: Response = await fetch(url);
+    const json: ErgastSeasonResponse = await data.json();
+    return json.MRData.SeasonTable.Seasons;
   }
   static async getDriversByYear(year: string): Promise<ErgastDriver[]> {
     if (process.env.REACT_APP_ENVIRONMENT === 'mock') {

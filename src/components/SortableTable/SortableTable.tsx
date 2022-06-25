@@ -98,7 +98,7 @@ export const SortableTable: React.FC<SortableTableProps> = ({ items, template, c
         </tbody>
       </table>
     </div>{limit && limitComponent ? limitComponent : <></>}</>
-  ) : <div style={{ textAlign: 'center' }}>
-      {caption ? caption : 'Data'} are not available for this event. It's probably very much in the past or sometime soon in the future.
+  ) : <div style={{ textAlign: 'center', padding: '5px' }}>
+      {caption ? caption : 'Data'} are not available for this event. It's probably far in the past or sometime soon in the future.
     </div>;
 };

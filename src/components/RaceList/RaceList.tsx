@@ -25,6 +25,7 @@ export const RaceList: React.FC<ScheduleDisplayProps> = ({ races }) => {
                 <span className="medium-font">
                   {race.Circuit.Location.locality}, {race.Circuit.Location.country} at {race.Circuit.circuitName}
                 </span><br />
+                <span>{new Date(race.date).toLocaleDateString()}</span>
               </motion.li>
             </Link>
           );
