@@ -15,6 +15,8 @@ export const SortableTableHelper = {
       return <div className="material-icons-align">
         {result.position}
         {result.position === "1" && <span className="material-icons gold">star</span>}
+        {result.position === "2" && <span className="material-icons silver">star</span>}
+        {result.position === "3" && <span className="material-icons bronze">star</span>}
       </div>;
     },
     Driver: (result: ErgastResult) => {

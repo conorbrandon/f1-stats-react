@@ -7,7 +7,7 @@ export class TimeHelper {
     return minPart + secPart + msPart;
   }
   static msToRaceTime(timestamp: number | undefined): string {
-    // console.log({timestamp});
+    // console.log({ timestamp });
     if (!timestamp || timestamp === Infinity || timestamp === -Infinity) return '';
     const hour = 1000 * 60 * 60;
     const minute = 1000 * 60;
@@ -18,7 +18,6 @@ export class TimeHelper {
     let seconds = 0;
     let mss = 0;
     while (timestamp >= hour) {
-      console.log({timestamp});
       timestamp -= hour;
       hours += 1;
     }

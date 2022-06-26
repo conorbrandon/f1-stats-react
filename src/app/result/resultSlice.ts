@@ -41,7 +41,6 @@ export const resultSlice = createSlice({
       })
       .addCase(fetchResult.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        console.log('thing', {action});
         const resultsWithPosGained = action.payload?.data?.Results?.map(result => {
           return {
             ...result,

@@ -16,6 +16,9 @@ import styles from "./Dashboard.module.css";
 export const Dashboard = ({ }) => {
   const [nextRace, setNextRace] = useState<ErgastRace>();
   const [nextRaceTimeZone, setNextRaceTimeZone] = useState<string>();
+  const [previousRace, setPreviousRace] = useState<ErgastRace>();
+  const [previousRaceTimeZone, setPreviousRaceTimeZone] = useState<string>();
+  const [previousRaceResult, setPreviousRaceResult] = useState<ErgastRace>();
   const driverStandings = useAppSelector(selectDriverStandings);
   const driverStandingsStatus = useAppSelector(selectDriverStandingsStatus);
   const driverStandingsError = useAppSelector(selectDriverStandingsError);
@@ -23,6 +26,7 @@ export const Dashboard = ({ }) => {
   const constructorStandingsStatus = useAppSelector(selectConstructorStandingsStatus);
   const constructorStandingsError = useAppSelector(selectConstructorStandingsError);
 
+  const [isNextRaceActive, setIsNextRaceActive] = useState(true);
   useEffect(() => {
     if (!nextRace) {
       ErgastAPI.getNextRace()
@@ -32,18 +36,34 @@ export const Dashboard = ({ }) => {
           setNextRaceTimeZone(timeZone);
         });
     }
-  }, []);
+    if (!previousRace && !isNextRaceActive) {
+      ErgastAPI.getPreviousRace()
+        .then(response => {
+          const { prevRace, timeZone } = response;
+          setPreviousRace(prevRace);
+          setPreviousRaceTimeZone(timeZone);
+        });
+    }
+    if (!previousRaceResult && !isNextRaceActive) {
+      ErgastAPI.getRaceResult('current', 'last')
+        .then(response => {
+          setPreviousRaceResult(response);
+        })
+    }
+  }, [isNextRaceActive]);
 
-  const raceSummaryCardContent = nextRace ? <>
-    <span className="displayFlex flexJustContentCenter xx-large-font">Next race:</span>
-    <span className="material-icons-align">
-      <Link className="material-icons-align" to={`/${nextRace.season}/${nextRace.round}`}>
-        <span className="x-large-font">{nextRace.season} {nextRace.raceName} (Round {nextRace.round})</span>
-        <img className={styles.dashboardImg} src={FlagHelper.getFlag(nextRace.Circuit.Location.country)} alt={`${nextRace.Circuit.Location.country} flag`} />
-      </Link>
-    </span>
-    <RaceSummaryCard race={nextRace} timeZone={nextRaceTimeZone || ''} /></>
-    : <><LoadingSpinner />Next race loading...</>;
+  const raceSummaryCardContent = <>
+    <div className={`displayFlex flexDirRow ${styles.tabContainer}`}>
+      <span onClick={() => setIsNextRaceActive(false)} className={`x-large-font ${styles.tab} ${!isNextRaceActive ? styles.activeTab : ''}`}>
+        Previous race:
+      </span>
+      <span onClick={() => setIsNextRaceActive(true)} className={`x-large-font ${styles.tab} ${isNextRaceActive ? styles.activeTab : ''}`}>
+        Next race:
+      </span>
+    </div>
+    {isNextRaceActive ? (nextRace ? <RaceSummaryCard race={nextRace} timeZone={nextRaceTimeZone || ''} useBuiltInHeader isUpcomingRace /> : <><LoadingSpinner />Next race loading...</>) : <></>}
+    {!isNextRaceActive ? (previousRace && previousRaceResult ? <RaceSummaryCard race={{...previousRaceResult, ...previousRace}} timeZone={previousRaceTimeZone || ''} useBuiltInHeader useBuiltInResults /> : <><LoadingSpinner />Previous race loading...</>) : <></>}
+    </>;
 
   return (
     <>

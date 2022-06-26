@@ -4,24 +4,38 @@ import { CollapsibleMapbox } from "./CollapsibleMapbox/CollapsibleMapbox";
 import styles from "./RaceSummaryCard.module.css";
 import { RaceTimesContainer } from "./RaceTimesContainer/RaceTimesContainer";
 import Switch from "react-switch";
+import { Link } from "react-router-dom";
+import { FlagHelper } from "../../helpers/FlagHelper";
+import { RaceResults } from "../RaceResults/RaceResults";
 
 interface RaceSummaryCardProps {
   race: ErgastRace,
   horizontalLayout?: boolean,
-  timeZone: string
+  timeZone: string,
+  useBuiltInHeader?: boolean,
+  isUpcomingRace?: boolean,
+  useBuiltInResults?: boolean
 }
 
-export const RaceSummaryCard: React.FC<RaceSummaryCardProps> = ({ race, horizontalLayout, timeZone }) => {
+export const RaceSummaryCard: React.FC<RaceSummaryCardProps> = ({ race, horizontalLayout, timeZone, useBuiltInHeader, isUpcomingRace, useBuiltInResults }) => {
   const [useMyTime, setUseMyTime] = useState(true);
   const handleUseMyTimeChange = (checked: boolean) => {
     setUseMyTime(checked);
   };
   return (
     <div className={horizontalLayout ? styles.horizontalLayout : ''}>
+      {/* built-in header */}
+      {useBuiltInHeader && <span className="material-icons-align">
+        <Link className="material-icons-align" to={`/${race.season}/${race.round}`}>
+          <span className="x-large-font">{race.season} {race.raceName} (Round {race.round})</span>
+          <img className={styles.dashboardImg} src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
+        </Link>
+      </span>}
       <div style={{ width: horizontalLayout ? '30%' : '' }}>
-        <div style={{ marginTop: '1rem', marginBottom: '2rem', border: 'solid 5px green', borderRadius: '10px', padding: '1rem' }}>
+        {/* isUpcomingRace */}
+        {isUpcomingRace && <div style={{ marginTop: '1rem', marginBottom: '2rem', border: 'solid 5px green', borderRadius: '10px', padding: '1rem' }}>
           The race is coming up! Check back afterwards for results and detailed analysis.
-        </div>
+        </div>}
         <div>
           <span className="material-icons-align">
             <span className="material-icons">
@@ -36,6 +50,7 @@ export const RaceSummaryCard: React.FC<RaceSummaryCardProps> = ({ race, horizont
           </span>
         </div>
         <div style={{ marginTop: '1rem' }}></div>
+        {useBuiltInResults && <div><RaceResults noClass inputRace={race} limit={3} templateParam={['Position', 'Driver', 'Points']} /></div>}
         <span className="material-icons-align displayFlex flexRow flexJustContentCenter small-font">
           Use track time
           <Switch checked={useMyTime}
@@ -56,8 +71,8 @@ export const RaceSummaryCard: React.FC<RaceSummaryCardProps> = ({ race, horizont
               })
               .filter(timeObject => timeObject && timeObject.session)
               .sort((a: any, b: any) => new Date(b.date + 'T' + b.time).valueOf() - new Date(a.date + 'T' + a.time).valueOf())
-              .map(timeObject => timeObject ? 
-                <RaceTimesContainer open={horizontalLayout || false} useMyTime={useMyTime} key={timeObject.session} sessionText={timeObject.session} date={timeObject.date} time={timeObject.time} timeZone={timeZone} /> 
+              .map(timeObject => timeObject ?
+                <RaceTimesContainer open={horizontalLayout || false} useMyTime={useMyTime} key={timeObject.session} sessionText={timeObject.session} date={timeObject.date} time={timeObject.time} timeZone={timeZone} />
                 : <></>
               )
           }

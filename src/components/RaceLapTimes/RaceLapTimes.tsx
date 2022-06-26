@@ -128,7 +128,7 @@ export const RaceLapTimes = ({ }) => {
       setMinimumLapTime(minLapTime);
       avgLapTime /= numTotalLaps;
       setAverageLapTime(avgLapTime);
-      console.log({ avgLapTime, minLapTime, avgAsRaceTime: TimeHelper.msToRaceTime(avgLapTime) });
+      // console.log({ avgLapTime, minLapTime, avgAsRaceTime: TimeHelper.msToRaceTime(avgLapTime) });
       const logScaleFunction = scaleLog().domain([minLapTime, maxLapTime]).range([1, 100]).base(10);
       let logLapFormatterMap: { [ms: number]: string } = {};
       let transformedLogLaps: lapTime[] = laps.map((lap, lapNum) => {
@@ -158,13 +158,12 @@ export const RaceLapTimes = ({ }) => {
       });
       // console.log({ customCirclesPositions });
       let lap0Position: lapTime = { lapNum: 0 };
-      console.log({ raceQualifying });
+      // console.log({ raceQualifying });
       raceQualifying?.QualifyingResults?.forEach(result => {
         lap0Position[result.Driver.driverId] = parseInt(result.position);
       })
       transformedPositions.unshift(lap0Position);
       // console.log({ transformedLaps, transformedPositions });
-      console.log({ transformedLaps: transformedLaps.slice(0, 3), transformedLogLaps: transformedLogLaps.slice(0, 3) });
 
       setScaleDomain({ min: minLapTime, max: maxLapTime });
       setLogLapFormatterMap(logLapFormatterMap);
@@ -179,7 +178,7 @@ export const RaceLapTimes = ({ }) => {
 
   const onChange = (event: MultiValue<DriverIDElement>) => {
     setSelectFirstLoad(false);
-    console.log({ event });
+    // console.log({ event });
     const driverIDSetCopy = [...driverIDSet];
     const selectedDrivers = event.map(e => e.driverID);
     setDriverIDSet(driverIDSetCopy.map(driver =>

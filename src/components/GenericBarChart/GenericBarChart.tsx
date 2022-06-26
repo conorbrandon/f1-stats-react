@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 
 const CustomLabel: React.FC<any> = (props) => {
   const { fill, x, y, value, width } = props;
-  console.log({ fill, x, y, value, props });
+  // console.log({ fill, x, y, value, props });
   return <text
     x={x + (width / 2)}
     y={y}
@@ -41,21 +41,25 @@ export const GenericBarChart: React.FC<GenericBarChartProps> = ({ data, chartTit
     }
   }, [getPng]);
   return (
-    <div className="displayFlex flexJustContentCenter">
-      <ResponsiveContainer width={'100%'} height={400}>
-        <BarChart data={data} margin={{ bottom: 60, top: 50 }} ref={ref}>
-          <text x={'50%'} y={20} fill="black" textAnchor="middle" dominantBaseline="central">
-            <tspan fontSize="25">{chartTitle}</tspan>
-          </text>
-          <Bar dataKey="points" label={<CustomLabel />} animationDuration={5000}>
-            {data?.map((_, i) => {
-              return <Cell key={_.fillColor + i} fill={_.fillColor}></Cell>
-            })}
-          </Bar>
-          <XAxis dataKey="ID" angle={-45} tick={{fontSize: 15}} textAnchor='end' interval={0} />
-          <YAxis />
-        </BarChart>
-      </ResponsiveContainer>
-    </div>
+    <div style={{ position: 'relative' }}>
+      <button onClick={handleDownload} style={{ zIndex: 2, fontSize: '.5rem', position: 'absolute', left: '88%', top: '4%' }}>
+        {isLoading ? 'Downloading...' : 'Download Chart'}
+      </button>
+      <div className="displayFlex flexJustContentCenter">
+        <ResponsiveContainer width={'100%'} height={400}>
+          <BarChart data={data} margin={{ bottom: 60, top: 50 }} ref={ref}>
+            <text x={'50%'} y={20} fill="black" textAnchor="middle" dominantBaseline="central">
+              <tspan fontSize="25">{chartTitle}</tspan>
+            </text>
+            <Bar dataKey="points" label={<CustomLabel />}>
+              {data?.map((_, i) => {
+                return <Cell key={_.fillColor + i} fill={_.fillColor}></Cell>
+              })}
+            </Bar>
+            <XAxis dataKey="ID" angle={-45} tick={{ fontSize: 15 }} textAnchor='end' interval={0} />
+            <YAxis />
+          </BarChart>
+        </ResponsiveContainer>
+      </div></div>
   );
 };

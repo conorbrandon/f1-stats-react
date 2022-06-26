@@ -19,7 +19,7 @@ export const RaceSummary = ({ }) => {
     }
   }, [race]);
   // RaceSummaryCard will go to horizontal layout if race is in the future
-  const raceSummaryCardContent = race ? <RaceSummaryCard race={race} horizontalLayout={horizontalLayout} timeZone={raceTimeZone || ''} /> : <></>;
+  const raceSummaryCardContent = race ? <RaceSummaryCard race={race} horizontalLayout={horizontalLayout} isUpcomingRace={horizontalLayout} timeZone={raceTimeZone || ''} /> : <></>;
   return (
     <div className={`page-content ${!horizontalLayout ? styles.raceSummaryLayout : ''}`}>
       <div className={styles.raceSummaryLocation}>

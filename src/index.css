@@ -135,6 +135,12 @@ a {
 .gold {
   color: gold;
 }
+.silver {
+  color: silver;
+}
+.bronze {
+  color: #CD7F32;
+}
 .red {
   color: red;
 }
@@ -174,6 +180,10 @@ a {
 
 .Collapsible__trigger:hover {
   cursor: pointer;
+}
+.collapseTriggerBorder {
+  border: 1px solid gray;
+  border-radius: 5px;
 }
 
 .displayFlex {

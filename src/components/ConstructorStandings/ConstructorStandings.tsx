@@ -37,27 +37,29 @@ export const ConstructorStandings: React.FC<ConstructorStandingsProps> = ({ cons
         })
       });
       setConstructorStandingsTransformed(myConstructorStandingsTransformed);
-      console.log({ myDriverStandingsTransformed: myConstructorStandingsTransformed });
+      // console.log({ myConstructorStandingsTransformed: myConstructorStandingsTransformed });
     }
   }, [constructorStandings, dispatch]);
   return (
     <>{<div style={{ width: '90%' }}>
       {/* chart */}
       {constructorStandings && constructorStandings.ConstructorStandings?.length && <Collapsible trigger={
-        <motion.span whileHover={{ scale: 1.05 }} className="displayFlex flexJustContentCenter flexAlignItemsCenter">
-          {myIsOpenChart ? 'Collapse' : 'Expand'} Constructor Standings chart
+        <motion.span whileHover={{ scale: 1.05 }} className="displayFlex flexJustContentCenter flexAlignItemsCenter collapseTriggerBorder">
+          {/* {myIsOpenChart ? 'Collapse' : 'Expand'}  */}
+          Constructor Standings chart
           <span className="material-icons">{!myIsOpenChart ? 'expand_more' : 'expand_less'}</span>
         </motion.span>
       } open={myIsOpenChart}
         transitionTime={500}
         handleTriggerClick={() => { setMyIsOpenChart(!myIsOpenChart); }}
         easing={'ease-in-out'} >
-        <GenericBarChart data={constructorStandingsTransformed || []} chartTitle={`${constructorStandings?.season || ''} Constructor Standings (after round ${constructorStandings?.round || 'n/a'})`} />
+        <GenericBarChart data={constructorStandingsTransformed || []} chartTitle={`${constructorStandings?.season || ''} Constructor Standings (round ${constructorStandings?.round || 'n/a'})`} />
       </Collapsible>}
       {/* table */}
       <Collapsible trigger={
-        <motion.span whileHover={{ scale: 1.05 }} className="displayFlex flexJustContentCenter flexAlignItemsCenter">
-          {myIsOpenTable ? 'Collapse' : 'Expand'} Constructor Standings table
+        <motion.span whileHover={{ scale: 1.05 }} className="displayFlex flexJustContentCenter flexAlignItemsCenter collapseTriggerBorder">
+          {/* {myIsOpenTable ? 'Collapse' : 'Expand'}  */}
+          Constructor Standings table
           <span className="material-icons">{!myIsOpenTable ? 'expand_more' : 'expand_less'}</span>
         </motion.span>
       } open={myIsOpenTable}

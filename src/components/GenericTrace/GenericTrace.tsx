@@ -47,7 +47,7 @@ export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, w
   const renderDot = (event: any) => {
     if (!pitstopLapMap) return <></>;
     if (pitstopLapMap[event.index + ''] && pitstopLapMap[event.index + ''][event.dataKey]) {
-      console.log(pitstopLapMap[event.index + ''][event.dataKey], { event });
+      // console.log(pitstopLapMap[event.index + ''][event.dataKey], { event });
       return pitStopIcon(event.cx, event.cy);
     };
     return <></>;
@@ -55,7 +55,7 @@ export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, w
   const renderActiveDot = (event: any) => {
     if (!pitstopLapMap) return <></>;
     if (pitstopLapMap[event.index + ''] && pitstopLapMap[event.index + ''][event.dataKey]) {
-      console.log(pitstopLapMap[event.index + ''][event.dataKey], { event });
+      // console.log(pitstopLapMap[event.index + ''][event.dataKey], { event });
       return pitStopIcon(event.cx, event.cy);
     };
     if (event.cy > 0) return <circle cx={event.cx} cy={event.cy} r={5} fill={event.fill}></circle>;

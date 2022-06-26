@@ -5,7 +5,7 @@ import { ErgastRaceResponse } from "../model/ErgastRaceResponse";
 import { ErgastStandingList } from "../model/ErgastStandingList";
 import { ErgastStandingsResponse } from "../model/ErgastStandingsResponse";
 import { MockLapsResponse, MockLapsResponse2022, MockPitStopResponse2022, MockResultsResponse2022 } from "./MockLapsResponse";
-import { EmptyScheduleResponse, MockResultsResponse, MockScheduleResponse, MockQualifyingResponse, MockDriverResponse, EmptyDriverResponse, MockDriversReponse, MockScheduleResponse_2008, MockQualifyingResponse2022, MockScheduleResponse2022, MockNextRace, MockRace2022, MockRace, MockConstructorsResponse, EmptyConstructorsResponse } from "./MockResponse";
+import { EmptyScheduleResponse, MockResultsResponse, MockScheduleResponse, MockQualifyingResponse, MockDriverResponse, EmptyDriverResponse, MockDriversReponse, MockScheduleResponse_2008, MockQualifyingResponse2022, MockScheduleResponse2022, MockNextRace, MockRace2022, MockRace, MockConstructorsResponse, EmptyConstructorsResponse, MockLastRace, MockCurrentLastResultResponse } from "./MockResponse";
 import { EmptyDriverStandingsResponse, MockConstructorStandings2022, MockDriversStandings2022 } from "./MockStandingsResponse";
 import { getTimeZoneFromLatLng } from "./TimeZones";
 import { ErgastConstructor } from "../model/ErgastConstructor";
@@ -47,6 +47,22 @@ export class ErgastAPI {
     const timeZone = await getTimeZoneFromLatLng(lat, long);
     return {nextRace: json.MRData.RaceTable.Races[0], timeZone};
   }
+  static async getPreviousRace(): Promise<{prevRace: ErgastRace, timeZone: string}> {
+    let json: ErgastRaceResponse;
+    if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
+      await sleep(1000);
+      json = MockLastRace;
+      const { lat, long } = json.MRData.RaceTable.Races[0].Circuit.Location;
+      const timeZone = await getTimeZoneFromLatLng(lat, long);
+      return {prevRace: json.MRData.RaceTable.Races[0], timeZone};
+    }
+    const url = `${baseUrl}/current/last.json`;
+    const data: Response = await fetch(url);
+    json = await data.json();
+    const { lat, long } = json.MRData.RaceTable.Races[0].Circuit.Location;
+    const timeZone = await getTimeZoneFromLatLng(lat, long);
+    return {prevRace: json.MRData.RaceTable.Races[0], timeZone};
+  }
   static async getRace(year: string, round: string): Promise<ErgastRace> {
     if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
       await sleep(1000);
@@ -65,6 +81,7 @@ export class ErgastAPI {
       await sleep(1000);
       if (year === '2008' && round === '5') return MockResultsResponse.MRData.RaceTable.Races[0];
       else if (year === "2022" && round === "5") return MockResultsResponse2022.MRData.RaceTable.Races[0];
+      else if (year === 'current' && round === "last") return MockCurrentLastResultResponse.MRData.RaceTable.Races[0]
       else return EmptyScheduleResponse.MRData.RaceTable.Races[0];
     }
     const url = `${baseUrl}/${year}/${round}/results.json`;
@@ -112,7 +129,6 @@ export class ErgastAPI {
     if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
       await sleep(2500);
       if (!constructorID) return EmptyConstructorsResponse.MRData.ConstructorTable.Constructors[0];
-      console.log({ ferrari: MockConstructorsResponse.MRData.ConstructorTable.Constructors[0] })
       if (constructorID === "ferrari") return MockConstructorsResponse.MRData.ConstructorTable.Constructors[0];
       else return EmptyConstructorsResponse.MRData.ConstructorTable.Constructors[0];
     }

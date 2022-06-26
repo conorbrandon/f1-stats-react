@@ -19,7 +19,7 @@ export const UseReduxAsyncStatus: React.FC<UseReduxAsyncStatusProps> = ({ status
   const dispatch = useAppDispatch();
   const [pageContent, setPageContent] = useState(<></>);
   useEffect(() => {
-    console.log({ status, fetchAction, fetchParams });
+    // console.log({ status, fetchAction, fetchParams });
     if (status === 'idle' && fetchAction) {
       dispatch(fetchAction(fetchParams));
     } else if (status === 'loading') {

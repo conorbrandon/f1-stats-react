@@ -67,7 +67,7 @@ export const RaceReplayReMotion = ({ }) => {
   const pitstopsError = useAppSelector(selectPitStopsError);
 
   useEffect(() => {
-    console.log({ laps, results, pitstops });
+    // console.log({ laps, results, pitstops });
     if (laps?.length && results?.Results?.length && pitstops !== undefined) {
       const durationInFrames = duration * fps;
       // set left intervals
@@ -112,7 +112,7 @@ export const RaceReplayReMotion = ({ }) => {
       results.Results.forEach(result => {
         // fill in starting position for drivers that crashed on first lap
         if (!myTotalTimeDriverMap[result.Driver.driverId]) {
-          console.log('missing from laps', result.Driver.driverId);
+          // console.log('missing from laps', result.Driver.driverId);
           myTotalTimeDriverMap[result.Driver.driverId] = {
             totalTime: 0,
             keyFrames: [durationInFrames],
@@ -171,7 +171,7 @@ export const RaceReplayReMotion = ({ }) => {
         }
       }
 
-      console.log({ myTotalTimeDriverMap });
+      // console.log({ myTotalTimeDriverMap });
       setTotalTimeDriverMap(myTotalTimeDriverMap);
       // the winning driver had the baseline total race time to use for duration calculations
       const myBestTotalTime = myTotalTimeDriverMap[winningDriver].totalTime;

@@ -6,3 +6,8 @@
   flex-direction: row;
   justify-content: space-evenly;
 }
+
+.dashboardImg {
+  width: 10%;
+  margin-left: 10px;
+}

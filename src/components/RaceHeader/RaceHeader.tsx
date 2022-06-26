@@ -27,11 +27,11 @@ export const RaceHeader = ({ }) => {
   const { setTooltipPosition, setTooltipChild } = useOutletContext<AppOutletContext>();
   const handleMouseEnter = (targetRef: RefObject<HTMLAnchorElement>, targetRound: string, previousRace: boolean) => {
     if (!targetRef.current) return;
-    console.log({ targetRef, targetRound });
+    // console.log({ targetRef, targetRound });
     const {x, y, width, height} = targetRef.current?.getBoundingClientRect();
-    console.log({x, y, width, height});
+    // console.log({ x, y, width, height });
     setTooltipPosition({ x: x + (width / 2), y: y + (height / 2) + 45 });
-    console.log({schedule});
+    // console.log({ schedule });
     setTooltipChild(<TooltipRace race={schedule.find(race => race.round === targetRound)} previousRace={previousRace} />);
   };
   const handleMouseLeave = () => {

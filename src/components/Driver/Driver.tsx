@@ -12,7 +12,6 @@ export const Driver = ({ }) => {
   const driverSeasons = useAppSelector(selectDriverSeasons);
   const driverStatus = useAppSelector(selectDriverStatus);
   const driverError = useAppSelector(selectDriverError);
-  console.log({ driverID, driverStatus });
   const driverHeaderContent = <>{driver &&
     <span>
       <span className="xx-large-font">

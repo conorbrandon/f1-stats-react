@@ -51,20 +51,22 @@ export const DriverStandings: React.FC<DriverStandingsProps> = ({ driverStanding
       {/* chart */}
       {driverStandings && driverStandings.DriverStandings?.length && 
       <Collapsible trigger={
-        <motion.span whileHover={{ scale: 1.05 }} className="displayFlex flexJustContentCenter flexAlignItemsCenter">
-          {myIsOpenChart ? 'Collapse' : 'Expand'} Driver Standings chart
+        <motion.span whileHover={{ scale: 1.05 }} className="displayFlex flexJustContentCenter flexAlignItemsCenter collapseTriggerBorder">
+          {/* {myIsOpenChart ? 'Collapse' : 'Expand'}  */}
+          Driver Standings chart
           <span className="material-icons">{!myIsOpenChart ? 'expand_more' : 'expand_less'}</span>
         </motion.span>
       } open={myIsOpenChart}
         transitionTime={500}
         handleTriggerClick={() => { setMyIsOpenChart(!myIsOpenChart); }}
         easing={'ease-in-out'} >
-        <GenericBarChart data={driverStandingsTransformed || []} chartTitle={`${driverStandings?.season || ''} Driver Standings (after round ${driverStandings?.round || 'n/a'})`} />
+        <GenericBarChart data={driverStandingsTransformed || []} chartTitle={`${driverStandings?.season || ''} Driver Standings (round ${driverStandings?.round || 'n/a'})`} />
       </Collapsible>}
       {/* table */}
       <Collapsible trigger={
-        <motion.span whileHover={{ scale: 1.05 }} className="displayFlex flexJustContentCenter flexAlignItemsCenter">
-          {myIsOpenTable ? 'Collapse' : 'Expand'} Driver Standings table
+        <motion.span whileHover={{ scale: 1.05 }} className="displayFlex flexJustContentCenter flexAlignItemsCenter collapseTriggerBorder">
+          {/* {myIsOpenTable ? 'Collapse' : 'Expand'}  */}
+          Driver Standings table
           <span className="material-icons">{!myIsOpenTable ? 'expand_more' : 'expand_less'}</span>
         </motion.span>
       } open={myIsOpenTable}

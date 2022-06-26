@@ -26,7 +26,7 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType, zoo
   const [zoom, setZoom] = useState<number>(zoomParam || 0.5);
 
   const addMarkersForRaces = (races: ErgastRace[], map: mapboxgl.Map) => {
-    console.log('addMarkersForRaces', { races, map });
+    // console.log('addMarkersForRaces', { races, map });
     setMarkerMap([]);
     let [sumLng, sumLat] = [0, 0];
     setMarkerMap(races.map((race, i) => {
@@ -53,11 +53,11 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType, zoo
     }));
     sumLng /= races.length;
     sumLat /= races.length;
-    console.log({ sumLng, sumLat })
+    // console.log({ sumLng, sumLat })
     map?.setCenter([sumLng | 0, sumLat | 0]);
   };
   const removeMarkersForRaces = () => {
-    console.log('removeMarkersForRaces', { markerMap })
+    // console.log('removeMarkersForRaces', { markerMap })
     markerMap?.forEach(marker => marker.remove());
   };
 
@@ -71,7 +71,7 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType, zoo
       });
       map.addControl(new mapboxgl.NavigationControl());
       map.on("load", () => {
-        console.log('map loaded');
+        // console.log('map loaded');
         setMap(map);
         addMarkersForRaces(races, map);
       });
@@ -79,23 +79,23 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType, zoo
     if (!map) initializeMap(setMap, mapContainer);
     else if (map) {
       if (racesRef.current !== races) {
-        console.log('races changed', { races });
+        // console.log('races changed', { races });
         removeMarkersForRaces();
         if (map) addMarkersForRaces(races, map as mapboxgl.Map);
         racesRef.current = races;
       } else {
-        console.log('races constant');
+        // console.log('races constant');
       }
     }
   }, [races]);
   useEffect(() => {
-    console.log({activePopup}, {activePopupRef: activePopupRef.current});
+    // console.log({activePopup}, {activePopupRef: activePopupRef.current});
     if (activePopup !== undefined) {
-      console.log('show');
+      // console.log('show');
       markerMap[activePopup]?.togglePopup();
     } 
     if (activePopupRef.current !== undefined) {
-      console.log('hide');
+      // console.log('hide');
       markerMap[activePopupRef.current]?.togglePopup();
     }
     activePopupRef.current = activePopup;
