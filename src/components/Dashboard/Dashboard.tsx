@@ -54,10 +54,10 @@ export const Dashboard = ({ }) => {
 
   const raceSummaryCardContent = <>
     <div className={`displayFlex flexDirRow ${styles.tabContainer}`}>
-      <span onClick={() => setIsNextRaceActive(false)} className={`x-large-font ${styles.tab} ${!isNextRaceActive ? styles.activeTab : ''}`}>
+      <span onClick={() => setIsNextRaceActive(false)} className={`large-font ${styles.tab} ${!isNextRaceActive ? styles.activeTab : ''}`}>
         Previous race:
       </span>
-      <span onClick={() => setIsNextRaceActive(true)} className={`x-large-font ${styles.tab} ${isNextRaceActive ? styles.activeTab : ''}`}>
+      <span onClick={() => setIsNextRaceActive(true)} className={`large-font ${styles.tab} ${isNextRaceActive ? styles.activeTab : ''}`}>
         Next race:
       </span>
     </div>

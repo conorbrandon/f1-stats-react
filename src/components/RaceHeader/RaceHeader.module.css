@@ -1,5 +1,10 @@
+.links {
+  width: 50%;
+  display: flex;
+  justify-content: space-evenly;
+}
 .links a {
-  margin-right: 2rem;
+  /* margin-right: 2rem; */
   text-decoration: none;
 }
 .links a:hover {
@@ -19,18 +24,25 @@
 
 .spaceEvenly {
   justify-content: space-evenly;
-  width: 45%;
+  width: 50%;
+  padding-left: 6vw;
 }
 
 .backToSeasonLink {
-  position: absolute;
+  /* position: absolute;
   margin-left: -5rem;
-  margin-top: -1rem;
+  margin-top: -1rem; */
   font-size: medium;
   border-bottom: solid white 1px;
   border-right: solid white 1px;
   padding-right: 5px;
   border-radius: 4px;
+}
+.backToSeasonLinks {
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+  position: absolute;
 }
 .backToSeasonLink a {
   text-decoration: none;

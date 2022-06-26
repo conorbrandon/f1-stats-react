@@ -1,7 +1,7 @@
 export interface ErgastDriver {
   "driverId": string,
   "permanentNumber"?: string,
-  "code": string,
+  "code"?: string,
   "url": string,
   "givenName": string,
   "familyName": string,

@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 interface RaceTimesContainerProps {
   sessionText: string,
   date: string,
-  time: string,
+  time?: string,
   timeZone?: string,
   open?: boolean,
   useMyTime: boolean

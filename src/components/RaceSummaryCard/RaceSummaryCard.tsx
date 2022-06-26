@@ -27,13 +27,13 @@ export const RaceSummaryCard: React.FC<RaceSummaryCardProps> = ({ race, horizont
       {/* built-in header */}
       {useBuiltInHeader && <span className="material-icons-align">
         <Link className="material-icons-align" to={`/${race.season}/${race.round}`}>
-          <span className="x-large-font">{race.season} {race.raceName} (Round {race.round})</span>
+          <span className="large-font">{race.season} {race.raceName} (Round {race.round})</span>
           <img className={styles.dashboardImg} src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
         </Link>
       </span>}
       <div style={{ width: horizontalLayout ? '30%' : '' }}>
         {/* isUpcomingRace */}
-        {isUpcomingRace && <div style={{ marginTop: '1rem', marginBottom: '2rem', border: 'solid 5px green', borderRadius: '10px', padding: '1rem' }}>
+        {isUpcomingRace && <div style={{ fontSize: '0.8rem', marginTop: '1rem', marginBottom: '1rem', border: 'solid 3px green', borderRadius: '10px', padding: '0.5rem' }}>
           The race is coming up! Check back afterwards for results and detailed analysis.
         </div>}
         <div>
@@ -50,7 +50,7 @@ export const RaceSummaryCard: React.FC<RaceSummaryCardProps> = ({ race, horizont
           </span>
         </div>
         <div style={{ marginTop: '1rem' }}></div>
-        {useBuiltInResults && <div><RaceResults noClass inputRace={race} limit={3} templateParam={['Position', 'Driver', 'Points']} /></div>}
+        {useBuiltInResults && <div><RaceResults noClass inputRace={race} limit={5} templateParam={['Position', 'Driver', 'Points']} /></div>}
         <span className="material-icons-align displayFlex flexRow flexJustContentCenter small-font">
           Use track time
           <Switch checked={useMyTime}

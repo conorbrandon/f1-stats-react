@@ -201,3 +201,8 @@ a {
 .flexAlignItemsCenter {
   align-items: center;
 }
+
+/* give all images a small white border, especially useful for the belgian flag 🇧🇪 */
+img {
+  border: solid white 1px;
+}

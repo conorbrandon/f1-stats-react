@@ -44,11 +44,20 @@ export const RaceHeader = ({ }) => {
   };
 
   const successContent = (year && round) ? <>
-    <span className={`${styles.backToSeasonLink} material-icons-align`}>
+    <span className={styles.backToSeasonLinks}>
+      <span className={`${styles.backToSeasonLink} material-icons-align`}>
+        <span className="material-icons">
+          arrow_back
+        </span><Link to={`/${year}`}>
+          {year} season</Link>
+      </span>
+      <span className={`${styles.backToSeasonLink} material-icons-align`}>
       <span className="material-icons">
-        arrow_back
-      </span><Link to={`/${year}`}>
-        {year} season</Link>
+          leaderboard
+        </span>
+        <Link to={`/${year}/standings`}>
+          {year} standings</Link>
+      </span>
     </span>
     <span className={`material-icons-align ${styles.spaceEvenly}`}>
       <span style={{ marginLeft: '3rem' }}>
@@ -72,18 +81,28 @@ export const RaceHeader = ({ }) => {
   </> : <></>;
   return (
     <>
-      <div className="page-header">
+      <div className="page-header" style={{ padding: '0 6vw 0 0', width: '94vw' }}>
         <UseReduxAsyncStatuses 
           statuses={[resultStatus, scheduleStatus]} 
           successContent={successContent} 
           errors={[resultError, scheduleError]}
           loadingWidth={'50%'} />
         <span className={styles.links}>
-          {race?.Results?.length && <><Link to="">Summary</Link>
-          <Link to="results">Results</Link></>}
-          {qualifying && <><Link to="qualifying">Qualifying</Link>
-          <Link to="laptimes">Lap/Position Trace</Link>
-          <Link to="racereplay">Race Replay</Link></>}
+          {race?.Results?.length && <><span>
+            <Link to="">Summary</Link>
+          </span>
+          <span>
+            <Link to="results">Results</Link>
+          </span></>}
+          {qualifying && <><span>
+            <Link to="qualifying">Qualifying</Link>
+          </span>
+          <span>
+            <Link to="laptimes">Lap/Position Trace</Link>
+          </span>
+          <span>
+            <Link to="racereplay">Race Replay</Link>
+          </span></>}
         </span>
       </div>
     </>

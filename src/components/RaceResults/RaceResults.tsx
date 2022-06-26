@@ -14,10 +14,11 @@ export interface RaceResultsProps {
   noClass?: boolean,
   limit?: number,
   templateParam?: string[],
-  inputRace?: ErgastRace
+  inputRace?: ErgastRace,
+  captionForTable?: string | JSX.Element
 }
 
-export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam, inputRace }) => {
+export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam, inputRace, captionForTable }) => {
   const race = useAppSelector(selectResult);
   const resultStatus = useAppSelector(selectResultStatus);
   const resultError = useAppSelector(selectResultError);
@@ -50,7 +51,7 @@ export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templa
         limitComponent={<p>
           <Link to={`/${race?.season}/${race?.round}/results`}>See full results...</Link>
         </p>}
-        caption={'Results'}
+        caption={captionForTable || 'Results'}
         template={template}
         comparators={{
           Position: SortableTableHelper.comparators.Position,

@@ -36,7 +36,8 @@ export const RaceReplayReMotion = ({ }) => {
   const [speed, setSpeed] = useState<number>(1);
   const [isPaused, setPaused] = useState<boolean>(true);
   const [displayAllLaps, setDisplayAllLaps] = useState<boolean>(false);
-  const THIRD_OF_AVG_NUM_LAPS = 40;
+  const THIRD_OF_AVG_NUM_LAPS = 25;
+  const MINIMUM_KNOWN_NUM_LAPS_SPA = 44;
   const [width, setWidth] = useState((document.body.clientWidth * .80) * THIRD_OF_AVG_NUM_LAPS);
   const fps = 60;
   const height = 550;
@@ -247,7 +248,8 @@ export const RaceReplayReMotion = ({ }) => {
       <span>
         <span style={{ textDecoration: 'underline' }}>Legend</span><br />
         {pitstops?.length ? <><span className="material-icons-align">Pitstop: <img src={PirelliTyre} alt="tire" className={styles.tireBig} /> </span></> : <></>}
-        Empty grid slots indicate a Pit Lane start
+        <span>Empty grid slots indicate a Pit Lane start</span><br></br>
+        {laps && laps.length < MINIMUM_KNOWN_NUM_LAPS_SPA && <span className="material-icons-align">All laps may not be available <span className="material-icons red">warning</span></span>}
       </span>
     </div>
     <div className={styles.player}>

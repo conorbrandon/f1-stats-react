@@ -12,7 +12,7 @@ export interface ErgastRace {
   "raceName": string,
   "Circuit": ErgastCircuit,
   "date": string,
-  "time": string,
+  "time"?: string,
   "FirstPractice"?: ErgastDate,
   "SecondPractice"?: ErgastDate,
   "ThirdPractice"?: ErgastDate,

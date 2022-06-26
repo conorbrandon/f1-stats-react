@@ -11,7 +11,11 @@ export const AppHeader = ({ }) => {
         <Link to={'/'}>dashboard</Link>
         <Link to={`/current`}>seasons</Link>
         <Link to={'/current/standings'}>standings</Link>
-        <Link to="2008/5">test race</Link>
+        {process.env.REACT_APP_ENVIRONMENT === 'mock' && 
+          <><Link to="2008/5">test race 2008</Link>
+          <Link to="2022/5">test race 2022</Link>
+          <Link to="driver/massa">test driver massa</Link>
+          <Link to="constructor/ferrari">test const. ferrari</Link></>}
       </nav>
     </div>
   );
