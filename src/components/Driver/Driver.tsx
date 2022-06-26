@@ -21,7 +21,8 @@ export const Driver = ({ }) => {
         {driver.givenName} {driver.familyName}
       </span>
       <span className="large-font" style={{ marginLeft: '5px' }}>
-        (#{driver.permanentNumber})
+        {driver.permanentNumber && <>(#{driver.permanentNumber})</>}
+        {driver.code && <>({driver.code})</>}
       </span>
     </span>}
   </>;

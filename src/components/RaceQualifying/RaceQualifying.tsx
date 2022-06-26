@@ -6,12 +6,13 @@ import { selectBestTimesFromEachSession, selectQualifying, selectQualifyingError
 import { SortableTableHelper } from "../../helpers/SortableTableHelper";
 import { TimeHelper } from "../../helpers/TimeHelper";
 import { ErgastQualifyingResult } from "../../model/ErgastQualifyingResult";
+import { ErgastRace } from "../../model/ErgastRace";
 import { RaceResultsProps } from "../RaceResults/RaceResults";
 import { SortableTable } from "../SortableTable/SortableTable";
 import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
 import styles from "./RaceQualifying.module.css";
 
-export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam }) => {
+export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam, inputRace, captionForTable, noTableHeader, prescribeWidths }) => {
   const qualifying = useAppSelector(selectQualifying);
   const qualifyingStatus = useAppSelector(selectQualifyingStatus);
   const qualifyingError = useAppSelector(selectQualifyingError);
@@ -31,8 +32,13 @@ export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, tem
       qualifying.QualifyingResults.forEach(result => {
         if (!constructorLogos || !constructorLogos[result.Constructor.constructorId]) dispatch(fetchConstructorLogo(result.Constructor));
       });
+      if (inputRace?.Results && inputRace?.Results.length) {
+        inputRace.Results.forEach(result => {
+          if (!constructorLogos || !constructorLogos[result.Constructor.constructorId]) dispatch(fetchConstructorLogo(result.Constructor))
+        });
+      }
     }
-  }, [qualifying, dispatch]);
+  }, [qualifying, dispatch, inputRace]);
   useEffect(() => {
     if (qualifying?.QualifyingResults && qualifying?.QualifyingResults.length && bestTimesFromEachSession) {
       const QualifyingResultsCopy = (JSON.parse(JSON.stringify(qualifying.QualifyingResults)) as ErgastQualifyingResult[]).map(result => {
@@ -49,40 +55,45 @@ export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, tem
       dispatch(setUpdatedQualifyingResults(QualifyingResultsCopy));
     }
   }, [bestTimesFromEachSession, dispatch]);
-  
-  const raceQualifyingContent = <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-    <SortableTable
-      items={limit ? qualifying?.QualifyingResults?.slice(0, limit) : qualifying?.QualifyingResults}
-      limit={limit}
-      limitComponent={<p>
-        <Link to={`/${qualifying?.season}/${qualifying?.round}/qualifying`}>See full qualifying results...</Link>
-      </p>}
-      caption={"Qualifying Results"}
-      template={template}
-      comparators={{
-        Position: SortableTableHelper.comparators.Position,
-        Driver: SortableTableHelper.comparators.Driver,
-        Constructor: SortableTableHelper.comparators.Constructor,
-        Q1: (a: ErgastQualifyingResult, b: ErgastQualifyingResult) => SortableTableHelper.comparators.LapTime(a, b, 'Q1'),
-        Q2: (a: ErgastQualifyingResult, b: ErgastQualifyingResult) => SortableTableHelper.comparators.LapTime(a, b, 'Q2'),
-        Q3: (a: ErgastQualifyingResult, b: ErgastQualifyingResult) => SortableTableHelper.comparators.LapTime(a, b, 'Q3')
-      }}
-      transformers={{
-        Position: SortableTableHelper.transformers.Position,
-        Driver: SortableTableHelper.transformers.Driver,
-        Constructor: (result: ErgastQualifyingResult) => SortableTableHelper.transformers.Constructor(result, constructorLogos),
-        Q1: (result: ErgastQualifyingResult) => SortableTableHelper.transformers.RawFromDeepValue(result, 'Q1'),
-        'Q1 Interval': (result: ErgastQualifyingResult) => <div>{result["Q1 Interval"] ? `+${TimeHelper.msToRaceTime(result["Q1 Interval"])}`: ''}</div>,
-        Q2: (result: ErgastQualifyingResult) => SortableTableHelper.transformers.RawFromDeepValue(result, 'Q2'),
-        'Q2 Interval': (result: ErgastQualifyingResult) => <div>{result["Q2 Interval"] ? `+${TimeHelper.msToRaceTime(result["Q2 Interval"])}`: ''}</div>,
-        Q3: (result: ErgastQualifyingResult) => SortableTableHelper.transformers.RawFromDeepValue(result, 'Q3'),
-        'Q3 Interval': (result: ErgastQualifyingResult) => <div>{result["Q3 Interval"] ? `+${TimeHelper.msToRaceTime(result["Q3 Interval"])}`: ''}</div>,
-      }}
-    />
-  </div>;
+
+  const raceQualifyingContent = (qualifing: ErgastRace) => {
+    return qualifying ? <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <SortableTable
+        prescribeWidths={prescribeWidths}
+        noTableHeader={noTableHeader}
+        items={limit ? qualifying?.QualifyingResults?.slice(0, limit) : qualifying?.QualifyingResults}
+        limit={limit}
+        limitComponent={<p>
+          <Link to={`/${qualifying?.season}/${qualifying?.round}/qualifying`}>See full qualifying results...</Link>
+        </p>}
+        caption={captionForTable || "Qualifying Results"}
+        template={template}
+        comparators={{
+          Position: SortableTableHelper.comparators.Position,
+          Driver: SortableTableHelper.comparators.Driver,
+          Constructor: SortableTableHelper.comparators.Constructor,
+          Q1: (a: ErgastQualifyingResult, b: ErgastQualifyingResult) => SortableTableHelper.comparators.LapTime(a, b, 'Q1'),
+          Q2: (a: ErgastQualifyingResult, b: ErgastQualifyingResult) => SortableTableHelper.comparators.LapTime(a, b, 'Q2'),
+          Q3: (a: ErgastQualifyingResult, b: ErgastQualifyingResult) => SortableTableHelper.comparators.LapTime(a, b, 'Q3')
+        }}
+        transformers={{
+          Position: SortableTableHelper.transformers.Position,
+          Driver: SortableTableHelper.transformers.Driver,
+          Constructor: (result: ErgastQualifyingResult) => SortableTableHelper.transformers.Constructor(result, constructorLogos),
+          Q1: (result: ErgastQualifyingResult) => SortableTableHelper.transformers.RawFromDeepValue(result, 'Q1'),
+          'Q1 Interval': (result: ErgastQualifyingResult) => <div>{result["Q1 Interval"] ? `+${TimeHelper.msToRaceTime(result["Q1 Interval"])}` : ''}</div>,
+          Q2: (result: ErgastQualifyingResult) => SortableTableHelper.transformers.RawFromDeepValue(result, 'Q2'),
+          'Q2 Interval': (result: ErgastQualifyingResult) => <div>{result["Q2 Interval"] ? `+${TimeHelper.msToRaceTime(result["Q2 Interval"])}` : ''}</div>,
+          Q3: (result: ErgastQualifyingResult) => SortableTableHelper.transformers.RawFromDeepValue(result, 'Q3'),
+          'Q3 Interval': (result: ErgastQualifyingResult) => <div>{result["Q3 Interval"] ? `+${TimeHelper.msToRaceTime(result["Q3 Interval"])}` : ''}</div>,
+        }}
+      />
+    </div> : <></>;
+  }
   return (
-    <div className={noClass ? '' : "page-content"} style={{ width: '99%' }}>
-      <UseReduxAsyncStatus status={qualifyingStatus} successContent={raceQualifyingContent} error={qualifyingError} loadingInterText={'Qualifying results'} />
+    <div className={noClass ? '' : "page-content"} style={{ width: '100%' }}>
+      {!inputRace && qualifying && <UseReduxAsyncStatus status={qualifyingStatus} successContent={raceQualifyingContent(qualifying)} error={qualifyingError} loadingInterText={'Qualifying results'} />}
+      {inputRace && raceQualifyingContent(inputRace)}
     </div>
   );
 };

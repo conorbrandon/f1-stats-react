@@ -16,6 +16,7 @@ import { fetchLaps, selectLaps, selectLapsError, selectLapsStatus } from "../../
 import { shuffle } from "../../helpers/GenericHelpers";
 import { UseReduxAsyncStatuses } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
 import { fetchPitStops, selectPitStops, selectPitStopsError, selectPitStopsStatus } from "../../app/pitstops/pitStopsSlice";
+import { MINIMUM_KNOWN_NUM_LAPS_SPA } from "../RaceReplayReMotion/RaceReplayReMotion";
 
 type DriverIDElement = { driverID: string, isSelected: boolean, driverColor: string, value: string, label: string };
 export type DriverIDSet = DriverIDElement[];
@@ -196,6 +197,11 @@ export const RaceLapTimes = ({ }) => {
     setDriverIDSet(driverIDSet.map(driver => { return { ...driver, isSelected: true } }));
   };
   const raceLapTimesContent = <>
+    {laps && laps.length < MINIMUM_KNOWN_NUM_LAPS_SPA && <span className="material-icons-align">
+      <span className="material-icons gold">warning</span>
+      All laps may not be available
+      <span className="material-icons gold">warning</span>
+    </span>}
     <span style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'baseline' }}>
       {!showPositions && <span className={`material-icons-align ${styles.floatRight}`}>
         <span>Use Laps:</span>

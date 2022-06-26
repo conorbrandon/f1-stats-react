@@ -80,7 +80,7 @@ export const Dashboard = ({ }) => {
           {raceSummaryCardContent}
         </div>
         <div style={{ gridColumn: 3, gridRow: 1 }}>
-          <div className="displayFlex flexDirCol" style={{ alignItems: 'end' }}>
+          <div className="displayFlex flexDirCol" style={{ alignItems: 'flex-end' }}>
             <UseReduxAsyncStatus
               status={driverStandingsStatus}
               error={driverStandingsError}

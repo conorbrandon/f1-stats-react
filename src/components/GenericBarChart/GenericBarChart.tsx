@@ -42,13 +42,13 @@ export const GenericBarChart: React.FC<GenericBarChartProps> = ({ data, chartTit
   }, [getPng]);
   return (
     <div style={{ position: 'relative' }}>
-      <button onClick={handleDownload} style={{ zIndex: 2, fontSize: '.5rem', position: 'absolute', left: '88%', top: '4%' }}>
+      <button onClick={handleDownload} style={{ zIndex: 2, fontSize: '.5rem', position: 'absolute', left: '0%', top: '4%' }}>
         {isLoading ? 'Downloading...' : 'Download Chart'}
       </button>
       <div className="displayFlex flexJustContentCenter">
         <ResponsiveContainer width={'100%'} height={400}>
           <BarChart data={data} margin={{ bottom: 60, top: 50 }} ref={ref}>
-            <text x={'50%'} y={20} fill="black" textAnchor="middle" dominantBaseline="central">
+            <text x={'50%'} y={30} fill="black" textAnchor="middle" dominantBaseline="central">
               <tspan fontSize="25">{chartTitle}</tspan>
             </text>
             <Bar dataKey="points" label={<CustomLabel />}>

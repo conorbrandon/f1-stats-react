@@ -29,6 +29,8 @@ export interface TotalTimeDriverMap {
   }
 }
 
+export const MINIMUM_KNOWN_NUM_LAPS_SPA = 44;
+
 export const RaceReplayReMotion = ({ }) => {
   const { year, round } = useParams();
 
@@ -37,7 +39,6 @@ export const RaceReplayReMotion = ({ }) => {
   const [isPaused, setPaused] = useState<boolean>(true);
   const [displayAllLaps, setDisplayAllLaps] = useState<boolean>(false);
   const THIRD_OF_AVG_NUM_LAPS = 25;
-  const MINIMUM_KNOWN_NUM_LAPS_SPA = 44;
   const [width, setWidth] = useState((document.body.clientWidth * .80) * THIRD_OF_AVG_NUM_LAPS);
   const fps = 60;
   const height = 550;
@@ -164,7 +165,7 @@ export const RaceReplayReMotion = ({ }) => {
 
       // add pitstops if they exist for this race
       if (pitstops && pitstops.length) {
-        for (let i = 0; i < pitstops.length; i++) {          
+        for (let i = 0; i < pitstops.length; i++) {
           const pitstop = pitstops[i];
           if (parseInt(pitstop.lap) >= myTotalTimeDriverMap[pitstop.driverId].pitStopStyles.length) continue;
           // set the indices of the laps they actually took a pitstop on to our pitstop indicator style
@@ -249,7 +250,11 @@ export const RaceReplayReMotion = ({ }) => {
         <span style={{ textDecoration: 'underline' }}>Legend</span><br />
         {pitstops?.length ? <><span className="material-icons-align">Pitstop: <img src={PirelliTyre} alt="tire" className={styles.tireBig} /> </span></> : <></>}
         <span>Empty grid slots indicate a Pit Lane start</span><br></br>
-        {laps && laps.length < MINIMUM_KNOWN_NUM_LAPS_SPA && <span className="material-icons-align">All laps may not be available <span className="material-icons red">warning</span></span>}
+        {laps && laps.length < MINIMUM_KNOWN_NUM_LAPS_SPA && <span className="material-icons-align">
+          <span className="material-icons gold">warning</span>
+          All laps may not be available
+          <span className="material-icons gold">warning</span>
+        </span>}
       </span>
     </div>
     <div className={styles.player}>

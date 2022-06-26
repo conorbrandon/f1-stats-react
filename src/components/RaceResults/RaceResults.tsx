@@ -15,10 +15,12 @@ export interface RaceResultsProps {
   limit?: number,
   templateParam?: string[],
   inputRace?: ErgastRace,
-  captionForTable?: string | JSX.Element
+  captionForTable?: string | JSX.Element,
+  noTableHeader?: boolean,
+  prescribeWidths?: { [templateKey: string]: string }
 }
 
-export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam, inputRace, captionForTable }) => {
+export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam, inputRace, captionForTable, noTableHeader, prescribeWidths }) => {
   const race = useAppSelector(selectResult);
   const resultStatus = useAppSelector(selectResultStatus);
   const resultError = useAppSelector(selectResultError);
@@ -46,6 +48,8 @@ export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templa
   const raceResultsContent = (race: ErgastRace) => {
     return race ? <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <SortableTable
+        prescribeWidths={prescribeWidths}
+        noTableHeader={noTableHeader}
         items={limit ? race?.Results?.slice(0, limit) : race?.Results}
         limit={limit}
         limitComponent={<p>
@@ -79,7 +83,7 @@ export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templa
       /></div> : <></>;
   };
   return (
-    <div className={noClass ? '' : "page-content"} style={{ width: '99%' }}>
+    <div className={noClass ? '' : "page-content"} style={{ width: '100%' }}>
       {!inputRace && race && <UseReduxAsyncStatus status={resultStatus} successContent={raceResultsContent(race)} error={resultError} loadingInterText={'Results'} />}
       {inputRace && raceResultsContent(inputRace)}
     </div>

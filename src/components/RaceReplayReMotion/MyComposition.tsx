@@ -89,10 +89,10 @@ export const MyComposition: React.FC<CompositionProps> = ({ totalTimeDriverMap, 
       {preparedInnerWrapper}
       {/* x axes, positions */}
       {totalTimeDriverMap && <div className={`${styles.positionAxis} ${styles.positionAxisLeft} ${styles.fivePercentTop}`}>
-        {Object.keys(totalTimeDriverMap).map((_, i) => <div key={i + 'f'}>{i + 1}</div>)}
+        {Object.keys(totalTimeDriverMap).map((_, i) => <div style={{ height: driverObjectHeight }} key={i + 'f'}>{i + 1}</div>)}
       </div>}
       {totalTimeDriverMap && <div className={`${styles.positionAxis} ${styles.positionAxisRight} ${styles.fivePercentTop}`}>
-        {Object.keys(totalTimeDriverMap).map((_, i) => <div key={i + 'g'}>{i + 1}</div>)}
+        {Object.keys(totalTimeDriverMap).map((_, i) => <div style={{ height: driverObjectHeight }} key={i + 'g'}>{i + 1}</div>)}
       </div>}
       {/* cartesian axis dotted lines */}
       {totalTimeDriverMap && driverObjectHeight && <div>
