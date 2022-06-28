@@ -136,7 +136,7 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
             </div>
             <div style={{
                   overflowY: 'auto',
-                  height: '50vh',
+                  height: '65vh',
                   width: '100%',
                   border: 'solid white 1px',
                   borderRadius: '10px',

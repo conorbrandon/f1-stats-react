@@ -1,0 +1,135 @@
+{/* {entityResults && entityQualifying ?
+        <div className="displayFlex flexDirRow" style={{ justifyContent: 'space-evenly' }}>
+          {entityResults.length &&
+            <div className="displayFlex flexDirCol flexAlignItemsCenter">
+              <div className="x-large-font">
+                {entityResults[0].season} Results:
+              </div>
+              <div style={{ width: `${.9 * 90}%` }}>
+                <SortableTableHeader
+                  template={['Position', 'Driver', 'Constructor', 'Points', 'Fastest Lap', 'Finishing Status', 'Laps']}
+                  prescribeWidths={{
+                    'Position': '10%',
+                    'Driver': '18%',
+                    'Constructor': '18%',
+                    'Points': '10%',
+                    'Fastest Lap': '17%',
+                    'Finishing Status': '17%',
+                    'Laps': '10%'
+                  }}
+                />
+              </div>
+              <div className="displayFlex flexDirCol flexAlignItemsCenter"
+                style={{
+                  overflowY: 'auto',
+                  height: '50vh',
+                  width: '90%',
+                  border: 'solid white 1px',
+                  borderRadius: '10px'
+                }}>
+                {entityResults.map(race => {
+                  return <div style={{ width: '90%', margin: '1rem' }}>
+                    <RaceResults
+                      noTableHeader
+                      captionForTable={<>
+                        <Link to={`/${race.season}/${race.round}`}>
+                          <span className="displayFlex flexDirCol flexAlignItemsCenter">
+                            <span className={`x-large-font ${styles.smallResultHeaderLink}`}>
+                              <span className="material-icons-align" style={{ width: '50%' }}>
+                                {race.raceName}
+                                <img src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
+                              </span>
+                              <span className="material-icons-align large-font">
+                                Go to race
+                                <span className="material-icons">
+                                  logout
+                                </span>
+                              </span>
+                            </span>
+                          </span>
+                        </Link>
+                      </>}
+                      noClass
+                      templateParam={['Position', 'Driver', 'Constructor', 'Points', 'Fastest Lap', 'Finishing Status', 'Laps']}
+                      inputRace={race}
+                      prescribeWidths={{
+                        'Position': '10%',
+                        'Driver': '18%',
+                        'Constructor': '18%',
+                        'Points': '10%',
+                        'Fastest Lap': '17%',
+                        'Finishing Status': '17%',
+                        'Laps': '10%'
+                      }}
+                    />
+                  </div>;
+                })}
+              </div>
+            </div>}
+          {entityQualifying.length &&
+            <div className="displayFlex flexDirCol flexAlignItemsCenter">
+              <div className="x-large-font">
+                {entityQualifying[0].season} Qualifying:
+              </div>
+              <div style={{ width: `${.9 * 90}%` }}>
+                <SortableTableHeader
+                  template={['Position', 'Driver', 'Constructor', 'Q3', 'Q2', 'Q1']}
+                  prescribeWidths={{
+                    'Position': '10%',
+                    'Driver': '20%',
+                    'Constructor': '20%',
+                    'Q1': '17%',
+                    'Q2 Lap': '17%',
+                    'Q3': '15%'
+                  }}
+                />
+              </div>
+              <div className="displayFlex flexDirCol flexAlignItemsCenter"
+                style={{
+                  overflowY: 'auto',
+                  height: '50vh',
+                  width: '90%',
+                  border: 'solid white 1px',
+                  borderRadius: '10px'
+                }}>
+                {entityQualifying.map(race => {
+                  return <div style={{ width: '90%', margin: '1rem' }}>
+                    <RaceQualifying
+                      noTableHeader
+                      captionForTable={<>
+                        <Link to={`/${race.season}/${race.round}`}>
+                          <span className="displayFlex flexDirCol flexAlignItemsCenter">
+                            <span className={`x-large-font ${styles.smallResultHeaderLink}`}>
+                              <span className="material-icons-align" style={{ width: '50%' }}>
+                                {race.raceName}
+                                <img src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
+                              </span>
+                              <span className="material-icons-align large-font">
+                                Go to race
+                                <span className="material-icons">
+                                  logout
+                                </span>
+                              </span>
+                            </span>
+                          </span>
+                        </Link>
+                      </>}
+                      noClass
+                      templateParam={['Position', 'Driver', 'Constructor', 'Q3', 'Q2', 'Q1']}
+                      inputRace={race}
+                      prescribeWidths={{
+                        'Position': '10%',
+                        'Driver': '20%',
+                        'Constructor': '20%',
+                        'Q1': '17%',
+                        'Q2 Lap': '17%',
+                        'Q3': '15%'
+                      }}
+                    />
+                  </div>;
+                })}
+              </div>
+            </div>}
+        </div>
+        : <LoadingSpinner />
+      } */}

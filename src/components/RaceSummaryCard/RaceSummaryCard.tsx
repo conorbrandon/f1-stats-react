@@ -72,7 +72,7 @@ export const RaceSummaryCard: React.FC<RaceSummaryCardProps> = ({ race, horizont
               .filter(timeObject => timeObject && timeObject.session)
               .sort((a: any, b: any) => new Date(b.date + 'T' + b.time).valueOf() - new Date(a.date + 'T' + a.time).valueOf())
               .map(timeObject => timeObject ?
-                <RaceTimesContainer open={horizontalLayout || false} useMyTime={useMyTime} key={timeObject.session} sessionText={timeObject.session} date={timeObject.date} time={timeObject.time} timeZone={timeZone} />
+                <RaceTimesContainer open={timeObject.session === 'Sprint' || timeObject.session === 'Qualifying' || horizontalLayout || false} useMyTime={useMyTime} key={timeObject.session} sessionText={timeObject.session} date={timeObject.date} time={timeObject.time} timeZone={timeZone} />
                 : <></>
               )
           }
