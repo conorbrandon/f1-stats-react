@@ -10,6 +10,7 @@ interface DriverState {
   driver: ErgastDriver | undefined,
   seasons: ErgastSeason[],
   results: ErgastRace[] | undefined,
+  qualifying: ErgastRace[] | undefined,
   status: ReduxAsyncStatusType,
   error: ReduxAsyncErrorType
 };
@@ -19,6 +20,7 @@ const initialState: DriverState = {
   driver: undefined,
   seasons: [],
   results: undefined,
+  qualifying: undefined,
   status: 'idle',
   error: undefined
 };
@@ -27,7 +29,8 @@ export const fetchDriver = createAsyncThunk('driver/fetchDriver', async (driverI
   const response = await ErgastAPI.getDriver(driverID);
   const seasons = await ErgastAPI.getDriverSeasons(driverID);
   const results = seasons[seasons.length - 1] ? await ErgastAPI.getDriverResults(seasons[seasons.length - 1].season, driverID) : [];
-  return { response, seasons, results };
+  const qualifying = seasons[seasons.length - 1] ? await ErgastAPI.getDriverQualifying(seasons[seasons.length - 1].season, driverID) : [];
+  return { response, seasons, results, qualifying };
 });
 
 export const driverSlice = createSlice({
@@ -36,6 +39,9 @@ export const driverSlice = createSlice({
   reducers: {
     setNewDriverResults: (state, action: PayloadAction<ErgastRace[] | undefined>) => {
       state.results = action.payload;
+    },
+    setNewDriverQualifying: (state, action: PayloadAction<ErgastRace[] | undefined>) => {
+      state.qualifying = action.payload;
     }
   },
   extraReducers(builder) {
@@ -48,6 +54,7 @@ export const driverSlice = createSlice({
         state.driver = action.payload.response;
         state.seasons = action.payload.seasons;
         state.results = action.payload.results;
+        state.qualifying = action.payload.qualifying;
       })
       .addCase(fetchDriver.rejected, (state, action) => {
         state.status = 'failed';
@@ -56,11 +63,12 @@ export const driverSlice = createSlice({
   }
 });
 
-export const { setNewDriverResults } = driverSlice.actions;
+export const { setNewDriverResults, setNewDriverQualifying } = driverSlice.actions;
 
 export const selectDriver = (state: RootState) => state.driver.driver;
 export const selectDriverSeasons = (state: RootState) => state.driver.seasons;
 export const selectDriverResults = (state: RootState) => state.driver.results;
+export const selectDriverQualifying = (state: RootState) => state.driver.qualifying;
 export const selectDriverStatus = (state: RootState) => state.driver.status;
 export const selectDriverError = (state: RootState) => state.driver.error;
 export const selectDriverWhole = (state: RootState) => state.driver;

@@ -56,7 +56,7 @@ export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, tem
     }
   }, [bestTimesFromEachSession, dispatch]);
 
-  const raceQualifyingContent = (qualifing: ErgastRace) => {
+  const raceQualifyingContent = (qualifying: ErgastRace) => {
     return qualifying ? <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <SortableTable
         prescribeWidths={prescribeWidths}

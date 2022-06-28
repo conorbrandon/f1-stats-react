@@ -10,6 +10,7 @@ interface ConstructorState {
   constructor: ErgastConstructor | undefined,
   seasons: ErgastSeason[],
   results: ErgastRace[] | undefined,
+  qualifying: ErgastRace[] | undefined,
   status: ReduxAsyncStatusType,
   error: ReduxAsyncErrorType
 };
@@ -19,6 +20,7 @@ const initialState: ConstructorState = {
   constructor: undefined,
   seasons: [],
   results: undefined,
+  qualifying: undefined,
   status: 'idle',
   error: undefined
 };
@@ -27,7 +29,8 @@ export const fetchConstructor = createAsyncThunk('constructor/fetchConstructor',
   const response = await ErgastAPI.getConstructor(constructorID);
   const seasons = await ErgastAPI.getConstructorSeasons(constructorID);
   const results = seasons[seasons.length - 1] ? await ErgastAPI.getConstructorResults(seasons[seasons.length - 1].season, constructorID) : [];
-  return { response, seasons, results };
+  const qualifying = seasons[seasons.length - 1] ? await ErgastAPI.getConstructorQualifying(seasons[seasons.length - 1].season, constructorID) : [];
+  return { response, seasons, results, qualifying };
 });
 
 export const constructorSlice = createSlice({
@@ -36,6 +39,9 @@ export const constructorSlice = createSlice({
   reducers: {
     setNewConstructorResults: (state, action: PayloadAction<ErgastRace[]>) => {
       state.results = action.payload;
+    },
+    setNewConstructorQualifying: (state, action: PayloadAction<ErgastRace[]>) => {
+      state.qualifying = action.payload;
     }
   },
   extraReducers(builder) {
@@ -48,6 +54,7 @@ export const constructorSlice = createSlice({
         state.constructor = action.payload.response;
         state.seasons = action.payload.seasons;
         state.results = action.payload.results;
+        state.qualifying = action.payload.qualifying;
       })
       .addCase(fetchConstructor.rejected, (state, action) => {
         state.status = 'failed';
@@ -56,11 +63,12 @@ export const constructorSlice = createSlice({
   }
 });
 
-export const { setNewConstructorResults } = constructorSlice.actions;
+export const { setNewConstructorResults, setNewConstructorQualifying } = constructorSlice.actions;
 
 export const selectConstructor = (state: RootState) => state.myConstructor.constructor
 export const selectConstructorSeasons = (state: RootState) => state.myConstructor.seasons;
 export const selectConstructorResults = (state: RootState) => state.myConstructor.results;
+export const selectConstructorQualifying = (state: RootState) => state.myConstructor.qualifying;
 export const selectConstructorStatus = (state: RootState) => state.myConstructor.status;
 export const selectConstructorError = (state: RootState) => state.myConstructor.error;
 export const selectConstructorWhole = (state: RootState) => state.myConstructor;

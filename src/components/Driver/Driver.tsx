@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { ErgastAPI } from "../../api/ErgastAPI";
-import { setNewDriverResults, fetchDriver, selectDriver, selectDriverError, selectDriverResults, selectDriverSeasons, selectDriverStatus } from "../../app/driver/driverSlice";
+import { setNewDriverResults, fetchDriver, selectDriver, selectDriverError, selectDriverResults, selectDriverSeasons, selectDriverStatus, setNewDriverQualifying, selectDriverQualifying } from "../../app/driver/driverSlice";
 import { useAppSelector } from "../../app/hooks";
 import { EntityProfile } from "../EntityProfile/EntityProfile";
 import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
@@ -12,6 +12,7 @@ export const Driver = ({ }) => {
   const driver = useAppSelector(selectDriver);
   const driverSeasons = useAppSelector(selectDriverSeasons);
   const driverResults = useAppSelector(selectDriverResults);
+  const driverQualifying = useAppSelector(selectDriverQualifying);
   const driverStatus = useAppSelector(selectDriverStatus);
   const driverError = useAppSelector(selectDriverError);
 
@@ -37,7 +38,10 @@ export const Driver = ({ }) => {
         entitySeasons={driverSeasons} 
         entityResults={driverResults}
         ergastResultsFn={ErgastAPI.getDriverResults}
-        setNewResultsReducerAction={setNewDriverResults} />
+        setNewResultsReducerAction={setNewDriverResults}
+        entityQualifying={driverQualifying}
+        ergastQualifyingFn={ErgastAPI.getDriverQualifying}
+        setNewQualifyingReducerAction={setNewDriverQualifying} />
     </>
   );
 };

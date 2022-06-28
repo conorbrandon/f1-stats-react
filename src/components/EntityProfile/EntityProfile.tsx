@@ -9,6 +9,7 @@ import { ErgastDriver } from "../../model/ErgastDriver";
 import { ErgastRace } from "../../model/ErgastRace";
 import { ErgastSeason } from "../../model/ErgastSeason";
 import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner";
+import { RaceQualifying } from "../RaceQualifying/RaceQualifying";
 import { RaceResults } from "../RaceResults/RaceResults";
 import { SortableTableHeader } from "../SortableTable/SortableTable";
 import styles from "./EntityProfile.module.css";
@@ -18,12 +19,16 @@ interface EntityProfileProps {
   entityID: string | undefined,
   entitySeasons: ErgastSeason[],
   entityResults: ErgastRace[] | undefined,
+  entityQualifying: ErgastRace[] | undefined,
   ergastResultsFn: (year: string, id: string) => Promise<ErgastRace[]>,
   setNewResultsReducerAction: ActionCreatorWithOptionalPayload<any, string>,
-  constructorLogos?: ConstructorLogoType
+  ergastQualifyingFn: (year: string, id: string) => Promise<ErgastRace[]>,
+  setNewQualifyingReducerAction: ActionCreatorWithOptionalPayload<any, string>,
+  constructorLogos?: ConstructorLogoType,
+  isConstructorProfile?: boolean
 }
 
-export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, entitySeasons, entityResults, ergastResultsFn, setNewResultsReducerAction, constructorLogos }) => {
+export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, entitySeasons, entityResults, ergastResultsFn, setNewResultsReducerAction, entityQualifying, ergastQualifyingFn, setNewQualifyingReducerAction, constructorLogos, isConstructorProfile }) => {
   const dispatch = useAppDispatch();
   const [resultsYear, setResultsYear] = useState<string>();
 
@@ -32,6 +37,9 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
     dispatch(setNewResultsReducerAction(undefined));
     ergastResultsFn(year, entityID || '')
       .then((response: ErgastRace[]) => dispatch(setNewResultsReducerAction(response)));
+    dispatch(setNewQualifyingReducerAction(undefined));
+    ergastQualifyingFn(year, entityID || '')
+      .then((response: ErgastRace[]) => dispatch(setNewQualifyingReducerAction(response)));
   };
   useEffect(() => {
     if (entityResults && entityResults.length) {
@@ -41,7 +49,7 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
 
   const entityBodyContent = <>{entity &&
     <div>
-      <div className="displayFlex flexDirRow flexAlignItemsCenter" style={{ justifyContent: 'space-evenly', marginBottom: '3rem' }}>
+      <div className="displayFlex flexDirRow flexAlignItemsCenter" style={{ justifyContent: 'space-evenly', marginBottom: '1rem' }}>
         {entityID && constructorLogos && constructorLogos[entityID] && <img className="white-bg" src={constructorLogos[entityID]} alt={`${entityID} logo`} />}
         <div>Nationality: {entity.nationality}</div>
         <img src={FlagHelper.getFlagFromDenonym(entity.nationality)} alt={`${entity.nationality} flag`} />
@@ -86,74 +94,114 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
           </div>
         </div>
       </div>
-      {entityResults ?
-        <>
-          {entityResults.length && <div className="displayFlex flexDirCol flexAlignItemsCenter">
-            <div className="x-large-font">
-              {entityResults[0].season} Results:
+      {entityResults && entityQualifying ?
+        <div className="displayFlex flexDirCol flexAlignItemsCenter" style={{ width: '100%' }}>
+          <div className="displayFlex flexDirCol flexAlignItemsCenter" style={{ width: '90%' }}>
+            <div className="displayFlex flexDirRow" style={{ justifyContent: 'space-between', width: '100%' }}>
+              {entityResults.length &&
+                <div className="displayFlex flexDirCol flexAlignItemsCenter" style={{ width: '50%' }}>
+                  <div className="x-large-font">
+                    {entityResults[0].season} Results:
+                  </div>
+                  <SortableTableHeader
+                    template={['Fastest Lap', 'Finishing Status', 'Laps', 'Points', 'Position', 'Driver']}
+                    prescribeWidths={{
+                      'Fastest Lap': '20%',
+                      'Finishing Status': '20%',
+                      'Laps': '10%',
+                      'Points': '10%',
+                      'Position': '10%',
+                      'Driver': '30%'
+                    }}
+                  />
+                </div>
+              }
+              {entityQualifying.length &&
+                <div className="displayFlex flexDirCol flexAlignItemsCenter" style={{ width: '50%' }}>
+                  <div className="x-large-font">
+                    {entityQualifying[0].season} Qualifying:
+                  </div>
+                  <SortableTableHeader
+                    template={[`${isConstructorProfile ? 'Driver': 'Constructor'}`, 'Position', 'Q3', 'Q2', 'Q1']}
+                    prescribeWidths={{
+                      [`${isConstructorProfile ? 'Driver': 'Constructor'}`]: '30%',
+                      'Position': '10%',
+                      'Q1': '20%',
+                      'Q2': '20%',
+                      'Q3': '20%'
+                    }}
+                  />
+                </div>
+              }
             </div>
-            <div style={{ width: `${.9 * 90}%` }}>
-              <SortableTableHeader
-                template={['Position', 'Driver', 'Constructor', 'Points', 'Fastest Lap', 'Finishing Status', 'Laps']}
-                prescribeWidths={{
-                  'Position': '10%',
-                  'Driver': '18%',
-                  'Constructor': '18%',
-                  'Points': '10%',
-                  'Fastest Lap': '17%',
-                  'Finishing Status': '17%',
-                  'Laps': '10%'
-                }}
-              />
-            </div>
-            <div className="displayFlex flexDirCol flexAlignItemsCenter"
-              style={{
-                overflowY: 'auto',
-                height: '50vh',
-                width: '90%',
-                border: 'solid white 1px',
-                borderRadius: '10px'
-              }}>
-              {entityResults.map(race => {
-                return <div style={{ width: '90%', margin: '1rem' }}>
-                  <RaceResults
-                    noTableHeader
-                    captionForTable={<>
-                      <Link to={`/${race.season}/${race.round}`}>
-                        <span className="displayFlex flexDirCol flexAlignItemsCenter">
-                          <span className={`x-large-font ${styles.smallResultHeaderLink}`}>
-                            <span className="material-icons-align" style={{ width: '50%' }}>
-                              {race.raceName}
-                              <img src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
-                            </span>
-                            <span className="material-icons-align large-font">
-                              Go to race
-                              <span className="material-icons">
-                                logout
-                              </span>
+            <div style={{
+                  overflowY: 'auto',
+                  height: '50vh',
+                  width: '100%',
+                  border: 'solid white 1px',
+                  borderRadius: '10px',
+                  padding: '1rem'
+                }}>
+              {(entityResults.length >= entityQualifying.length ? entityResults : entityQualifying).map((_, i) => {
+                return (
+                  <div style={{ width: '100%', marginBottom: '1rem' }}>
+                    <div style={{ width: '100%' }}>
+                      <Link to={`/${(entityResults[i] || entityQualifying[i]).season}/${(entityResults[i] || entityQualifying[i]).round}`}>
+                        <span className={`x-large-font displayFlex flexDirRow`} style={{ justifyContent: 'space-between' }}>
+                          <span className="material-icons-align">
+                            {i + 1}. {(entityResults[i] || entityQualifying[i]).raceName}
+                            <img style={{ width: '10%' }} src={FlagHelper.getFlag((entityResults[i] || entityQualifying[i]).Circuit.Location.country)} alt={`${(entityResults[i] || entityQualifying[i]).Circuit.Location.country} flag`} />
+                          </span>
+                          <span className="material-icons-align large-font">
+                            Go to race
+                            <span className="material-icons">
+                              logout
                             </span>
                           </span>
                         </span>
                       </Link>
-                    </>}
-                    noClass
-                    templateParam={['Position', 'Driver', 'Constructor', 'Points', 'Fastest Lap', 'Finishing Status', 'Laps']}
-                    inputRace={race}
-                    prescribeWidths={{
-                      'Position': '10%',
-                      'Driver': '18%',
-                      'Constructor': '18%',
-                      'Points': '10%',
-                      'Fastest Lap': '17%',
-                      'Finishing Status': '17%',
-                      'Laps': '10%'
-                    }}
-                  />
-                </div>;
+                    </div>
+                    <div style={{ width: '100%', justifyContent: 'space-between' }} className={`x-large-font displayFlex flexDirRow small-font`}>
+                      <div style={{ width: '50%' }}>
+                        <RaceResults
+                          noTableHeader
+                          noClass
+                          captionForTable={<></>}
+                          templateParam={['Fastest Lap', 'Finishing Status', 'Laps', 'Points', 'Position', 'Driver']}
+                          inputRace={entityResults[i]}
+                          prescribeWidths={{
+                            'Fastest Lap': '20%',
+                            'Finishing Status': '20%',
+                            'Laps': '10%',
+                            'Points': '10%',
+                            'Position': '10%',
+                            'Driver': '30%'
+                          }}
+                        />
+                      </div>
+                      <div style={{ width: '50%' }}>
+                        <RaceQualifying
+                          noTableHeader
+                          noClass
+                          captionForTable={<></>}
+                          templateParam={[`${isConstructorProfile ? 'Driver': 'Constructor'}`, 'Position', 'Q3', 'Q2', 'Q1']}
+                          inputRace={entityQualifying[i]}
+                          prescribeWidths={{
+                            [`${isConstructorProfile ? 'Driver': 'Constructor'}`]: '30%',
+                            'Position': '10%',
+                            'Q1': '20%',
+                            'Q2': '20%',
+                            'Q3': '20%'
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
               })}
             </div>
-          </div>}
-        </>
+          </div>
+        </div>
         : <LoadingSpinner />
       }
     </div>

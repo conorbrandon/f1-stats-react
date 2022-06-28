@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ErgastAPI } from "../../api/ErgastAPI";
-import { setNewConstructorResults, fetchConstructor, selectConstructor, selectConstructorError, selectConstructorResults, selectConstructorSeasons, selectConstructorStatus } from "../../app/constructor/constructorSlice";
+import { setNewConstructorResults, fetchConstructor, selectConstructor, selectConstructorError, selectConstructorResults, selectConstructorSeasons, selectConstructorStatus, selectConstructorQualifying, setNewConstructorQualifying } from "../../app/constructor/constructorSlice";
 import { fetchConstructorLogo, selectConstructorLogos } from "../../app/constructorLogos/constructorLogosSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { EntityProfile } from "../EntityProfile/EntityProfile";
@@ -15,6 +15,7 @@ export const Constructor = ({ }) => {
   const constructor = useAppSelector(selectConstructor);
   const constructorSeasons = useAppSelector(selectConstructorSeasons);
   const constructorResults = useAppSelector(selectConstructorResults);
+  const constructorQualifying = useAppSelector(selectConstructorQualifying);
   const constructorStatus = useAppSelector(selectConstructorStatus);
   const constructorError = useAppSelector(selectConstructorError);
 
@@ -40,7 +41,11 @@ export const Constructor = ({ }) => {
         entityResults={constructorResults}
         ergastResultsFn={ErgastAPI.getConstructorResults}
         setNewResultsReducerAction={setNewConstructorResults}
-        constructorLogos={constructorLogos} />
+        entityQualifying={constructorQualifying}
+        ergastQualifyingFn={ErgastAPI.getConstructorQualifying}
+        setNewQualifyingReducerAction={setNewConstructorQualifying}
+        constructorLogos={constructorLogos}
+        isConstructorProfile={true} />
     </>
   );
 };

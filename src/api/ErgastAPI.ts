@@ -10,7 +10,7 @@ import { EmptyDriverStandingsResponse, MockConstructorStandings2022, MockDrivers
 import { getTimeZoneFromLatLng } from "./TimeZones";
 import { ErgastConstructor } from "../model/ErgastConstructor";
 import { ErgastConstructorsResponse } from "../model/ErgastConstructorsResponse";
-import { EmptySeasonsResponse, MockConstructorResultsResponse2022, MockConstructorResultsResponse2021, MockConstructorsSeasonsResponse, MockDriversSeasonsResponse, MockDriversResultsResponse2017, MockDriversResultsResponse2016 } from "./MockBySeason";
+import { EmptySeasonsResponse, MockConstructorResultsResponse2022, MockConstructorResultsResponse2021, MockConstructorsSeasonsResponse, MockDriversSeasonsResponse, MockDriversResultsResponse2017, MockDriversResultsResponse2016, MockDriversQualifyingResponse2017, MockConstructorQualifyingResponse2022, MockConstructorQualifyingResponse2021 } from "./MockBySeason";
 import { ErgastSeasonResponse } from "../model/ErgastSeasonResponse";
 import { ErgastSeason } from "../model/ErgastSeason";
 
@@ -210,6 +210,24 @@ export class ErgastAPI {
     ergastCache.race[url] = json;
     return json.MRData.RaceTable.Races;
   }
+  static async getDriverQualifying(year: string, driverID: string): Promise<ErgastRace[]> {
+    if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
+      await sleep(1000);
+      if (!driverID) return [];
+      if (driverID === "massa" && year === "2017") return MockDriversQualifyingResponse2017.MRData.RaceTable.Races;
+      else if (driverID === "massa" && year === "2016") return MockDriversResultsResponse2016.MRData.RaceTable.Races;
+      else return [];
+    }
+    const url = `${baseUrl}/${year}/drivers/${driverID}/qualifying.json?limit=100`;
+    if (ergastCache.race[url]) {
+      console.log(`getting ${url} from cache`);
+      return ergastCache.race[url].MRData.RaceTable.Races;
+    }
+    const data: Response = await fetch(url);
+    const json: ErgastRaceResponse = await data.json();
+    ergastCache.race[url] = json;
+    return json.MRData.RaceTable.Races;
+  }
   static async getConstructor(constructorID: string | undefined): Promise<ErgastConstructor> {
     if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
       await sleep(1000);
@@ -253,6 +271,24 @@ export class ErgastAPI {
       else return [];
     }
     const url = `${baseUrl}/${year}/constructors/${constructorID}/results.json?limit=1000`;
+    if (ergastCache.race[url]) {
+      console.log(`getting ${url} from cache`);
+      return ergastCache.race[url].MRData.RaceTable.Races;
+    }
+    const data: Response = await fetch(url);
+    const json: ErgastRaceResponse = await data.json();
+    ergastCache.race[url] = json;
+    return json.MRData.RaceTable.Races;
+  }
+  static async getConstructorQualifying(year: string, constructorID: string): Promise<ErgastRace[]> {
+    if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
+      await sleep(1000);
+      if (!constructorID) return [];
+      if (constructorID === "ferrari" && year === "2022") return MockConstructorQualifyingResponse2022.MRData.RaceTable.Races;
+      else if (constructorID === "ferrari" && year === "2021") return MockConstructorQualifyingResponse2021.MRData.RaceTable.Races;
+      else return [];
+    }
+    const url = `${baseUrl}/${year}/constructors/${constructorID}/qualifying.json?limit=1000`;
     if (ergastCache.race[url]) {
       console.log(`getting ${url} from cache`);
       return ergastCache.race[url].MRData.RaceTable.Races;
