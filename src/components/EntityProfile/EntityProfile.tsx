@@ -65,14 +65,14 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
             <div className="displayFlex flexDirCol">
               {entitySeasons.slice().reverse().map((season, i) =>
                 <span key={season.season} style={{ justifyContent: 'space-between', display: 'flex' }}>
-                  {season.season}
-                  <span>
+                  <span style={{ width: '10%' }}>{season.season}</span>
+                  <span className="displayFlex flexDirRow flexJustContentCenter" style={{ width: '40%' }}>
                     <button className={!resultsYear && i == 0 ? styles.activeResultsYear : (resultsYear === season.season ? styles.activeResultsYear : '')}
                       onClick={() => handleChangeResultsYear(season.season)}>
                       {!resultsYear && i == 0 ? 'Showing' : (resultsYear === season.season ? 'Showing' : '')} Results
                     </button>
                   </span>
-                  <Link to={`/${season.season}`}>
+                  <Link style={{ width: '25%' }} to={`/${season.season}`}>
                     <span className="material-icons-align">
                       Schedule
                       <span className="material-icons">
@@ -80,7 +80,7 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
                       </span>
                     </span>
                   </Link>
-                  <Link to={`/${season.season}/standings`}>
+                  <Link style={{ width: '25%' }} to={`/${season.season}/standings`}>
                     <span className="material-icons-align">
                       Standings
                       <span className="material-icons">
