@@ -4117,7 +4117,7 @@ export const MockDriverResponse: ErgastDriverResponse = {
 };
 export const EmptyDriverResponse: ErgastDriverResponse = { "MRData": { "DriverTable": { "driverId": "", "Drivers": [] } } };
 
-export const MockDriversReponse: ErgastDriverResponse = {
+export const MockDriversResponse: ErgastDriverResponse = {
   "MRData": {
     "xmlns": "http://ergast.com/mrd/1.5",
     "series": "f1",
@@ -4339,6 +4339,87 @@ export const MockDriversReponse: ErgastDriverResponse = {
     }
   }
 };
+export const MockConstructorsResponse: ErgastConstructorsResponse = {
+  "MRData": {
+      "xmlns": "http://ergast.com/mrd/1.5",
+      "series": "f1",
+      "url": "http://ergast.com/api/f1/2008/constructors.json",
+      "limit": "1000",
+      "offset": "0",
+      "total": "11",
+      "ConstructorTable": {
+          "season": "2008",
+          "Constructors": [
+              {
+                  "constructorId": "bmw_sauber",
+                  "url": "http://en.wikipedia.org/wiki/BMW_Sauber",
+                  "name": "BMW Sauber",
+                  "nationality": "German"
+              },
+              {
+                  "constructorId": "ferrari",
+                  "url": "http://en.wikipedia.org/wiki/Scuderia_Ferrari",
+                  "name": "Ferrari",
+                  "nationality": "Italian"
+              },
+              {
+                  "constructorId": "force_india",
+                  "url": "http://en.wikipedia.org/wiki/Racing_Point_Force_India",
+                  "name": "Force India",
+                  "nationality": "Indian"
+              },
+              {
+                  "constructorId": "honda",
+                  "url": "http://en.wikipedia.org/wiki/Honda_Racing_F1",
+                  "name": "Honda",
+                  "nationality": "Japanese"
+              },
+              {
+                  "constructorId": "mclaren",
+                  "url": "http://en.wikipedia.org/wiki/McLaren",
+                  "name": "McLaren",
+                  "nationality": "British"
+              },
+              {
+                  "constructorId": "red_bull",
+                  "url": "http://en.wikipedia.org/wiki/Red_Bull_Racing",
+                  "name": "Red Bull",
+                  "nationality": "Austrian"
+              },
+              {
+                  "constructorId": "renault",
+                  "url": "http://en.wikipedia.org/wiki/Renault_in_Formula_One",
+                  "name": "Renault",
+                  "nationality": "French"
+              },
+              {
+                  "constructorId": "super_aguri",
+                  "url": "http://en.wikipedia.org/wiki/Super_Aguri_F1",
+                  "name": "Super Aguri",
+                  "nationality": "Japanese"
+              },
+              {
+                  "constructorId": "toro_rosso",
+                  "url": "http://en.wikipedia.org/wiki/Scuderia_Toro_Rosso",
+                  "name": "Toro Rosso",
+                  "nationality": "Italian"
+              },
+              {
+                  "constructorId": "toyota",
+                  "url": "http://en.wikipedia.org/wiki/Toyota_Racing",
+                  "name": "Toyota",
+                  "nationality": "Japanese"
+              },
+              {
+                  "constructorId": "williams",
+                  "url": "http://en.wikipedia.org/wiki/Williams_Grand_Prix_Engineering",
+                  "name": "Williams",
+                  "nationality": "British"
+              }
+          ]
+      }
+  }
+};
 
 export const MockNextRace: ErgastRaceResponse = {
   "MRData": {
@@ -4531,7 +4612,7 @@ export const MockRace2022: ErgastRaceResponse = {
   }
 };
 
-export const MockConstructorsResponse: ErgastConstructorsResponse = {
+export const MockConstructorResponse: ErgastConstructorsResponse = {
   "MRData": {
       "xmlns": "http://ergast.com/mrd/1.5",
       "series": "f1",

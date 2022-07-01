@@ -20,8 +20,13 @@ const initialState: DriversState = {
 };
 
 export const fetchDrivers = createAsyncThunk('drivers/fetchDrivers', async (year: GetPayloadAction) => {
-  const response = await ErgastAPI.getDriversByYear(year);
-  return response;
+  if (year !== 'all') {
+    const response = await ErgastAPI.getDriversByYear(year);
+    return response;
+  } else {
+    const response = await ErgastAPI.getAllF1Drivers();
+    return response;
+  }
 });
 
 export const driversSlice = createSlice({

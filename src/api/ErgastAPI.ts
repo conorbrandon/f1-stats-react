@@ -5,7 +5,7 @@ import { ErgastRaceResponse } from "../model/ErgastRaceResponse";
 import { ErgastStandingList } from "../model/ErgastStandingList";
 import { ErgastStandingsResponse } from "../model/ErgastStandingsResponse";
 import { MockLapsResponse, MockLapsResponse2022, MockPitStopResponse2022, MockResultsResponse2022 } from "./MockLapsResponse";
-import { EmptyScheduleResponse, MockResultsResponse, MockScheduleResponse, MockQualifyingResponse, MockDriverResponse, EmptyDriverResponse, MockDriversReponse, MockScheduleResponse_2008, MockQualifyingResponse2022, MockScheduleResponse2022, MockNextRace, MockRace2022, MockRace, MockConstructorsResponse, EmptyConstructorsResponse, MockLastRace, MockCurrentLastResultResponse } from "./MockResponse";
+import { EmptyScheduleResponse, MockResultsResponse, MockScheduleResponse, MockQualifyingResponse, MockDriverResponse, EmptyDriverResponse, MockDriversResponse, MockScheduleResponse_2008, MockQualifyingResponse2022, MockScheduleResponse2022, MockNextRace, MockRace2022, MockRace, MockConstructorResponse, EmptyConstructorsResponse, MockLastRace, MockCurrentLastResultResponse, MockConstructorsResponse } from "./MockResponse";
 import { EmptyDriverStandingsResponse, MockConstructorStandings2022, MockDriversStandings2022 } from "./MockStandingsResponse";
 import { getTimeZoneFromLatLng } from "./TimeZones";
 import { ErgastConstructor } from "../model/ErgastConstructor";
@@ -13,6 +13,7 @@ import { ErgastConstructorsResponse } from "../model/ErgastConstructorsResponse"
 import { EmptySeasonsResponse, MockConstructorResultsResponse2022, MockConstructorResultsResponse2021, MockConstructorsSeasonsResponse, MockDriversSeasonsResponse, MockDriversResultsResponse2017, MockDriversResultsResponse2016, MockDriversQualifyingResponse2017, MockConstructorQualifyingResponse2022, MockConstructorQualifyingResponse2021 } from "./MockBySeason";
 import { ErgastSeasonResponse } from "../model/ErgastSeasonResponse";
 import { ErgastSeason } from "../model/ErgastSeason";
+import { MockAllFormula1ConstructorsResponse, MockAllFormula1DriversResponse } from "./MockAllTimeResponse";
 
 const baseUrl = 'https://ergast.com/api/f1';  // URL to web api
 export const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
@@ -232,7 +233,7 @@ export class ErgastAPI {
     if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
       await sleep(1000);
       if (!constructorID) return EmptyConstructorsResponse.MRData.ConstructorTable.Constructors[0];
-      if (constructorID === "ferrari") return MockConstructorsResponse.MRData.ConstructorTable.Constructors[0];
+      if (constructorID === "ferrari") return MockConstructorResponse.MRData.ConstructorTable.Constructors[0];
       else return EmptyConstructorsResponse.MRData.ConstructorTable.Constructors[0];
     }
     const url = `${baseUrl}/constructors/${constructorID}.json`;
@@ -298,10 +299,25 @@ export class ErgastAPI {
     ergastCache.race[url] = json;
     return json.MRData.RaceTable.Races;
   }
+  static async getAllF1Drivers(): Promise<ErgastDriver[]> {
+    if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
+      await sleep(1000);
+      return MockAllFormula1DriversResponse.MRData.DriverTable.Drivers;
+    }
+    const url = `${baseUrl}/drivers.json?limit=1000`;
+    if (ergastCache.driver[url]) {
+      console.log(`getting ${url} from cache`);
+      return ergastCache.driver[url].MRData.DriverTable.Drivers;
+    }
+    const data: Response = await fetch(url);
+    const json: ErgastDriverResponse = await data.json();
+    ergastCache.driver[url] = json;
+    return json.MRData.DriverTable.Drivers;
+  }
   static async getDriversByYear(year: string): Promise<ErgastDriver[]> {
     if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
       await sleep(1000);
-      if (year === "2008") return MockDriversReponse.MRData.DriverTable.Drivers;
+      if (year === "2008") return MockDriversResponse.MRData.DriverTable.Drivers;
       else return EmptyDriverResponse.MRData.DriverTable.Drivers;
     }
     const url = `${baseUrl}/${year}/drivers.json?limit=100`;
@@ -313,6 +329,37 @@ export class ErgastAPI {
     const json: ErgastDriverResponse = await data.json();
     ergastCache.driver[url] = json;
     return json.MRData.DriverTable.Drivers;
+  }
+  static async getAllF1Constructors(): Promise<ErgastConstructor[]> {
+    if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
+      await sleep(1000);
+      return MockAllFormula1ConstructorsResponse.MRData.ConstructorTable.Constructors;
+    }
+    const url = `${baseUrl}/constructors.json?limit=1000`;
+    if (ergastCache.constructor[url]) {
+      console.log(`getting ${url} from cache`);
+      return ergastCache.constructor[url].MRData.ConstructorTable.Constructors;
+    }
+    const data: Response = await fetch(url);
+    const json: ErgastConstructorsResponse = await data.json();
+    ergastCache.constructor[url] = json;
+    return json.MRData.ConstructorTable.Constructors;
+  }
+  static async getConstructorsByYear(year: string): Promise<ErgastConstructor[]> {
+    if (process.env.REACT_APP_ENVIRONMENT === 'mock') {
+      await sleep(1000);
+      if (year === "2008") return MockConstructorsResponse.MRData.ConstructorTable.Constructors;
+      else return EmptyConstructorsResponse.MRData.ConstructorTable.Constructors;
+    }
+    const url = `${baseUrl}/${year}/constructors.json?limit=100`;
+    if (ergastCache.constructor[url]) {
+      console.log(`getting ${url} from cache`);
+      return ergastCache.constructor[url].MRData.ConstructorTable.Constructors;
+    }
+    const data: Response = await fetch(url);
+    const json: ErgastConstructorsResponse = await data.json();
+    ergastCache.constructor[url] = json;
+    return json.MRData.ConstructorTable.Constructors;
   }
   static async getLapTimes(year: string, round: string): Promise<ErgastRace> {
     if (process.env.REACT_APP_ENVIRONMENT === 'mock') {

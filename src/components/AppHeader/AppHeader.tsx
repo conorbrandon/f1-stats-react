@@ -28,6 +28,8 @@ export const AppHeader = ({ }) => {
         <Link to={'/'} onClick={handleResetStandings}>dashboard</Link>
         <Link to={`/current`} onClick={handleResetSeasons}>seasons</Link>
         <Link to={'/current/standings'} onClick={handleResetStandings}>standings</Link>
+        <Link to={'/drivers'}>drivers</Link>
+        <Link to={'/constructors'}>constructors</Link>
         {process.env.REACT_APP_ENVIRONMENT === 'mock' && 
           <>
           <Link style={{ color: 'gray' }} to="2008/5">test race 2008</Link>

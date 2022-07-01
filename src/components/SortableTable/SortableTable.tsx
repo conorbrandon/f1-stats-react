@@ -12,16 +12,20 @@ interface SortableTableProps {
   limit?: number,
   limitComponent?: JSX.Element,
   noTableHeader?: boolean,
-  prescribeWidths?: { [templateKey: string]: string }
+  prescribeWidths?: { [templateKey: string]: string },
+  indices?: boolean
 }
 type SortDirection = "asc" | "desc";
-interface Comparators {
+export interface Comparators {
   [key: string]: (a: any, b: any) => number
-}
+};
+export interface Transformers {
+  [key: string]: (data: any) => JSX.Element
+};
 interface SortConfig {
   direction: SortDirection,
   key: string
-}
+};
 
 const useSortableData = (items: any[], config?: SortConfig, comparators?: Comparators) => {
   const [sortConfig, setSortConfig] = useState<SortConfig | undefined>(config);
@@ -58,7 +62,7 @@ const useSortableData = (items: any[], config?: SortConfig, comparators?: Compar
   return { sortedItems, requestSort, sortConfig };
 };
 
-export const SortableTable: React.FC<SortableTableProps> = ({ items, template, caption, transformers, comparators, limit, limitComponent, noTableHeader, prescribeWidths }) => {
+export const SortableTable: React.FC<SortableTableProps> = ({ items, template, caption, transformers, comparators, limit, limitComponent, noTableHeader, prescribeWidths, indices }) => {
   const { sortedItems, requestSort, sortConfig } = useSortableData(items || [], undefined, comparators);
   const getClassNamesFor = (name: string) => {
     if (!sortConfig) {
@@ -72,6 +76,7 @@ export const SortableTable: React.FC<SortableTableProps> = ({ items, template, c
         {caption && <caption className="xx-large-font">{caption}</caption>}
         {!noTableHeader && <thead>
           <tr>
+            {indices && <th></th>}
             {template?.map((key, i) => {
               return (
                 <th key={i} style={{ width: prescribeWidths && prescribeWidths[key] ? prescribeWidths[key] : '' }}>
@@ -90,6 +95,7 @@ export const SortableTable: React.FC<SortableTableProps> = ({ items, template, c
         <tbody>
           {sortedItems.map((item, i) => (
             <tr key={i}>
+              {indices && <td>{i + 1}</td>}
               {template?.map((t, j) => {
                 return (
                   <td style={{ width: prescribeWidths && prescribeWidths[t] ? prescribeWidths[t] : '' }} key={j}>{transformers && transformers[t] ? transformers[t](item) : ''}</td>

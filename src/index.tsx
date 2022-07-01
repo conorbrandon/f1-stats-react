@@ -17,6 +17,8 @@ import { Provider } from 'react-redux';
 import { RaceReplayReMotion } from './components/RaceReplayReMotion/RaceReplayReMotion';
 import { Dashboard } from './components/Dashboard/Dashboard';
 import { Standings } from './components/Standings/Standings';
+import { Drivers } from './components/Drivers/Drivers';
+import { Constructors } from './components/Constructors/Constructors';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -37,7 +39,9 @@ root.render(
             <Route path='laptimes' element={<RaceLapTimes />}/>
             <Route path='racereplay' element={<RaceReplayReMotion />}/>
           </Route>
+          <Route path='/drivers' element={<Drivers />} />
           <Route path='/driver/:driverID' element={<Driver />}/>
+          <Route path='/constructors' element={<Constructors />} />
           <Route path='/constructor/:constructorID' element={<Constructor />}/>
         </Route>
       </Routes>

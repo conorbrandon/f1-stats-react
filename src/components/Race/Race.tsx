@@ -4,8 +4,8 @@ import { RaceHeader } from "../RaceHeader/RaceHeader";
 import styles from "./Race.module.css";
 import { fetchResult } from "../../app/result/resultSlice";
 import { fetchQualifying } from "../../app/qualifying/qualifyingSlice";
-import { fetchDrivers } from "../../app/drivers/driversSlice";
-import { fetchLaps } from "../../app/laps/lapsSlice";
+// import { fetchDrivers } from "../../app/drivers/driversSlice";
+// import { fetchLaps } from "../../app/laps/lapsSlice";
 import { fetchSchedule } from "../../app/schedule/scheduleSlice";
 import { store } from "../../app/store";
 
