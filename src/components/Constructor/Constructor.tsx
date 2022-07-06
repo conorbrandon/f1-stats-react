@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { ErgastAPI } from "../../api/ErgastAPI";
+import { AppOutletContext } from "../../App";
 import { setNewConstructorResults, fetchConstructor, selectConstructor, selectConstructorError, selectConstructorResults, selectConstructorSeasons, selectConstructorStatus, selectConstructorQualifying, setNewConstructorQualifying } from "../../app/constructor/constructorSlice";
 import { fetchConstructorLogo, selectConstructorLogos } from "../../app/constructorLogos/constructorLogosSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -9,6 +10,7 @@ import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatu
 import styles from "./Constructor.module.css";
 
 export const Constructor = ({ }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const { constructorID } = useParams();
   const dispatch = useAppDispatch();
 
@@ -31,7 +33,7 @@ export const Constructor = ({ }) => {
 
   return (
     <>
-      <div className="page-header displayFlex flexJustContentCenter">
+      <div className={`page-header ${isDarkMode ? 'dark' : 'light'} displayFlex flexJustContentCenter`}>
         <UseReduxAsyncStatus status={constructorStatus} error={constructorError} successContent={constructorHeaderContent} fetchAction={fetchConstructor} fetchParams={constructorID} />
       </div>
       <EntityProfile 

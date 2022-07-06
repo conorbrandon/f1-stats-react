@@ -1,8 +1,13 @@
 .timesContainer {
   margin-bottom: .5rem;
-  border: solid white 2px;
   border-radius: 5px;
   width: 90%;
+}
+.timesContainerdark {
+  border: solid white 2px;
+}
+.timesContainerlight {
+  border: solid black 2px;
 }
 .header {
   display: flex;
@@ -13,5 +18,10 @@
 }
 .opened {
   border-bottom: solid 1px gray;
+}
+.openeddark {
   color: rgb(255, 150, 150);
+}
+.openedlight {
+  color: rgb(255, 60, 60);
 }

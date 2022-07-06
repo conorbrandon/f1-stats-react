@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { AppOutletContext } from "../../App";
 import { useAppSelector } from "../../app/hooks";
 import { selectResult, selectResultError, selectResultStatus, selectResultTimeZone } from "../../app/result/resultSlice";
 import { RaceQualifying } from "../RaceQualifying/RaceQualifying";
@@ -8,6 +10,7 @@ import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatu
 import styles from "./RaceSummary.module.css";
 
 export const RaceSummary = ({ }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const race = useAppSelector(selectResult);
   const raceTimeZone = useAppSelector(selectResultTimeZone);
   const resultStatus = useAppSelector(selectResultStatus);
@@ -21,7 +24,7 @@ export const RaceSummary = ({ }) => {
   // RaceSummaryCard will go to horizontal layout if race is in the future
   const raceSummaryCardContent = race ? <RaceSummaryCard race={race} horizontalLayout={horizontalLayout} isUpcomingRace={horizontalLayout} timeZone={raceTimeZone || ''} /> : <></>;
   return (
-    <div className={`page-content ${!horizontalLayout ? styles.raceSummaryLayout : ''}`}>
+    <div className={`page-content ${isDarkMode ? 'dark' : 'light'} ${!horizontalLayout ? styles.raceSummaryLayout : ''}`}>
       <div className={styles.raceSummaryLocation}>
         <UseReduxAsyncStatus status={resultStatus} successContent={raceSummaryCardContent} error={resultError} />
       </div>

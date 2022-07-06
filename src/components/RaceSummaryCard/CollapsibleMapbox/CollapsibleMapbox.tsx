@@ -4,15 +4,18 @@ import { ErgastRace } from "../../../model/ErgastRace";
 import { Mapbox } from "../../Mapbox/Mapbox";
 import styles from "./CollapsibleMapbox.module.css";
 import { motion } from 'framer-motion';
+import { useOutletContext } from "react-router-dom";
+import { AppOutletContext } from "../../../App";
 
 export const CollapsibleMapbox: React.FC<{race: ErgastRace}> = ({ race }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const [myIsOpen, setMyIsOpen] = useState(true);
   return (
       <div className={styles.collapsibleMapContainer}>
         <Collapsible open={myIsOpen}
           transitionTime={200}
           trigger={
-            <motion.div whileHover={{ scale: 1.1 }} style={{ border: 'solid 2px white', borderRadius: '5px 5px 0px 0px' }}>
+            <motion.div className={isDarkMode ? styles.borderdark : styles.borderlight} whileHover={{ scale: 1.1 }} style={{ borderRadius: '5px 5px 0px 0px' }}>
             <span style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '40px' }}>
               <span className="material-icons">public</span>
               Map

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
+import { AppOutletContext } from "../../App";
 import { fetchConstructorLogo, selectConstructorLogos } from "../../app/constructorLogos/constructorLogosSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectResult, selectResultError, selectResultStatus } from "../../app/result/resultSlice";
@@ -21,6 +22,7 @@ export interface RaceResultsProps {
 }
 
 export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam, inputRace, captionForTable, noTableHeader, prescribeWidths }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const race = useAppSelector(selectResult);
   const resultStatus = useAppSelector(selectResultStatus);
   const resultError = useAppSelector(selectResultError);
@@ -83,7 +85,7 @@ export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templa
       /></div> : <></>;
   };
   return (
-    <div className={noClass ? '' : "page-content"} style={{ width: '100%' }}>
+    <div className={noClass ? '' : `page-content ${isDarkMode ? 'dark' : 'light'}`} style={{ width: '100%' }}>
       {!inputRace && race && <UseReduxAsyncStatus status={resultStatus} successContent={raceResultsContent(race)} error={resultError} loadingInterText={'Results'} />}
       {inputRace && raceResultsContent(inputRace)}
     </div>

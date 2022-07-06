@@ -86,7 +86,7 @@ export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, w
             />;
           })}
           {/* pitstop legend */}
-          <g>
+          {pitstopLapMap && Object.keys(pitstopLapMap).length && <><g>
             <circle cx={'90%'} cy={'5%'} r={7} fill='green'></circle>
             <circle cx={'90%'} cy={'5%'} r={5} fill='yellow'></circle>
             <circle cx={'90%'} cy={'5%'} r={3} fill='red'></circle>
@@ -94,7 +94,7 @@ export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, w
           </g>
           <text x={'91%'} y={'5%'} fill='black' dominantBaseline={'central'}>
             <tspan fontSize={'14'}>Pit stop</tspan>
-          </text>
+          </text></>}
         </LineChart>
       </ResponsiveContainer>
     </div>

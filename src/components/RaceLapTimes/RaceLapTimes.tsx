@@ -8,15 +8,15 @@ import { scaleLog, ScaleLogarithmic } from 'd3-scale';
 import { TimeHelper } from "../../helpers/TimeHelper";
 import { useAppSelector } from "../../app/hooks";
 import { fetchQualifying, selectQualifying, selectQualifyingError, selectQualifyingStatus } from "../../app/qualifying/qualifyingSlice";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { interpolateRainbow } from 'd3-scale-chromatic';
-import { ErgastLap } from "../../model/ErgastLap";
 import { fetchResult, selectResult, selectResultError, selectResultStatus } from "../../app/result/resultSlice";
 import { fetchLaps, selectLaps, selectLapsError, selectLapsStatus } from "../../app/laps/lapsSlice";
 import { shuffle } from "../../helpers/GenericHelpers";
 import { UseReduxAsyncStatuses } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
 import { fetchPitStops, selectPitStops, selectPitStopsError, selectPitStopsStatus } from "../../app/pitstops/pitStopsSlice";
 import { MINIMUM_KNOWN_NUM_LAPS_SPA } from "../RaceReplayReMotion/RaceReplayReMotion";
+import { AppOutletContext } from "../../App";
 
 type DriverIDElement = { driverID: string, isSelected: boolean, driverColor: string, value: string, label: string };
 export type DriverIDSet = DriverIDElement[];
@@ -63,6 +63,7 @@ const lapTypeFullName: { [lapTypeID: string]: string } = {
 };
 
 export const RaceLapTimes = ({ }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const { year, round } = useParams();
 
   const [lapTimes, setLapTimes] = useState<lapTime[]>();
@@ -248,7 +249,7 @@ export const RaceLapTimes = ({ }) => {
     {!driverIDSet.find(driver => driver.isSelected) && <div style={{height: '450px'}}></div>}
   </>;
   return (
-    <div className="page-content">
+    <div className={`page-content ${isDarkMode ? 'dark' : 'light'}`}>
       <div className={`${styles.centered}`}>
         <UseReduxAsyncStatuses 
           statuses={[raceStatus, raceQualifyingStatus, lapsStatus, pitstopsStatus]} 

@@ -4,6 +4,8 @@ import styles from "./Mapbox.module.css";
 import { ErgastRace } from "../../model/ErgastRace";
 import mapboxgl from 'mapbox-gl';
 import { FlagHelper } from "../../helpers/FlagHelper";
+import { useOutletContext } from "react-router-dom";
+import { AppOutletContext } from "../../App";
 
 interface MapboxProps {
   races: ErgastRace[],
@@ -13,6 +15,7 @@ interface MapboxProps {
 }
 
 export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType, zoomParam }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN as string;
   const [map, setMap] = useState<mapboxgl.Map>();
   const mapContainer = useRef<HTMLDivElement>();
@@ -103,6 +106,7 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType, zoo
 
 
   return (
+    // ${isDarkMode ? styles.mapdark : styles.maplight}
     <div id="map" className={`${styles.map} ${styles[mapType]}`} ref={el => (mapContainer.current = el as HTMLDivElement)}></div>
   );
 };

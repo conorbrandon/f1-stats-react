@@ -1,4 +1,6 @@
 import React, { useMemo, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { AppOutletContext } from "../../App";
 import styles from "./SortableTable.module.css";
 
 interface SortableTableProps {
@@ -63,6 +65,7 @@ const useSortableData = (items: any[], config?: SortConfig, comparators?: Compar
 };
 
 export const SortableTable: React.FC<SortableTableProps> = ({ items, template, caption, transformers, comparators, limit, limitComponent, noTableHeader, prescribeWidths, indices }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const { sortedItems, requestSort, sortConfig } = useSortableData(items || [], undefined, comparators);
   const getClassNamesFor = (name: string) => {
     if (!sortConfig) {
@@ -71,7 +74,7 @@ export const SortableTable: React.FC<SortableTableProps> = ({ items, template, c
     return sortConfig.key === name ? sortConfig.direction === 'asc' ? 'expand_more' : 'expand_less' : '';
   };
   return items?.length ? (
-    <><div className={styles.centeredTable}>
+    <><div className={`${styles.centeredTable} ${isDarkMode ? styles.centeredTabledark : styles.centeredTablelight}`}>
       <table style={{ width: '100%' }}>
         {caption && <caption className="xx-large-font">{caption}</caption>}
         {!noTableHeader && <thead>
@@ -80,7 +83,7 @@ export const SortableTable: React.FC<SortableTableProps> = ({ items, template, c
             {template?.map((key, i) => {
               return (
                 <th key={i} style={{ width: prescribeWidths && prescribeWidths[key] ? prescribeWidths[key] : '' }}>
-                  <button className={styles.button} type="button"
+                  <button className={`${styles.button} ${isDarkMode ? styles.buttondark : styles.buttonlight}`} type="button"
                     onClick={comparators && comparators[key] ? () => requestSort(key) : () => { }}>
                     <div className="material-icons-align center">
                       <span>{key}</span>

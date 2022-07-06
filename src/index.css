@@ -8,9 +8,13 @@ THIS IS A CSS RESET SO WE DON'T HAVE TO DEAL WITH DUMB CSS STYLES THAT ARE SET A
 
 /* You can add global styles to this file, and also import other style files */
 
+:root {
+  --light-background-color: rgb(240, 240, 240);
+  --dark-background-color: rgb(20, 20, 20);
+}
+
 html, body {
-  background-color: rgb(20, 20, 20);
-  color: white;
+  color: lightgreen;
   font-family: 'Kdam Thmor Pro', sans-serif;
   overflow-x: hidden;
   margin: 0;
@@ -18,7 +22,7 @@ html, body {
 
 ::-webkit-scrollbar {
   -webkit-appearance: none;
-  width: 7px;
+  width: 5px;
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
@@ -31,8 +35,6 @@ button, .cursor-pointer {
   cursor: pointer;
 }
 button {
-  color: white;
-  background-color: black;
   border-radius: 5px;
   font-family: 'Kdam Thmor Pro', sans-serif;
 }
@@ -62,9 +64,15 @@ button {
   color: black;
   border-radius: 10px;
 }
+.mapboxgl-ctrl-bottom-right {
+  display: none;
+}
+.mapboxgl-ctrl.mapboxgl-ctrl-group button {
+  background-color: white !important;
+}
 
-a {
-  color: white;
+a:visited {
+  color: transparent;
 }
 .no-underline {
   text-decoration: none;
@@ -99,38 +107,103 @@ a {
   width: 90vw;
   padding: 0 5vw;
   height: 8vh;
-  background-color: black;
   z-index: 5;
-  border-bottom: solid white 3px;
   display: flex;
   flex-direction: row;
   align-items: baseline;
   left: 0;
   justify-content: center;
 }
+.app-header.dark a {
+  color: white;
+}
+.app-header.dark {
+  background-color: var(--dark-background-color);
+  background-color: black;
+  border-bottom: solid white 3px;
+  /* box-shadow: .5vh .3vh 0vh white; */
+}
+.app-header.light a {
+  color: black;
+}
+.app-header.light {
+  background-color: var(--light-background-color);
+  background-color: white;
+  border-bottom: solid black 3px;
+  /* box-shadow: .5vh .3vh 0vh black; */
+}
+
 .page-header {
   overflow: hidden;
   position: fixed;
   top: 8vh;
   width: 88vw;
   height: 6vh;
-  background-color: black;
   z-index: 5;
   padding: 0 6vw;
-  border-top: solid white 3px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0vh .3vh .5vh white;
   left: 0;
 }
+.page-header.dark a {
+  color: white;
+}
+.page-header.dark button {
+  color: white;
+  background-color: black;
+}
+.page-header.dark {
+  color: white;
+  background-color: black;
+  border-top: solid white 3px;
+  box-shadow: 0vh .3vh .5vh white;
+}
+.page-header.light a {
+  color: black;
+}
+.page-header.light button {
+  color: black;
+  background-color: white;
+}
+.page-header.light {
+  color: black;
+  background-color: white;
+  border-top: solid black 3px;
+  box-shadow: 0vh .3vh .5vh black;
+}
+
 .page-content {
   position: absolute;
   overflow: scroll;
-  top: 16vh;
+  top: 14vh;
   width: 100vw;
   padding-bottom: 5rem;
+  padding-top: 2vh;
 }
+.page-content.dark a {
+  color: white;
+}
+.page-content.dark button {
+  color: white;
+  background-color: black;
+}
+.page-content.dark {
+  background-color: var(--dark-background-color);
+  color: white;
+}
+.page-content.light a {
+  color: black;
+}
+.page-content.light button {
+  color: black;
+  background-color: white;
+}
+.page-content.light {
+  background-color: var(--light-background-color);
+  color: black;
+}
+
 .page-content.padded {
   margin-left: 5rem;
 }
@@ -214,7 +287,7 @@ a {
   align-items: center;
 }
 
-/* give all images a small white border, especially useful for the belgian flag 🇧🇪 */
+/* give all images a small gray border, especially useful for the belgian flag 🇧🇪 and austrian flag 🇦🇹 (probably other too) */
 img {
-  border: solid white 1px;
+  border: solid gray 1.5px;
 }

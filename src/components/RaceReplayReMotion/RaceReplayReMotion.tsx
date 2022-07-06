@@ -4,7 +4,7 @@ import styles from "./RaceReplayReMotion.module.css";
 import { TimeHelper } from "../../helpers/TimeHelper";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { fetchLaps, selectLaps, selectLapsError, selectLapsStatus } from "../../app/laps/lapsSlice";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import Switch from "react-switch";
 import { selectResult } from "../../app/result/resultSlice";
 import { shuffle } from "../../helpers/GenericHelpers";
@@ -14,6 +14,7 @@ import { UseReduxAsyncStatuses } from "../UseReduxAsyncStatuses/UseReduxAsyncSta
 import { MyComposition } from "./MyComposition";
 import { Player, PlayerRef } from "@remotion/player";
 import PirelliTyre from "./pirelliTire.png";
+import { AppOutletContext } from "../../App";
 
 export interface TotalTimeDriverMap {
   [driverID: string]: {
@@ -32,6 +33,7 @@ export interface TotalTimeDriverMap {
 export const MINIMUM_KNOWN_NUM_LAPS_SPA = 44;
 
 export const RaceReplayReMotion = ({ }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const { year, round } = useParams();
 
   const [duration, setDuration] = useState<number>(60);
@@ -288,7 +290,7 @@ export const RaceReplayReMotion = ({ }) => {
     </div>
   </>;
   return (
-    <div className={`page-content ${laps?.length && results?.Results?.length && pitstops !== undefined ? styles.centered : ''}`}>
+    <div className={`page-content ${isDarkMode ? 'dark' : 'light'} ${laps?.length && results?.Results?.length && pitstops !== undefined ? styles.centered : ''}`}>
       <UseReduxAsyncStatuses statuses={[lapsStatus, pitstopsStatus]}
         errors={[lapsError, pitstopsError]}
         fetchActions={[fetchLaps, fetchPitStops]}

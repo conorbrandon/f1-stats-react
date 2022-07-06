@@ -1,5 +1,4 @@
 .raceCard {
-  border: solid 1px white;
   border-radius: 5px;
   flex: 0 1 21%;
   /* max-width: 25%; */
@@ -8,13 +7,26 @@
   position: relative;
   margin: 5px;
 }
+.raceCarddark {
+  border: solid 1px white;
+}
+.raceCardlight {
+  border: solid 1px black;
+}
 
-.raceCard:hover {
+.raceCarddark:hover {
   background-color: white;
   color: black;
 }
-.raceCard:hover a {
+.raceCarddark:hover a {
   color: black;
+}
+.raceCardlight:hover {
+  background-color: black;
+  color: white;
+}
+.raceCardlight:hover a {
+  color: white;
 }
 
 .raceCardRoundCounter {
@@ -24,16 +36,22 @@
   font-size: x-large;
   width: 10%;
   height: auto;
-  border-bottom: solid white 1px;
-  border-left: solid white 1px;
   padding: 1px;
   text-align: center;
+}
+.raceCardRoundCounterdark {
+  border-bottom: solid white 1px;
+  border-left: solid white 1px;
+}
+.raceCardRoundCounterlight {
+  border-bottom: solid black 1px;
+  border-left: solid black 1px;
 }
 
 .centered {
   display: flex;
-flex-direction: column;
-align-items: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .raceCardLayout {

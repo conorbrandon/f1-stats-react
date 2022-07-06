@@ -6,13 +6,14 @@ import { motion, useAnimation } from "framer-motion";
 import { TimeHelper } from "../../helpers/TimeHelper";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { fetchLaps, selectLaps, selectLapsError, selectLapsStatus } from "../../app/laps/lapsSlice";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import Switch from "react-switch";
 import { selectResult } from "../../app/result/resultSlice";
 import { shuffle } from "../../helpers/GenericHelpers";
 import { interpolateRainbow } from "d3-scale-chromatic";
 import { fetchPitStops, selectPitStops, selectPitStopsError, selectPitStopsStatus } from "../../app/pitstops/pitStopsSlice";
 import { UseReduxAsyncStatuses } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
+import { AppOutletContext } from "../../App";
 
 interface TotalTimeDriverMap {
   [driverID: string]: {
@@ -29,6 +30,7 @@ interface TotalTimeDriverMap {
 };
 
 export const RaceReplay = ({ }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const { year, round } = useParams();
 
   // component display variables
@@ -463,7 +465,7 @@ export const RaceReplay = ({ }) => {
   </>;
 
   return (
-    <div className={`page-content ${laps?.length && result?.Results?.length && pitstops !== undefined ? styles.centered : ''}`}>
+    <div className={`page-content ${isDarkMode ? 'dark' : 'light'} ${laps?.length && result?.Results?.length && pitstops !== undefined ? styles.centered : ''}`}>
       <UseReduxAsyncStatuses statuses={[lapsStatus, pitstopsStatus]}
         errors={[lapsError, pitstopsError]}
         fetchActions={[fetchLaps, fetchPitStops]}

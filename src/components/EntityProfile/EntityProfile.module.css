@@ -1,6 +1,6 @@
 .activeResultsYear {
-  background-color: lightgreen;
-  color: black;
+  background-color: lightgreen !important;
+  color: black !important;
 }
 .smallResultHeaderLink {
   width: 90%;

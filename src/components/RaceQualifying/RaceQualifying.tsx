@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
+import { AppOutletContext } from "../../App";
 import { fetchConstructorLogo, selectConstructorLogos } from "../../app/constructorLogos/constructorLogosSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectBestTimesFromEachSession, selectQualifying, selectQualifyingError, selectQualifyingStatus, setUpdatedQualifyingResults } from "../../app/qualifying/qualifyingSlice";
@@ -13,6 +14,7 @@ import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatu
 import styles from "./RaceQualifying.module.css";
 
 export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam, inputRace, captionForTable, noTableHeader, prescribeWidths }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const qualifying = useAppSelector(selectQualifying);
   const qualifyingStatus = useAppSelector(selectQualifyingStatus);
   const qualifyingError = useAppSelector(selectQualifyingError);
@@ -91,7 +93,7 @@ export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, tem
     </div> : <></>;
   }
   return (
-    <div className={noClass ? '' : "page-content"} style={{ width: '100%' }}>
+    <div className={noClass ? '' : `page-content ${isDarkMode ? 'dark' : 'light'}`} style={{ width: '100%' }}>
       {!inputRace && qualifying && <UseReduxAsyncStatus status={qualifyingStatus} successContent={raceQualifyingContent(qualifying)} error={qualifyingError} loadingInterText={'Qualifying results'} />}
       {inputRace && raceQualifyingContent(inputRace)}
     </div>

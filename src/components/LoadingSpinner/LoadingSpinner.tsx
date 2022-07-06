@@ -4,6 +4,8 @@ import styles from "./LoadingSpinner.module.css";
 import Color from "color";
 
 import { useInterval } from "usehooks-ts";
+import { useOutletContext } from "react-router-dom";
+import { AppOutletContext } from "../../App";
 
 export type LoadingColorType = string;
 interface LoadingSpinnerProps {
@@ -12,6 +14,7 @@ interface LoadingSpinnerProps {
 };
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ color, width }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const [progress, setProgress] = useState<number>(0);
   useInterval(() => {
     // console.log({ progress });
@@ -29,7 +32,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ color, width }) 
           border: `3px solid`,
           borderImageSlice: 1,
           borderImageSource: `linear-gradient(to right, 
-            ${myColor.darken(0.8).hex()}, 
+            ${isDarkMode ? myColor.darken(0.8).hex() : myColor.lighten(0.9).hex()}, 
             ${myColor.darken(1 - (progress / 100)).hex()})`
         }}></div>
         {/* <TailSpin color="red" height={'25%'} width={'25%'} wrapperClass={styles.loadingSpinner} /> */}

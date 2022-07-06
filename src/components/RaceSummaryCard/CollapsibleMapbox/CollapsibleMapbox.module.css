@@ -8,3 +8,9 @@
 .collapsibleMapContainer:hover {
   cursor: pointer;
 }
+.borderdark {
+  border: solid 2px white;
+}
+.borderlight {
+  border: solid 2px black;
+}

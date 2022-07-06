@@ -9,7 +9,11 @@
   margin-bottom: 1px;
   padding: 5px;
 }
-.raceListLayout li:hover {
+.raceListLayoutdark li:hover {
   background-color: white;
   color: rgb(20, 20, 20);
+}
+.raceListLayoutlight li:hover {
+  background-color: var(--dark-background-color);
+  color: var(--light-background-color);
 }

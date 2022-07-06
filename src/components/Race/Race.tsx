@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useOutletContext, useParams } from "react-router-dom";
 import { RaceHeader } from "../RaceHeader/RaceHeader";
 import styles from "./Race.module.css";
 import { fetchResult } from "../../app/result/resultSlice";
@@ -8,6 +8,7 @@ import { fetchQualifying } from "../../app/qualifying/qualifyingSlice";
 // import { fetchLaps } from "../../app/laps/lapsSlice";
 import { fetchSchedule } from "../../app/schedule/scheduleSlice";
 import { store } from "../../app/store";
+import { AppOutletContext } from "../../App";
 
 export const initializeRace = (year: string, round: string) => {
   store.dispatch(fetchResult({year, round}));
@@ -18,6 +19,7 @@ export const initializeRace = (year: string, round: string) => {
 };
 
 export const Race = ({ }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const { year, round } = useParams();
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export const Race = ({ }) => {
   return (
     <>
       <RaceHeader />
-      <Outlet />
+      <Outlet context={{ isDarkMode }} />
     </>
   );
 };

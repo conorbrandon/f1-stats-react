@@ -1,6 +1,12 @@
 .map {
   /* margin: 2% auto; */
+  border: solid 3px gray;
+}
+.mapdark {
   border: solid white 3px;
+}
+.maplight {
+  border: solid black 3px;
 }
 .horizontal {
   height: 400px;

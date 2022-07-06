@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { ErgastAPI } from "../../api/ErgastAPI";
+import { AppOutletContext } from "../../App";
 import { fetchConstructorStandings, selectConstructorStandings, selectConstructorStandingsError, selectConstructorStandingsStatus } from "../../app/constructorStandings/constructorStandingsSlice";
 import { fetchDriverStandings, selectDriverStandings, selectDriverStandingsError, selectDriverStandingsStatus } from "../../app/driverStandings/driverStandingsSlice";
 import { useAppSelector } from "../../app/hooks";
@@ -14,6 +15,7 @@ import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatu
 import styles from "./Dashboard.module.css";
 
 export const Dashboard = ({ }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const [nextRace, setNextRace] = useState<ErgastRace>();
   const [nextRaceTimeZone, setNextRaceTimeZone] = useState<string>();
   const [previousRace, setPreviousRace] = useState<ErgastRace>();
@@ -53,11 +55,11 @@ export const Dashboard = ({ }) => {
   }, [isNextRaceActive]);
 
   const raceSummaryCardContent = <>
-    <div className={`displayFlex flexDirRow ${styles.tabContainer}`}>
-      <span onClick={() => setIsNextRaceActive(false)} className={`large-font ${styles.tab} ${!isNextRaceActive ? styles.activeTab : ''}`}>
+    <div className={`displayFlex flexDirRow ${styles.tabContainer} ${isDarkMode ? styles.tabContainerdark : styles.tabContainerlight}`}>
+      <span onClick={() => setIsNextRaceActive(false)} className={`large-font ${styles.tab} ${!isNextRaceActive ? (isDarkMode ? styles.activeTabdark : styles.activeTablight) : ''}`}>
         Previous race:
       </span>
-      <span onClick={() => setIsNextRaceActive(true)} className={`large-font ${styles.tab} ${isNextRaceActive ? styles.activeTab : ''}`}>
+      <span onClick={() => setIsNextRaceActive(true)} className={`large-font ${styles.tab} ${isNextRaceActive ? (isDarkMode ? styles.activeTabdark : styles.activeTablight) : ''}`}>
         Next race:
       </span>
     </div>
@@ -67,7 +69,7 @@ export const Dashboard = ({ }) => {
 
   return (
     <>
-      <div className={`page-header x-large-font ${styles.centeredHeader}`}>
+      <div className={`page-header ${isDarkMode ? 'dark' : 'light'} x-large-font ${styles.centeredHeader}`}>
         <span className="material-icons-align">
           Dashboard
           <span className="material-icons" style={{ color: 'red' }}>
@@ -75,7 +77,7 @@ export const Dashboard = ({ }) => {
           </span>
         </span>
       </div>
-      <div className={`page-content ${styles.dashboardGridLayout}`}>
+      <div className={`page-content ${isDarkMode ? 'dark' : 'light'} ${styles.dashboardGridLayout}`}>
         <div style={{ gridColumn: 2, gridRow: 1 }}>
           {raceSummaryCardContent}
         </div>
@@ -88,7 +90,7 @@ export const Dashboard = ({ }) => {
               fetchAction={fetchDriverStandings}
               fetchParams={'current'}
               loadingInterText={'Driver standings'} />
-            <div style={{ borderBottom: '3px solid white', margin: '1rem 0', width: '90%' }}></div>
+            <div style={{ borderBottom: `3px solid ${isDarkMode ? 'white' : 'black'}`, margin: '1rem 0', width: '90%' }}></div>
             <UseReduxAsyncStatus
               status={constructorStandingsStatus}
               error={constructorStandingsError}

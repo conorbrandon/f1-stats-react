@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import styles from "./RaceTimesContainer.module.css";
 import Collapsible from 'react-collapsible';
 import { motion } from 'framer-motion';
+import { AppOutletContext } from "../../../App";
+import { useOutletContext } from "react-router-dom";
 
 interface RaceTimesContainerProps {
   sessionText: string,
@@ -13,14 +15,15 @@ interface RaceTimesContainerProps {
 }
 
 export const RaceTimesContainer: React.FC<RaceTimesContainerProps> = ({ sessionText, date, time, timeZone, open, useMyTime }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const [myIsOpen, setMyIsOpen] = useState(open);
   useEffect(() => {
     setMyIsOpen(open);
   }, [open]);
   return (
-    <motion.div whileHover={{ scale: 1.05 }} className={`${styles.timesContainer}`}>
+    <motion.div whileHover={{ scale: 1.05 }} className={`${styles.timesContainer} ${isDarkMode ? styles.timesContainerdark : styles.timesContainerlight}`}>
       <Collapsible
-        triggerClassName={styles.trigger} triggerOpenedClassName={`${styles.trigger} ${styles.opened}`}
+        triggerClassName={styles.trigger} triggerOpenedClassName={`${styles.trigger} ${styles.opened} ${isDarkMode ? styles.openeddark : styles.openedlight}`}
         trigger={<>
           <span className={`material-icons-align ${styles.header}`}>
             <span className="material-icons">schedule</span>

@@ -1,6 +1,7 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { ErgastAPI } from "../../api/ErgastAPI";
+import { AppOutletContext } from "../../App";
 import { setNewDriverResults, fetchDriver, selectDriver, selectDriverError, selectDriverResults, selectDriverSeasons, selectDriverStatus, setNewDriverQualifying, selectDriverQualifying } from "../../app/driver/driverSlice";
 import { useAppSelector } from "../../app/hooks";
 import { EntityProfile } from "../EntityProfile/EntityProfile";
@@ -8,6 +9,7 @@ import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatu
 import styles from "./Driver.module.css";
 
 export const Driver = ({ }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const { driverID } = useParams();
   const driver = useAppSelector(selectDriver);
   const driverSeasons = useAppSelector(selectDriverSeasons);
@@ -29,7 +31,7 @@ export const Driver = ({ }) => {
   </>;
   return (
     <>
-      <div className="page-header displayFlex flexJustContentCenter">
+      <div className={`page-header ${isDarkMode ? 'dark' : 'light'} displayFlex flexJustContentCenter`}>
         <UseReduxAsyncStatus status={driverStatus} successContent={driverHeaderContent} error={driverError} fetchAction={fetchDriver} fetchParams={driverID || ''} />
       </div>
       <EntityProfile 

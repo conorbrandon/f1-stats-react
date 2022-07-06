@@ -1,6 +1,7 @@
 import { ActionCreatorWithOptionalPayload } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
+import { AppOutletContext } from "../../App";
 import { ConstructorLogoType } from "../../app/constructorLogos/constructorLogosSlice";
 import { useAppDispatch } from "../../app/hooks";
 import { FlagHelper } from "../../helpers/FlagHelper";
@@ -29,6 +30,7 @@ interface EntityProfileProps {
 }
 
 export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, entitySeasons, entityResults, ergastResultsFn, setNewResultsReducerAction, entityQualifying, ergastQualifyingFn, setNewQualifyingReducerAction, constructorLogos, isConstructorProfile }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const dispatch = useAppDispatch();
   const [resultsYear, setResultsYear] = useState<string>();
 
@@ -59,7 +61,7 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
           Seasons:
           <div style={{
             height: '30vh', overflowY: 'auto',
-            border: 'solid white 1px', borderRadius: '10px',
+            border: `solid ${isDarkMode ? 'white' : 'black'} 1px`, borderRadius: '10px',
             padding: '.5rem 2rem'
           }}>
             <div className="displayFlex flexDirCol">
@@ -138,7 +140,7 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
                   overflowY: 'auto',
                   height: '65vh',
                   width: '100%',
-                  border: 'solid white 1px',
+                  border: `solid ${isDarkMode ? 'white' : 'black'} 1px`,
                   borderRadius: '10px',
                   padding: '1rem'
                 }}>
@@ -207,7 +209,7 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
     </div>
   }</>;
   return (
-    <div className="page-content">
+    <div className={`page-content ${isDarkMode ? 'dark' : 'light'}`}>
       {entityBodyContent}
     </div>
   );

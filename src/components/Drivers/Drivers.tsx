@@ -1,4 +1,6 @@
 import React from "react";
+import { useOutletContext } from "react-router-dom";
+import { AppOutletContext } from "../../App";
 import { fetchDrivers, selectDrivers, selectDriversError, selectDriversStatus } from "../../app/drivers/driversSlice";
 import { useAppSelector } from "../../app/hooks";
 import { SortableTableHelper } from "../../helpers/SortableTableHelper";
@@ -8,6 +10,7 @@ import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatu
 import styles from "./Drivers.module.css";
 
 export const Drivers = ({ }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const drivers = useAppSelector(selectDrivers);
   const driversStatus = useAppSelector(selectDriversStatus);
   const driversError = useAppSelector(selectDriversError);
@@ -40,8 +43,11 @@ export const Drivers = ({ }) => {
     : <></>;
 
   return (
-    <div className="page-content">
+    <>
+    <div className={`page-header ${isDarkMode ? 'dark' : 'light'}`}></div>
+    <div className={`page-content ${isDarkMode ? 'dark' : 'light'}`}>
       <UseReduxAsyncStatus status={driversStatus} error={driversError} successContent={driversSuccessContent} fetchAction={fetchDrivers} fetchParams={'all'} />
     </div>
+    </>
   );
 };

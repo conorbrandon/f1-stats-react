@@ -7,7 +7,7 @@ import { FlagHelper } from "../../helpers/FlagHelper";
 import { Mapbox } from "../Mapbox/Mapbox";
 import { motion } from "framer-motion";
 
-export const RaceCards: React.FC<ScheduleDisplayProps> = ({ races }) => {
+export const RaceCards: React.FC<ScheduleDisplayProps> = ({ races, isDarkMode }) => {
   return (
     <>
       <div className={styles.centered}>
@@ -15,7 +15,7 @@ export const RaceCards: React.FC<ScheduleDisplayProps> = ({ races }) => {
         <div className={styles.raceCardLayout}>
           {races.map(race => {
             return (
-              <motion.div whileHover={{ scale: 1.05 }} className={`${styles.raceCard} cursor-pointer`}>
+              <motion.div whileHover={{ scale: 1.05 }} className={`${styles.raceCard} ${isDarkMode ? styles.raceCarddark : styles.raceCardlight} cursor-pointer`}>
                 <Link to={`/${race.season}/${race.round}`} className="no-underline">
                   <span className="x-large-font" style={{ paddingRight: '10%' }}>{race.raceName}</span><br></br>
                   <span className="large-font">{race.Circuit.circuitName}</span>
@@ -24,7 +24,7 @@ export const RaceCards: React.FC<ScheduleDisplayProps> = ({ races }) => {
                     <span>{new Date(race.date).toLocaleDateString()}</span>
                     <img src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} className="race-card-flag card" />
                   </div>
-                  <div className={styles.raceCardRoundCounter}>{race.round}</div>
+                  <div className={`${styles.raceCardRoundCounter} ${isDarkMode ? styles.raceCardRoundCounterdark : styles.raceCardRoundCounterlight}`}>{race.round}</div>
                 </Link>
               </motion.div>
             );

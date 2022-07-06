@@ -13,14 +13,23 @@
 .tabContainer {
   justify-content: space-evenly;
   margin-bottom: 1rem;
+}
+.tabContainerdark {
   border-bottom: solid gray 1px;
+}
+.tabContainerlight {
+  border-bottom: solid rgb(171, 171, 171) 1px;
 }
 .tab {
   width: 50%;
   text-align: center;
   cursor: pointer;
 }
-.activeTab {
+.activeTabdark {
   background-color: gray;
+  border-radius: 10px 10px 0px 0px;
+}
+.activeTablight {
+  background-color: rgb(171, 171, 171);
   border-radius: 10px 10px 0px 0px;
 }

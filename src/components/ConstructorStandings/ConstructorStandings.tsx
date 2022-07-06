@@ -3,7 +3,6 @@ import Collapsible from "react-collapsible";
 import { fetchConstructorLogo, selectConstructorLogos } from "../../app/constructorLogos/constructorLogosSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { SortableTableHelper } from "../../helpers/SortableTableHelper";
-import { ErgastDriverStanding } from "../../model/ErgastDriverStanding";
 import { SortableTable } from "../SortableTable/SortableTable";
 import styles from "./ConstructorStandings.module.css";
 import { motion } from 'framer-motion';

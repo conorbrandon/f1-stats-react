@@ -5,3 +5,17 @@
 .paddedLink a {
   padding-left: 20px;
 }
+
+.darkModeToggleButton {
+  cursor: pointer;
+  position: absolute;
+  right: 1rem;
+  top: 1.2rem;
+  font-size: xx-large;
+}
+.lightModeButton {
+  color: white;
+}
+.darkModeButton {
+  color: black
+}

@@ -8,11 +8,11 @@ import { Mapbox } from "../Mapbox/Mapbox";
 
 import { motion } from "framer-motion";
 
-export const RaceList: React.FC<ScheduleDisplayProps> = ({ races }) => {
+export const RaceList: React.FC<ScheduleDisplayProps> = ({ races, isDarkMode }) => {
   const [activePopup, setActivePopup] = useState<number | undefined>();
 
   return (
-    <div className={styles.raceListLayout}>
+    <div className={`${styles.raceListLayout} ${isDarkMode ? styles.raceListLayoutdark : styles.raceListLayoutlight}`}>
       <div>
         <ol>
         {races.map((race, i) => {

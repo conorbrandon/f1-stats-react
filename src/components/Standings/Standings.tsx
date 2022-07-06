@@ -7,9 +7,11 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { ConstructorStandings } from "../ConstructorStandings/ConstructorStandings";
 import { DriverStandings } from "../DriverStandings/DriverStandings";
 import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { AppOutletContext } from "../../App";
 
 export const Standings = ({ }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const dispatch = useAppDispatch();
   const driverStandings = useAppSelector(selectDriverStandings);
   const driverStandingsStatus = useAppSelector(selectDriverStandingsStatus);
@@ -32,7 +34,7 @@ export const Standings = ({ }) => {
 
   return (
     <>
-      <div className={`page-header`}>
+      <div className={`page-header ${isDarkMode ? 'dark' : 'light'}`}>
         <span className={`xx-large-font ${styles.standingsHeader}`} style={{ width: '100%' }}>
           {standingYear !== 'current' ? standingYear : (driverStandings && driverStandings.DriverStandings && driverStandings.DriverStandings.length ? driverStandings.season : '')} Standings
           <span className="displayFlex flexDirRow flexAlignItemsCenter">
@@ -43,7 +45,7 @@ export const Standings = ({ }) => {
           </span>
         </span>
       </div>
-      <div className={`page-content ${constructorStandingsStatus === 'succeeded' && constructorStandings ?  styles.standingsGrid : styles.noConstructorGrid}`}>
+      <div className={`page-content ${isDarkMode ? 'dark' : 'light'} ${constructorStandingsStatus === 'succeeded' && constructorStandings ?  styles.standingsGrid : styles.noConstructorGrid}`}>
         <div style={{ gridColumn: 2 }} className='displayFlex flexDirCol flexAlignItemsCenter'>
           <UseReduxAsyncStatus
             status={driverStandingsStatus}
@@ -60,7 +62,7 @@ export const Standings = ({ }) => {
             successContent={<ConstructorStandings constructorStandings={constructorStandings} isOpenTable={true} />}
             fetchAction={fetchConstructorStandings}
             fetchParams={year || 'current'}
-            loadingInterText={'Driver standings'} />
+            loadingInterText={'Constructor standings'} />
         </div>
       </div>
     </>

@@ -35,10 +35,13 @@
 .tire {
   width: 15px;
   height: 15px;
+  border: transparent;
 }
 .tireBig {
   width: 30px;
   height: 30px;
+  border: transparent;
+  margin-left: 1rem;
 }
 
 .positionLines {

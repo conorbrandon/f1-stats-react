@@ -24,7 +24,7 @@ export const RaceHeader = ({ }) => {
   const backRef = useRef<HTMLAnchorElement>(null);
   const forwardRef = useRef<HTMLAnchorElement>(null);
 
-  const { setTooltipPosition, setTooltipChild } = useOutletContext<AppOutletContext>();
+  const { setTooltipPosition, setTooltipChild, isDarkMode } = useOutletContext<AppOutletContext>();
   const handleMouseEnter = (targetRef: RefObject<HTMLAnchorElement>, targetRound: string, previousRace: boolean) => {
     if (!targetRef.current) return;
     // console.log({ targetRef, targetRound });
@@ -45,13 +45,13 @@ export const RaceHeader = ({ }) => {
 
   const successContent = (year && round) ? <>
     <span className={styles.backToSeasonLinks}>
-      <span className={`${styles.backToSeasonLink} material-icons-align`}>
+      <span className={`${styles.backToSeasonLink} ${isDarkMode ? styles.backToSeasonLinkdark : styles.backToSeasonLinklight} material-icons-align`}>
         <span className="material-icons">
           arrow_back
         </span><Link to={`/${year}`}>
           {year} season</Link>
       </span>
-      <span className={`${styles.backToSeasonLink} material-icons-align`}>
+      <span className={`${styles.backToSeasonLink} ${isDarkMode ? styles.backToSeasonLinkdark : styles.backToSeasonLinklight} material-icons-align`}>
       <span className="material-icons">
           leaderboard
         </span>
@@ -81,7 +81,7 @@ export const RaceHeader = ({ }) => {
   </> : <></>;
   return (
     <>
-      <div className="page-header" style={{ padding: '0 6vw 0 0', width: '94vw' }}>
+      <div className={`page-header ${isDarkMode ? 'dark' : 'light'}`} style={{ padding: '0 6vw 0 0', width: '94vw' }}>
         <UseReduxAsyncStatuses 
           statuses={[resultStatus, scheduleStatus]} 
           successContent={successContent} 
