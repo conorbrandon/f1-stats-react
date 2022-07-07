@@ -1,10 +1,16 @@
 .tooltip {
   position: absolute;
   z-index: 5;
-  border: solid white 1px;
-  background-color: rgb(5, 5, 5);
   transform: translateX(-50%);
   padding: 1rem;
+}
+.tooltipdark {
+  border: solid white 1px;
+  background-color: black;
+}
+.tooltiplight {
+  border: solid black 1px;
+  background-color: white;
 }
 .tooltip::after {
   content: "";
@@ -14,5 +20,10 @@
   margin-left: -15px;
   border-width: 15px;
   border-style: solid;
+}
+.tooltipdark::after {
   border-color: transparent transparent white transparent;
+}
+.tooltiplight::after {
+  border-color: transparent transparent black transparent;
 }

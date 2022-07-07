@@ -5,15 +5,16 @@ import styles from "./TooltipRace.module.css";
 
 interface TooltipRaceProps {
   race?: ErgastRace,
-  previousRace: boolean
+  previousRace: boolean,
+  isDarkMode: boolean
 };
 
-export const TooltipRace: React.FC<TooltipRaceProps> = ({ race, previousRace }) => {
+export const TooltipRace: React.FC<TooltipRaceProps> = ({ race, previousRace, isDarkMode }) => {
   console.log({ race });
   return (
     <>
       {race && 
-        <div className={styles.wrapper}>
+        <div className={`${styles.wrapper} ${isDarkMode ? styles.wrapperdark : styles.wrapperlight}`}>
           <div>{previousRace ? 'Previous round:' : 'Next round:'}</div>
           <div>
             <span>{race.season} {race.raceName}</span>

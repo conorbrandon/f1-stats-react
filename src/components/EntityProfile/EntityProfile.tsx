@@ -100,7 +100,7 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
         <div className="displayFlex flexDirCol flexAlignItemsCenter" style={{ width: '100%' }}>
           <div className="displayFlex flexDirCol flexAlignItemsCenter" style={{ width: '90%' }}>
             <div className="displayFlex flexDirRow" style={{ justifyContent: 'space-between', width: '100%' }}>
-              {entityResults.length &&
+              {entityResults.length ?
                 <div className="displayFlex flexDirCol flexAlignItemsCenter" style={{ width: '50%' }}>
                   <div className="x-large-font">
                     {entityResults[0].season} Results:
@@ -117,8 +117,9 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
                     }}
                   />
                 </div>
+                : <></>
               }
-              {entityQualifying.length &&
+              {entityQualifying.length ?
                 <div className="displayFlex flexDirCol flexAlignItemsCenter" style={{ width: '50%' }}>
                   <div className="x-large-font">
                     {entityQualifying[0].season} Qualifying:
@@ -134,6 +135,7 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
                     }}
                   />
                 </div>
+                : <></>
               }
             </div>
             <div style={{

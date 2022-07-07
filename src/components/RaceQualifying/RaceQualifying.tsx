@@ -13,7 +13,7 @@ import { SortableTable } from "../SortableTable/SortableTable";
 import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatuses";
 import styles from "./RaceQualifying.module.css";
 
-export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam, inputRace, captionForTable, noTableHeader, prescribeWidths }) => {
+export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam, inputRace, captionForTable, noTableHeader, prescribeWidths, stickyThead }) => {
   const { isDarkMode } = useOutletContext<AppOutletContext>();
   const qualifying = useAppSelector(selectQualifying);
   const qualifyingStatus = useAppSelector(selectQualifyingStatus);
@@ -63,6 +63,7 @@ export const RaceQualifying: React.FC<RaceResultsProps> = ({ noClass, limit, tem
       <SortableTable
         prescribeWidths={prescribeWidths}
         noTableHeader={noTableHeader}
+        stickyThead={stickyThead}
         items={limit ? qualifying?.QualifyingResults?.slice(0, limit) : qualifying?.QualifyingResults}
         limit={limit}
         limitComponent={<p>

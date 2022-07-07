@@ -34,8 +34,8 @@ root.render(
           <Route path={"/:year/standings"} element={<Standings />} />
           <Route path={"/:year/:round"} element={<Race />}>
             <Route path='' element={<RaceSummary />} />
-            <Route path='results' element={<RaceResults />}/>
-            <Route path='qualifying' element={<RaceQualifying />}/>
+            <Route path='results' element={<RaceResults stickyThead />}/>
+            <Route path='qualifying' element={<RaceQualifying stickyThead />}/>
             <Route path='laptimes' element={<RaceLapTimes />}/>
             <Route path='racereplay' element={<RaceReplayReMotion />}/>
           </Route>

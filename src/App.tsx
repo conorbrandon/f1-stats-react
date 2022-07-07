@@ -25,7 +25,7 @@ function App() {
     <div className="App">
       <AppHeader isDarkMode={isDarkMode} enableDarkMode={enableDarkMode} disableDarkMode={disableDarkMode}></AppHeader>
       <Outlet context={{ setTooltipPosition, setTooltipChild, isDarkMode, toggleDarkMode, enableDarkMode, disableDarkMode }} />
-      <Tooltip child={tooltipChild} position={tooltipPosition}></Tooltip>
+      <Tooltip isDarkMode={isDarkMode} child={tooltipChild} position={tooltipPosition}></Tooltip>
     </div>
   );
 }

@@ -15,10 +15,11 @@ import { interpolateRainbow } from "d3-scale-chromatic";
 interface DriverStandingsProps {
   driverStandings?: ErgastStandingList,
   tableLimit?: number,
-  isOpenTable?: boolean
+  isOpenTable?: boolean,
+  stickyThead?: boolean
 }
 
-export const DriverStandings: React.FC<DriverStandingsProps> = ({ driverStandings, tableLimit, isOpenTable }) => {
+export const DriverStandings: React.FC<DriverStandingsProps> = ({ driverStandings, tableLimit, isOpenTable, stickyThead }) => {
   const [myIsOpenChart, setMyIsOpenChart] = useState(true);
   const [myIsOpenTable, setMyIsOpenTable] = useState(isOpenTable || false);
   const [driverStandingsTransformed, setDriverStandingsTransformed] = useState<GenericBarChartData[]>();
@@ -75,6 +76,7 @@ export const DriverStandings: React.FC<DriverStandingsProps> = ({ driverStanding
         easing={'ease-in-out'} >
         <div className="displayFlex flexDirCol flexAlignItemsCenter">
           <SortableTable
+            stickyThead={stickyThead}
             items={tableLimit ? driverStandings?.DriverStandings?.slice(0, tableLimit) : driverStandings?.DriverStandings}
             caption={<>Driver Standings <span className="material-icons">leaderboard</span> </>}
             template={['Position', 'Points', 'Driver', 'Constructor', 'Wins']}

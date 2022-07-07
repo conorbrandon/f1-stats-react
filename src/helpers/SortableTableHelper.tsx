@@ -13,7 +13,7 @@ import { useAppDispatch } from "../app/hooks";
 import { fetchDriver } from "../app/driver/driverSlice";
 import { fetchConstructor } from "../app/constructor/constructorSlice";
 
-const DriverName: React.FC<{driver: ErgastDriver}> = ({ driver }) => {
+const DriverName: React.FC<{ driver: ErgastDriver }> = ({ driver }) => {
   const dispatch = useAppDispatch();
   const handleClick = () => {
     dispatch(fetchDriver(driver.driverId))
@@ -23,7 +23,7 @@ const DriverName: React.FC<{driver: ErgastDriver}> = ({ driver }) => {
     <span className="material-icons">logout</span>
   </span>;
 };
-const ConstructorName: React.FC<{myConstructor: ErgastConstructor}> = ({ myConstructor }) => {
+const ConstructorName: React.FC<{ myConstructor: ErgastConstructor }> = ({ myConstructor }) => {
   const dispatch = useAppDispatch();
   const handleClick = () => {
     dispatch(fetchConstructor(myConstructor.constructorId))
@@ -32,6 +32,16 @@ const ConstructorName: React.FC<{myConstructor: ErgastConstructor}> = ({ myConst
     <Link onClick={handleClick} to={`/constructor/${myConstructor.constructorId}`}>{myConstructor.name}</Link>
     <span className="material-icons">logout</span>
   </span>;
+};
+const Driver: React.FC<{ result: ErgastResult }> = ({ result }) => {
+  const dispatch = useAppDispatch();
+  const handleClick = () => {
+    dispatch(fetchDriver(result.Driver.driverId))
+  };
+  return <div className="material-icons-align" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+    <Link onClick={handleClick} to={`/driver/${result.Driver.driverId}`}>{result.Driver.givenName} {result.Driver.familyName}</Link>
+    <img src={FlagHelper.getFlagFromDenonym(result.Driver.nationality)} alt={`${result.Driver.nationality} flag`} />
+  </div>
 };
 
 export const SortableTableHelper = {
@@ -45,10 +55,7 @@ export const SortableTableHelper = {
       </div>;
     },
     Driver: (result: ErgastResult) => {
-      return <div className="material-icons-align" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Link to={`/driver/${result.Driver.driverId}`}>{result.Driver.givenName} {result.Driver.familyName}</Link>
-        <img src={FlagHelper.getFlagFromDenonym(result.Driver.nationality)} alt={`${result.Driver.nationality} flag`} />
-      </div>
+      return <Driver result={result} />
     },
     Constructor: (result: ErgastResult | ErgastQualifyingResult, constructorLogos: ConstructorLogoType) => {
       return <span className="material-icons-align" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}><Link to={`/constructor/${result.Constructor.constructorId}`}>{result.Constructor.name}

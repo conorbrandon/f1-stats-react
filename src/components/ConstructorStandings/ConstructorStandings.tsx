@@ -15,10 +15,11 @@ import { interpolateRainbow } from "d3-scale-chromatic";
 interface ConstructorStandingsProps {
   constructorStandings?: ErgastStandingList,
   tableLimit?: number,
-  isOpenTable?: boolean
+  isOpenTable?: boolean,
+  stickyThead?: boolean
 }
 
-export const ConstructorStandings: React.FC<ConstructorStandingsProps> = ({ constructorStandings, tableLimit, isOpenTable }) => {
+export const ConstructorStandings: React.FC<ConstructorStandingsProps> = ({ constructorStandings, tableLimit, isOpenTable, stickyThead }) => {
   const [myIsOpenChart, setMyIsOpenChart] = useState(true);
   const [myIsOpenTable, setMyIsOpenTable] = useState(isOpenTable || false);
   const [constructorStandingsTransformed, setConstructorStandingsTransformed] = useState<GenericBarChartData[]>();
@@ -67,6 +68,7 @@ export const ConstructorStandings: React.FC<ConstructorStandingsProps> = ({ cons
         easing={'ease-in-out'} >
         <div className="displayFlex flexDirCol flexAlignItemsCenter">
           <SortableTable
+            stickyThead={stickyThead}
             items={tableLimit ? constructorStandings?.ConstructorStandings?.slice(0, tableLimit) : constructorStandings?.ConstructorStandings}
             caption={<>Constructor Standings <span className="material-icons">leaderboard</span> </>}
             template={['Position', 'Points', 'Constructor', 'Wins']}

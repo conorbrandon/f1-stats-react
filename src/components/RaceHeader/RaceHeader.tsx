@@ -5,7 +5,6 @@ import { useAppSelector } from "../../app/hooks";
 import { selectQualifying } from "../../app/qualifying/qualifyingSlice";
 import { selectResult, selectResultError, selectResultStatus } from "../../app/result/resultSlice";
 import { selectSchedule } from "../../app/schedule/scheduleSlice";
-import { store } from "../../app/store";
 import { FlagHelper } from "../../helpers/FlagHelper";
 import { initializeRace } from "../Race/Race";
 import { TooltipRace } from "../TooltipRace/TooltipRace";
@@ -32,7 +31,7 @@ export const RaceHeader = ({ }) => {
     // console.log({ x, y, width, height });
     setTooltipPosition({ x: x + (width / 2), y: y + (height / 2) + 45 });
     // console.log({ schedule });
-    setTooltipChild(<TooltipRace race={schedule.find(race => race.round === targetRound)} previousRace={previousRace} />);
+    setTooltipChild(<TooltipRace isDarkMode={isDarkMode} race={schedule.find(race => race.round === targetRound)} previousRace={previousRace} />);
   };
   const handleMouseLeave = () => {
     setTooltipPosition(undefined);

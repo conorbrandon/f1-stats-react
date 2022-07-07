@@ -50,7 +50,7 @@ export const Standings = ({ }) => {
           <UseReduxAsyncStatus
             status={driverStandingsStatus}
             error={driverStandingsError}
-            successContent={<DriverStandings driverStandings={driverStandings} isOpenTable={true} />}
+            successContent={<DriverStandings stickyThead driverStandings={driverStandings} isOpenTable={true} />}
             fetchAction={fetchDriverStandings}
             fetchParams={year || 'current'}
             loadingInterText={'Driver standings'} />
@@ -59,7 +59,7 @@ export const Standings = ({ }) => {
           <UseReduxAsyncStatus
             status={constructorStandingsStatus}
             error={constructorStandingsError}
-            successContent={<ConstructorStandings constructorStandings={constructorStandings} isOpenTable={true} />}
+            successContent={<ConstructorStandings stickyThead constructorStandings={constructorStandings} isOpenTable={true} />}
             fetchAction={fetchConstructorStandings}
             fetchParams={year || 'current'}
             loadingInterText={'Constructor standings'} />

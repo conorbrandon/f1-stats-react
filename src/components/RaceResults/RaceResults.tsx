@@ -18,10 +18,11 @@ export interface RaceResultsProps {
   inputRace?: ErgastRace,
   captionForTable?: string | JSX.Element,
   noTableHeader?: boolean,
-  prescribeWidths?: { [templateKey: string]: string }
+  prescribeWidths?: { [templateKey: string]: string },
+  stickyThead?: boolean
 }
 
-export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam, inputRace, captionForTable, noTableHeader, prescribeWidths }) => {
+export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templateParam, inputRace, captionForTable, noTableHeader, prescribeWidths, stickyThead }) => {
   const { isDarkMode } = useOutletContext<AppOutletContext>();
   const race = useAppSelector(selectResult);
   const resultStatus = useAppSelector(selectResultStatus);
@@ -52,6 +53,7 @@ export const RaceResults: React.FC<RaceResultsProps> = ({ noClass, limit, templa
       <SortableTable
         prescribeWidths={prescribeWidths}
         noTableHeader={noTableHeader}
+        stickyThead={stickyThead}
         items={limit ? race?.Results?.slice(0, limit) : race?.Results}
         limit={limit}
         limitComponent={<p>

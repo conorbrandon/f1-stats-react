@@ -15,7 +15,8 @@ interface SortableTableProps {
   limitComponent?: JSX.Element,
   noTableHeader?: boolean,
   prescribeWidths?: { [templateKey: string]: string },
-  indices?: boolean
+  indices?: boolean,
+  stickyThead?: boolean
 }
 type SortDirection = "asc" | "desc";
 export interface Comparators {
@@ -64,7 +65,7 @@ const useSortableData = (items: any[], config?: SortConfig, comparators?: Compar
   return { sortedItems, requestSort, sortConfig };
 };
 
-export const SortableTable: React.FC<SortableTableProps> = ({ items, template, caption, transformers, comparators, limit, limitComponent, noTableHeader, prescribeWidths, indices }) => {
+export const SortableTable: React.FC<SortableTableProps> = ({ items, template, caption, transformers, comparators, limit, limitComponent, noTableHeader, prescribeWidths, indices, stickyThead }) => {
   const { isDarkMode } = useOutletContext<AppOutletContext>();
   const { sortedItems, requestSort, sortConfig } = useSortableData(items || [], undefined, comparators);
   const getClassNamesFor = (name: string) => {
@@ -74,7 +75,7 @@ export const SortableTable: React.FC<SortableTableProps> = ({ items, template, c
     return sortConfig.key === name ? sortConfig.direction === 'asc' ? 'expand_more' : 'expand_less' : '';
   };
   return items?.length ? (
-    <><div className={`${styles.centeredTable} ${isDarkMode ? styles.centeredTabledark : styles.centeredTablelight}`}>
+    <><div className={`${styles.centeredTable} ${stickyThead && styles.tableFixHead} ${isDarkMode ? styles.centeredTabledark : styles.centeredTablelight}`}>
       <table style={{ width: '100%' }}>
         {caption && <caption className="xx-large-font">{caption}</caption>}
         {!noTableHeader && <thead>
