@@ -19,6 +19,12 @@ html, body {
   overflow-x: hidden;
   margin: 0;
 }
+.bodydark {
+  background-color: var(--dark-background-color);
+}
+.bodylight {
+  background-color: var(--light-background-color);
+}
 
 ::-webkit-scrollbar {
   -webkit-appearance: none;
@@ -106,13 +112,19 @@ a:visited {
   top: 0;
   width: 90vw;
   padding: 0 5vw;
-  height: 8vh;
+  height: 60px;
   z-index: 5;
   display: flex;
   flex-direction: row;
   align-items: baseline;
   left: 0;
   justify-content: center;
+}
+@media only screen and (max-height: 500px) {
+  .app-header {
+    position: relative;
+    overflow: auto;
+  }
 }
 .app-header.dark a {
   color: white;
@@ -136,15 +148,22 @@ a:visited {
 .page-header {
   overflow: hidden;
   position: fixed;
-  top: 8vh;
+  top: 60px;
   width: 88vw;
-  height: 6vh;
+  height: 50px;
   z-index: 5;
   padding: 0 6vw;
   display: flex;
   align-items: center;
   justify-content: space-between;
   left: 0;
+}
+@media only screen and (max-height: 500px) {
+  .page-header {
+    position: relative;
+    overflow: auto;
+    top: -5px;
+  }
 }
 .page-header.dark a {
   color: white;
@@ -157,7 +176,7 @@ a:visited {
   color: white;
   background-color: black;
   border-top: solid white 3px;
-  box-shadow: 0vh .3vh .5vh white;
+  box-shadow: 0vh 3px 5px white;
 }
 .page-header.light a {
   color: black;
@@ -170,16 +189,16 @@ a:visited {
   color: black;
   background-color: white;
   border-top: solid black 3px;
-  box-shadow: 0vh .3vh .5vh black;
+  box-shadow: 0vh 3px 5px black;
 }
 
 .page-content {
   position: absolute;
   overflow: scroll;
-  top: 14vh;
+  top: calc(60px + 50px);
   width: 100vw;
   padding-bottom: 5rem;
-  padding-top: 2vh;
+  padding-top: 1rem;
 }
 .page-content.dark a {
   color: white;

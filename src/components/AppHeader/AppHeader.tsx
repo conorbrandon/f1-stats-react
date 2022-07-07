@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { fetchConstructorStandings } from "../../app/constructorStandings/constructorStandingsSlice";
 import { fetchDriverStandings } from "../../app/driverStandings/driverStandingsSlice";
@@ -28,6 +28,11 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ isDarkMode, enableDarkMode
   const handleDisableDarkMode = () => {
     disableDarkMode();
   };
+  useEffect(() => {
+    let body = document.getElementsByTagName('body')[0];
+    console.log({ body });
+    isDarkMode ? body.className = 'bodydark' : body.className = 'bodylight';
+  }, [isDarkMode]);
   return (
     <div className={`app-header ${isDarkMode ? 'dark' : 'light'}`}>
       <Link to="" onClick={handleResetStandings}>
