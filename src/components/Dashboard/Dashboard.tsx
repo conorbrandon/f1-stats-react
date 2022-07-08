@@ -56,10 +56,10 @@ export const Dashboard = ({ }) => {
   const raceSummaryCardContent = <>
     <div className={`displayFlex flexDirRow ${styles.tabContainer} ${isDarkMode ? styles.tabContainerdark : styles.tabContainerlight}`}>
       <span onClick={() => setIsNextRaceActive(false)} className={`large-font ${styles.tab} ${!isNextRaceActive ? (isDarkMode ? styles.activeTabdark : styles.activeTablight) : ''}`}>
-        Previous race:
+        Previous Round
       </span>
       <span onClick={() => setIsNextRaceActive(true)} className={`large-font ${styles.tab} ${isNextRaceActive ? (isDarkMode ? styles.activeTabdark : styles.activeTablight) : ''}`}>
-        Next race:
+        Next Round
       </span>
     </div>
     {isNextRaceActive ? (nextRace ? <RaceSummaryCard race={nextRace} timeZone={nextRaceTimeZone || ''} useBuiltInHeader isUpcomingRace /> : <><LoadingSpinner />Next race loading...</>) : <></>}

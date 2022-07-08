@@ -198,7 +198,7 @@ a:visited {
   top: calc(60px + 50px);
   width: 100vw;
   padding-bottom: 1rem;
-  padding-top: 1rem;
+  padding-top: 2rem;
 }
 .page-content.dark a {
   color: white;

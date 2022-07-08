@@ -74,7 +74,7 @@ export const RaceHeader = ({ }) => {
         </Link>}
       </span>
       {race ? <><span className="x-large-font"><Link to="" className={styles.raceName}>{year} {race.raceName}</Link></span>
-      <img style={{ border: 'solid white 1px' }} className={styles.img} src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
+      <img className={`${styles.img} ${isDarkMode ? styles.imgdark : styles.imglight}`} src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
       <span className="medium-font">(Round {round})</span></>: <></>}
     </span>
   </> : <></>;

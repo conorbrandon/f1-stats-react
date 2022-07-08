@@ -23,35 +23,67 @@ export type DriverIDSet = DriverIDElement[];
 
 export interface lapTime { [driverID: string]: number };
 
-const customStyles: StylesConfig<DriverIDElement> = {
-  option: (provided: any, state: any) => {
-    return {
-      ...provided,
-      color: 'black',
-      border: `solid 5px ${state.data.driverColor}`,
-      borderRadius: '5px',
-      padding: 2,
-      // marginBottom: 10
-    };
-  },
-  container: (provided: any, state: any) => {
-    return {
-      ...provided,
-      maxWidth: '80%',
-      minWidth: '50%',
-      paddingTop: '1rem',
-      paddingBottom: '1rem'
-    }
-  },
-  multiValue: (provided: any, state: any) => {
-    return {
-      ...provided,
-      border: `solid 5px ${state.data.driverColor}`,
-      color: 'black',
-      fontSize: 'small',
-      padding: 0
-    }
-  },
+const customStyles = (isDarkMode: boolean): StylesConfig<DriverIDElement> => {
+  return {
+    option: (provided: any, state: any) => {
+      return {
+        ...provided,
+        color: isDarkMode ? 'white' : 'black',
+        backgroundColor: isDarkMode ? 'black' : 'white',
+        border: `solid 5px ${state.data.driverColor}`,
+        borderRadius: '5px',
+        padding: 2,
+        // marginBottom: 10
+      };
+    },
+    container: (provided: any, state: any) => {
+      return {
+        ...provided,
+        maxWidth: '80%',
+        minWidth: '50%',
+        paddingTop: '1rem',
+        // paddingBottom: '1rem'
+      }
+    },
+    multiValue: (provided: any, state: any) => {
+      return {
+        ...provided,
+        border: `solid 5px ${state.data.driverColor}`,
+        color: isDarkMode ? 'white' : 'black',
+        backgroundColor: isDarkMode ? 'black' : 'white',
+        fontSize: 'small',
+        padding: 0
+      }
+    },
+    menuList: (provided: any, state: any) => {
+      return {
+        ...provided,
+        backgroundColor: isDarkMode ? 'black' : 'white',
+        marginTop: 0,
+        borderRadius: '5px',
+        border: isDarkMode ? 'solid 1px white' : 'solid 1px black',
+      }
+    },
+    dropdownIndicator: (provided: any, state: any) => {
+      return {
+        ...provided,
+        backgroundColor: isDarkMode ? 'black' : 'white',
+        border: isDarkMode ? 'solid 1px white' : 'solid 1px black',
+      }
+    },
+    valueContainer: (provided: any, state: any) => {
+      return {
+        ...provided,
+        backgroundColor: isDarkMode ? 'black' : 'white',
+      }
+    },
+    placeholder: (provided: any, state: any) => {
+      return {
+        ...provided,
+        color: isDarkMode ? 'white' : 'black',
+      }
+    },
+  }
 };
 
 interface ScaleDomain { min: number, max: number };
@@ -101,7 +133,7 @@ export const RaceLapTimes = ({ }) => {
       const randomColorIndexSet: number[] = shuffle(Array.from({ length: numDrivers }, (_, i: number) => i));
       // console.log({randomColorIndexSet});
       laps[0].Timings.forEach((timing, _i) => {
-      const driverColor = interpolateRainbow(randomColorIndexSet[_i] / numDrivers);
+        const driverColor = interpolateRainbow(randomColorIndexSet[_i] / numDrivers);
         driverIDSet.push({
           driverID: timing.driverId,
           isSelected: true,
@@ -176,7 +208,7 @@ export const RaceLapTimes = ({ }) => {
       setPitstopLapMap(myPitstopLapMap);
       setDriverIDSet(driverIDSet);
     }
-  }, [raceQualifying, laps]);
+  }, [raceQualifying, laps, pitstops]);
 
   const onChange = (event: MultiValue<DriverIDElement>) => {
     setSelectFirstLoad(false);
@@ -214,22 +246,22 @@ export const RaceLapTimes = ({ }) => {
       </span>}
       <span className={`material-icons-align ${styles.floatRight}`}>
         <span>Show Position Trace:</span>
-        <Switch checked={showPositions} onChange={handlePositionChange} />
+        <Switch checked={showPositions} onChange={handlePositionChange} height={20} width={40} onColor="#ff0000" />
       </span>
       {!selectFirstLoad && <span><button onClick={selectAllDrivers}>Select all drivers</button></span>}
     </span>
 
-    <Select placeholder={'Select drivers...'} options={driverIDSet} isMulti isSearchable onChange={onChange} styles={customStyles} value={selectFirstLoad ? [] : driverIDSet.filter(driver => driver.isSelected)} />
+    <Select placeholder={'Select drivers...'} options={driverIDSet} isMulti isSearchable onChange={onChange} styles={customStyles(isDarkMode)} value={selectFirstLoad ? [] : driverIDSet.filter(driver => driver.isSelected)} />
 
     {(useLapType === 'all' || useLapType === 'avg') && lapTimes && !showPositions && driverIDSet.find(driver => driver.isSelected) &&
-      <GenericTrace driverIDSet={driverIDSet}
-        domain={useLapType === 'all' ? ['dataMin - 1000', 'dataMax + 2000']: [minimumLapTime, averageLapTime]} data={lapTimes}
+      <GenericTrace driverIDSet={driverIDSet} grid
+        domain={useLapType === 'all' ? ['dataMin - 1000', 'dataMax + 2000'] : [minimumLapTime, averageLapTime]} data={lapTimes}
         width={1200} height={450}
         chartTitle={`${year} ${race?.raceName} Lap Comparison ${useLapType === 'avg' ? '(outlier laps removed)' : ''}`}
         tickCount={10} formatter={(ms: number) => TimeHelper.msToRaceTime(ms)} dot={false} pitstopLapMap={pitstopLapMap} />
     }
     {useLapType == 'log' && logScaleFunction && logLapTimes && !showPositions && driverIDSet.find(driver => driver.isSelected) &&
-      <GenericTrace driverIDSet={driverIDSet}
+      <GenericTrace driverIDSet={driverIDSet} grid
         domain={['dataMin', 'dataMax']} data={logLapTimes}
         width={1200} height={450}
         chartTitle={`${year} ${race?.raceName} Log Lap Comparison`}
@@ -246,18 +278,18 @@ export const RaceLapTimes = ({ }) => {
         tickCount={driverIDSet.length} reversed={true} dot={false} strokeWidth={3}
         pitstopLapMap={pitstopLapMap} />
     }
-    {!driverIDSet.find(driver => driver.isSelected) && <div style={{height: '450px'}}></div>}
+    {!driverIDSet.find(driver => driver.isSelected) && <div style={{ height: '450px' }}></div>}
   </>;
   return (
     <div className={`page-content ${isDarkMode ? 'dark' : 'light'}`}>
       <div className={`${styles.centered}`}>
-        <UseReduxAsyncStatuses 
-          statuses={[raceStatus, raceQualifyingStatus, lapsStatus, pitstopsStatus]} 
-          successContent={raceLapTimesContent} 
-          errors={[raceError, raceQualifyingError, lapsError, pitstopsError]} 
-          loadingInterText={'Laps'} 
-          fetchActions={[fetchResult, fetchQualifying, fetchLaps, fetchPitStops]} 
-          fetchParamss={[{year: year || '', round: round || ''}, {year: year || '', round: round || ''}, {year: year || '', round: round || ''}, {year: year || '', round: round || ''}]} />
+        <UseReduxAsyncStatuses
+          statuses={[raceStatus, raceQualifyingStatus, lapsStatus, pitstopsStatus]}
+          successContent={raceLapTimesContent}
+          errors={[raceError, raceQualifyingError, lapsError, pitstopsError]}
+          loadingInterText={'Laps'}
+          fetchActions={[fetchResult, fetchQualifying, fetchLaps, fetchPitStops]}
+          fetchParamss={[{ year: year || '', round: round || '' }, { year: year || '', round: round || '' }, { year: year || '', round: round || '' }, { year: year || '', round: round || '' }]} />
       </div>
     </div>
   );

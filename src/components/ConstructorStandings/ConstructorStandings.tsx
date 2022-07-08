@@ -7,10 +7,12 @@ import { SortableTable } from "../SortableTable/SortableTable";
 import styles from "./ConstructorStandings.module.css";
 import { motion } from 'framer-motion';
 import { ErgastStandingList } from "../../model/ErgastStandingList";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { GenericBarChart, GenericBarChartData } from "../GenericBarChart/GenericBarChart";
 import { ErgastConstructorStanding } from "../../model/ErgastConstructorStanding";
 import { interpolateRainbow } from "d3-scale-chromatic";
+import { AppOutletContext } from "../../App";
+import Color from "color";
 
 interface ConstructorStandingsProps {
   constructorStandings?: ErgastStandingList,
@@ -20,6 +22,7 @@ interface ConstructorStandingsProps {
 }
 
 export const ConstructorStandings: React.FC<ConstructorStandingsProps> = ({ constructorStandings, tableLimit, isOpenTable, stickyThead }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const [myIsOpenChart, setMyIsOpenChart] = useState(true);
   const [myIsOpenTable, setMyIsOpenTable] = useState(isOpenTable || false);
   const [constructorStandingsTransformed, setConstructorStandingsTransformed] = useState<GenericBarChartData[]>();
@@ -30,20 +33,22 @@ export const ConstructorStandings: React.FC<ConstructorStandingsProps> = ({ cons
       const myConstructorStandingsTransformed: GenericBarChartData[] = [];
       constructorStandings.ConstructorStandings.forEach((standing, i) => {
         if (!constructorLogos || !constructorLogos[standing.Constructor.constructorId]) dispatch(fetchConstructorLogo(standing.Constructor));
+        let fillColor = constructorStandings.ConstructorStandings ? interpolateRainbow(i / constructorStandings.ConstructorStandings.length) : 'black';
+        if (isDarkMode) fillColor = Color(fillColor).lighten(0.1).hex();
         myConstructorStandingsTransformed.push({ 
-          ID: `${standing.Constructor.name}`, 
+          ID: `${standing.Constructor.name}?${standing.Constructor.constructorId}`, 
           points: parseFloat(standing.points),
-          fillColor: constructorStandings.ConstructorStandings ? interpolateRainbow(i / constructorStandings.ConstructorStandings.length) : 'black'
+          fillColor
         })
       });
       setConstructorStandingsTransformed(myConstructorStandingsTransformed);
       // console.log({ myConstructorStandingsTransformed: myConstructorStandingsTransformed });
     }
-  }, [constructorStandings, dispatch]);
+  }, [constructorStandings, dispatch, isDarkMode]);
   return (
     <>{<div style={{ width: '90%' }}>
       {/* chart */}
-      {constructorStandings && constructorStandings.ConstructorStandings?.length && <Collapsible trigger={
+      {constructorStandings && constructorStandings.ConstructorStandings?.length ? <Collapsible trigger={
         <motion.span whileHover={{ scale: 1.05 }} className="displayFlex flexJustContentCenter flexAlignItemsCenter collapseTriggerBorder">
           {/* {myIsOpenChart ? 'Collapse' : 'Expand'}  */}
           Constructor Standings chart
@@ -54,7 +59,7 @@ export const ConstructorStandings: React.FC<ConstructorStandingsProps> = ({ cons
         handleTriggerClick={() => { setMyIsOpenChart(!myIsOpenChart); }}
         easing={'ease-in-out'} >
         <GenericBarChart data={constructorStandingsTransformed || []} chartTitle={`${constructorStandings?.season || ''} Constructor Standings (round ${constructorStandings?.round || 'n/a'})`} />
-      </Collapsible>}
+      </Collapsible> : <></>}
       {/* table */}
       <Collapsible trigger={
         <motion.span whileHover={{ scale: 1.05 }} className="displayFlex flexJustContentCenter flexAlignItemsCenter collapseTriggerBorder">

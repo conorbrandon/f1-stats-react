@@ -76,7 +76,9 @@ export const SortableTableHelper = {
     'Pos. Gained': (result: ErgastResult) => {
       let { posGained } = result;
       posGained = posGained || 0;
-      return <div className={`${posGained < 0 ? 'lightRedBg' : posGained > 0 ? 'lightGreenBg' : ''}`}>{result.posGained}</div>
+      return <div className={`${posGained < 0 ? 'lightRedBg' : posGained > 0 ? 'lightGreenBg' : ''}`} style={{ borderRadius: '5px', padding: '1px' }}>
+        {posGained > 0 ? `+${posGained}`:  posGained}
+      </div>;
     },
     RawFromDeepValue: (obj: {}, objectPath: string) => {
       return <div>{deep_value(obj, objectPath)}</div>

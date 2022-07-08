@@ -8,9 +8,11 @@ import { SortableTable } from "../SortableTable/SortableTable";
 import styles from "./DriverStandings.module.css";
 import { motion } from 'framer-motion';
 import { ErgastStandingList } from "../../model/ErgastStandingList";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { GenericBarChart, GenericBarChartData } from "../GenericBarChart/GenericBarChart";
 import { interpolateRainbow } from "d3-scale-chromatic";
+import { AppOutletContext } from "../../App";
+import Color from "color";
 
 interface DriverStandingsProps {
   driverStandings?: ErgastStandingList,
@@ -20,6 +22,7 @@ interface DriverStandingsProps {
 }
 
 export const DriverStandings: React.FC<DriverStandingsProps> = ({ driverStandings, tableLimit, isOpenTable, stickyThead }) => {
+  const { isDarkMode } = useOutletContext<AppOutletContext>();
   const [myIsOpenChart, setMyIsOpenChart] = useState(true);
   const [myIsOpenTable, setMyIsOpenTable] = useState(isOpenTable || false);
   const [driverStandingsTransformed, setDriverStandingsTransformed] = useState<GenericBarChartData[]>();
@@ -36,21 +39,23 @@ export const DriverStandings: React.FC<DriverStandingsProps> = ({ driverStanding
       const constructorIDMap: {[id: string]: number} = {};
       Array.from(constructorIDSet).forEach((constructorID, i) => constructorIDMap[constructorID] = i);
       driverStandings.DriverStandings.forEach(standing => {
+        let fillColor = interpolateRainbow(constructorIDMap[standing.Constructors[0].constructorId] / constructorIDSet.size);
+        if (isDarkMode) fillColor = Color(fillColor).lighten(0.1).hex();
         myDriverStandingsTransformed.push({ 
-          ID: `${standing.Driver.familyName}`, 
+          ID: `${standing.Driver.familyName}?${standing.Driver.driverId}`, 
           points: parseFloat(standing.points),
-          fillColor: interpolateRainbow(constructorIDMap[standing.Constructors[0].constructorId] / constructorIDSet.size)
+          fillColor
         });
       })
       setDriverStandingsTransformed(myDriverStandingsTransformed);
       console.log({ myDriverStandingsTransformed });
     }
-  }, [driverStandings, dispatch]);
+  }, [driverStandings, dispatch, isDarkMode]);
   
   return (
     <>{<div style={{ width: '90%' }}>
       {/* chart */}
-      {driverStandings && driverStandings.DriverStandings?.length && 
+      {driverStandings && driverStandings.DriverStandings?.length ? 
       <Collapsible trigger={
         <motion.span whileHover={{ scale: 1.05 }} className="displayFlex flexJustContentCenter flexAlignItemsCenter collapseTriggerBorder">
           {/* {myIsOpenChart ? 'Collapse' : 'Expand'}  */}
@@ -62,7 +67,7 @@ export const DriverStandings: React.FC<DriverStandingsProps> = ({ driverStanding
         handleTriggerClick={() => { setMyIsOpenChart(!myIsOpenChart); }}
         easing={'ease-in-out'} >
         <GenericBarChart data={driverStandingsTransformed || []} chartTitle={`${driverStandings?.season || ''} Driver Standings (round ${driverStandings?.round || 'n/a'})`} />
-      </Collapsible>}
+      </Collapsible> : <></>}
       {/* table */}
       <Collapsible trigger={
         <motion.span whileHover={{ scale: 1.05 }} className="displayFlex flexJustContentCenter flexAlignItemsCenter collapseTriggerBorder">
