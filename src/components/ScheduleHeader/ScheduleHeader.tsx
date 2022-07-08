@@ -7,11 +7,12 @@ import styles from "./ScheduleHeader.module.css";
 interface ScheduleHeaderProps {
   scheduleYear: string,
   changeScheduleYear: (year: string) => void,
+  useCardLayout: boolean,
   setUseCardLayout: React.Dispatch<React.SetStateAction<boolean>>,
   schedule?: ErgastRace[]
 }
 
-export const ScheduleHeader: React.FC<ScheduleHeaderProps> = ({ scheduleYear, changeScheduleYear, setUseCardLayout, schedule }) => {
+export const ScheduleHeader: React.FC<ScheduleHeaderProps> = ({ scheduleYear, changeScheduleYear, setUseCardLayout, schedule, useCardLayout }) => {
   const { isDarkMode } = useOutletContext<AppOutletContext>();
   const years: string[] = Array.from({ length: new Date().getUTCFullYear() + 1 - 1950 }, (_, i) => i + 1950 + '').reverse();
   return (
@@ -22,16 +23,16 @@ export const ScheduleHeader: React.FC<ScheduleHeaderProps> = ({ scheduleYear, ch
         <select name="years" id="years" onChange={(event) => changeScheduleYear(event.target.value)} defaultValue={scheduleYear}>
           {years.map((year, i) => <option key={i} value={year}>{year}</option>)}
         </select>
-        <button onClick={() => setUseCardLayout(false)}>
+        {useCardLayout && <button onClick={() => setUseCardLayout(false)}>
           <span className="material-icons">
             list
           </span>
-        </button>
-        <button onClick={() => setUseCardLayout(true)}>
+        </button>}
+        {!useCardLayout && <button onClick={() => setUseCardLayout(true)}>
           <span className="material-icons">
             dashboard
           </span>
-        </button>
+        </button>}
       </span>
     </div>
   );

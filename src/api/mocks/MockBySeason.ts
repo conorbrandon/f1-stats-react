@@ -1,5 +1,5 @@
-import { ErgastRaceResponse } from "../model/ErgastRaceResponse";
-import { ErgastSeasonResponse } from "../model/ErgastSeasonResponse";
+import { ErgastRaceResponse } from "../../model/ErgastRaceResponse";
+import { ErgastSeasonResponse } from "../../model/ErgastSeasonResponse";
 
 export const MockDriversSeasonsResponse: ErgastSeasonResponse = {
   "MRData": {

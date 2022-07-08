@@ -1,6 +1,6 @@
-import { ErgastConstructorsResponse } from "../model/ErgastConstructorsResponse";
-import { ErgastDriverResponse } from "../model/ErgastDriverResponse";
-import { ErgastRaceResponse } from "../model/ErgastRaceResponse";
+import { ErgastConstructorsResponse } from "../../model/ErgastConstructorsResponse";
+import { ErgastDriverResponse } from "../../model/ErgastDriverResponse";
+import { ErgastRaceResponse } from "../../model/ErgastRaceResponse";
 
 export const MockScheduleResponse_2008: ErgastRaceResponse = {
   "MRData": {

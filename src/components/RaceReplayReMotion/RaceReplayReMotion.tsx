@@ -119,9 +119,10 @@ export const RaceReplayReMotion = ({ }) => {
           // console.log('missing from laps', result.Driver.driverId);
           myTotalTimeDriverMap[result.Driver.driverId] = {
             totalTime: 0,
-            keyFrames: [durationInFrames],
+            keyFrames: [0, 30],
             cumkeyFrames: 0,
-            positions: [(parseInt(result.position) - 1) * myDriverObjectHeight],
+            // we want to still fill in a few positions if because their finishing position might overlap on someone else's starting position
+            positions: [(parseInt(result.grid) - 1) * myDriverObjectHeight, (parseInt(result.position) - 1) * myDriverObjectHeight],
             driverColor: '',
             driverLastName: result.Driver.familyName,
             pitStopStyles: [],
@@ -175,7 +176,7 @@ export const RaceReplayReMotion = ({ }) => {
         }
       }
 
-      // console.log({ myTotalTimeDriverMap });
+      console.log({ myTotalTimeDriverMap });
       setTotalTimeDriverMap(myTotalTimeDriverMap);
       // the winning driver had the baseline total race time to use for duration calculations
       const myBestTotalTime = myTotalTimeDriverMap[winningDriver].totalTime;

@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ErgastAPI } from '../../api/ErgastAPI';
 import type { RootState } from '../store';
 import { ReduxAsyncErrorType, ReduxAsyncStatusType } from '../types';
 import { ErgastStandingList } from '../../model/ErgastStandingList';
+import { getConstructorStandings } from '../../api/ErgastAPI/StandingsAPI';
 
 interface ConstructorStandingsState {
   constructorStandings?: ErgastStandingList,
@@ -18,7 +18,7 @@ const initialState: ConstructorStandingsState = {
 };
 
 export const fetchConstructorStandings = createAsyncThunk('constructorStandings/fetchConstructorStandings', async (year: GetPayloadAction) => {
-  const response = await ErgastAPI.getConstructorStandings(year);
+  const response = await getConstructorStandings(year);
   return response;
 });
 

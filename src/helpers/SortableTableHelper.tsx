@@ -12,6 +12,8 @@ import { ErgastDriver } from "../model/ErgastDriver";
 import { useAppDispatch } from "../app/hooks";
 import { fetchDriver } from "../app/driver/driverSlice";
 import { fetchConstructor } from "../app/constructor/constructorSlice";
+import { ErgastCircuit } from "../model/ErgastCircuit";
+import { fetchCircuit } from "../app/circuit/circuitSlice";
 
 const DriverName: React.FC<{ driver: ErgastDriver }> = ({ driver }) => {
   const dispatch = useAppDispatch();
@@ -42,6 +44,15 @@ const Driver: React.FC<{ result: ErgastResult }> = ({ result }) => {
     <Link onClick={handleClick} to={`/driver/${result.Driver.driverId}`}>{result.Driver.givenName} {result.Driver.familyName}</Link>
     <img src={FlagHelper.getFlagFromDenonym(result.Driver.nationality)} alt={`${result.Driver.nationality} flag`} />
   </div>
+};
+const CircuitName: React.FC<{ circuit: ErgastCircuit }> = ({ circuit }) => {
+  const dispatch = useAppDispatch();
+  const handleClick = () => {
+    dispatch(fetchCircuit(circuit.circuitId))
+  };
+  return <div className="material-icons-align" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+    <Link onClick={handleClick} to={`/circuit/${circuit.circuitId}`}>{circuit.circuitName}</Link>
+  </div>;
 };
 
 export const SortableTableHelper = {
@@ -89,6 +100,15 @@ export const SortableTableHelper = {
     },
     DriverName: (driver: ErgastDriver) => {
       return <DriverName driver={driver} />;
+    },
+    CircuitName: (circuit: ErgastCircuit) => {
+      return <CircuitName circuit={circuit} />;
+    },
+    CircuitCountry: (circuit: ErgastCircuit) => {
+      return <div className="displayFlex flexDirRow" style={{ justifyContent: 'space-between' }}>
+        <span>{circuit.Location.country}</span>
+        <span><img src={FlagHelper.getFlag(circuit.Location.country)} alt={`${circuit.Location.country} flag`} /></span>
+      </div>;
     },
     ConstructorName: (constructor: ErgastConstructor) => {
       return <ConstructorName myConstructor={constructor} />;

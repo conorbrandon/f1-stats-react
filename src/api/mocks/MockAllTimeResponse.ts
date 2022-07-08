@@ -1,5 +1,5 @@
-import { ErgastConstructorsResponse } from "../model/ErgastConstructorsResponse";
-import { ErgastDriverResponse } from "../model/ErgastDriverResponse";
+import { ErgastConstructorsResponse } from "../../model/ErgastConstructorsResponse";
+import { ErgastDriverResponse } from "../../model/ErgastDriverResponse";
 
 export const MockAllFormula1DriversResponse: ErgastDriverResponse = {
   "MRData": {

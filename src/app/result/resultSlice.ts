@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ErgastAPI } from '../../api/ErgastAPI';
 import type { RootState } from '../store';
 import { ErgastRace } from '../../model/ErgastRace';
 import { ReduxAsyncErrorType, ReduxAsyncStatusType } from '../types';
 import { getTimeZoneFromLatLng } from '../../api/TimeZones';
+import { getRace, getRaceResult } from '../../api/ErgastAPI/RaceAPI';
 
 interface ResultState {
   race: ErgastRace | undefined,
@@ -22,8 +22,8 @@ const initialState: ResultState = {
 
 export const fetchResult = createAsyncThunk('result/fetchResult', async ({year, round}: GetPayloadAction) => {
   console.log('fetchResult', { year, round });
-  const response = await ErgastAPI.getRaceResult(year, round);
-  const raceResponse = await ErgastAPI.getRace(year, round);
+  const response = await getRaceResult(year, round);
+  const raceResponse = await getRace(year, round);
   const timeZone = (await getTimeZoneFromLatLng(raceResponse?.Circuit.Location.lat, raceResponse?.Circuit.Location.long));
   return {data: {...raceResponse, ...response }, timeZone};
 });

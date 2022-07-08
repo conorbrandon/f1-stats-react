@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ErgastAPI } from '../../api/ErgastAPI';
 import type { RootState } from '../store';
 import { ReduxAsyncErrorType, ReduxAsyncStatusType } from '../types';
 import { ErgastConstructor } from '../../model/ErgastConstructor';
+import { getAllF1Constructors, getConstructorsByYear } from '../../api/ErgastAPI/ConstructorAPI';
 
 interface ConstructorsState {
   constructors: ErgastConstructor[],
@@ -21,10 +21,10 @@ const initialState: ConstructorsState = {
 
 export const fetchConstructors = createAsyncThunk('constructors/fetchConstructors', async (year: GetPayloadAction) => {
   if (year !== 'all') {
-    const response = await ErgastAPI.getConstructorsByYear(year);
+    const response = await getConstructorsByYear(year);
     return response;
   } else {
-    const response = await ErgastAPI.getAllF1Constructors();
+    const response = await getAllF1Constructors();
     return response;
   }
 });

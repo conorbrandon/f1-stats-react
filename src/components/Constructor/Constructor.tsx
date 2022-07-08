@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
-import { ErgastAPI } from "../../api/ErgastAPI";
+import { getConstructorQualifying, getConstructorResults } from "../../api/ErgastAPI/ConstructorAPI";
 import { AppOutletContext } from "../../App";
 import { setNewConstructorResults, fetchConstructor, selectConstructor, selectConstructorError, selectConstructorResults, selectConstructorSeasons, selectConstructorStatus, selectConstructorQualifying, setNewConstructorQualifying } from "../../app/constructor/constructorSlice";
 import { fetchConstructorLogo, selectConstructorLogos } from "../../app/constructorLogos/constructorLogosSlice";
@@ -41,10 +41,10 @@ export const Constructor = ({ }) => {
         entityID={constructorID} 
         entitySeasons={constructorSeasons} 
         entityResults={constructorResults}
-        ergastResultsFn={ErgastAPI.getConstructorResults}
+        ergastResultsFn={getConstructorResults}
         setNewResultsReducerAction={setNewConstructorResults}
         entityQualifying={constructorQualifying}
-        ergastQualifyingFn={ErgastAPI.getConstructorQualifying}
+        ergastQualifyingFn={getConstructorQualifying}
         setNewQualifyingReducerAction={setNewConstructorQualifying}
         constructorLogos={constructorLogos}
         isConstructorProfile={true} />

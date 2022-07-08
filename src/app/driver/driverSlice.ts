@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { ErgastAPI } from '../../api/ErgastAPI';
 import type { RootState } from '../store';
 import { ReduxAsyncErrorType, ReduxAsyncStatusType } from '../types';
 import { ErgastDriver } from '../../model/ErgastDriver';
 import { ErgastSeason } from '../../model/ErgastSeason';
 import { ErgastRace } from '../../model/ErgastRace';
+import { getDriver, getDriverSeasons, getDriverResults, getDriverQualifying } from '../../api/ErgastAPI/DriverAPI';
 
 interface DriverState {
   driver: ErgastDriver | undefined,
@@ -26,10 +26,10 @@ const initialState: DriverState = {
 };
 
 export const fetchDriver = createAsyncThunk('driver/fetchDriver', async (driverID: GetPayloadAction) => {
-  const response = await ErgastAPI.getDriver(driverID);
-  const seasons = await ErgastAPI.getDriverSeasons(driverID);
-  const results = seasons[seasons.length - 1] ? await ErgastAPI.getDriverResults(seasons[seasons.length - 1].season, driverID) : [];
-  const qualifying = seasons[seasons.length - 1] ? await ErgastAPI.getDriverQualifying(seasons[seasons.length - 1].season, driverID) : [];
+  const response = await getDriver(driverID);
+  const seasons = await getDriverSeasons(driverID);
+  const results = seasons[seasons.length - 1] ? await getDriverResults(seasons[seasons.length - 1].season, driverID) : [];
+  const qualifying = seasons[seasons.length - 1] ? await getDriverQualifying(seasons[seasons.length - 1].season, driverID) : [];
   return { response, seasons, results, qualifying };
 });
 

@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ErgastAPI } from '../../api/ErgastAPI';
 import type { RootState } from '../store';
 import { ReduxAsyncErrorType, ReduxAsyncStatusType } from '../types';
 import { ErgastDriver } from '../../model/ErgastDriver';
+import { getAllF1Drivers, getDriversByYear } from '../../api/ErgastAPI/DriverAPI';
 
 interface DriversState {
   drivers: ErgastDriver[],
@@ -21,10 +21,10 @@ const initialState: DriversState = {
 
 export const fetchDrivers = createAsyncThunk('drivers/fetchDrivers', async (year: GetPayloadAction) => {
   if (year !== 'all') {
-    const response = await ErgastAPI.getDriversByYear(year);
+    const response = await getDriversByYear(year);
     return response;
   } else {
-    const response = await ErgastAPI.getAllF1Drivers();
+    const response = await getAllF1Drivers();
     return response;
   }
 });

@@ -19,6 +19,8 @@ import { Dashboard } from './components/Dashboard/Dashboard';
 import { Standings } from './components/Standings/Standings';
 import { Drivers } from './components/Drivers/Drivers';
 import { Constructors } from './components/Constructors/Constructors';
+import { Circuit } from './components/Circuit/Circuit';
+import { Circuits } from './components/Circuits/Circuits';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -43,6 +45,8 @@ root.render(
           <Route path='/driver/:driverID' element={<Driver />}/>
           <Route path='/constructors' element={<Constructors />} />
           <Route path='/constructor/:constructorID' element={<Constructor />}/>
+          <Route path='/circuits' element={<Circuits />} />
+          <Route path='/circuit/:circuitID' element={<Circuit />}/>
         </Route>
       </Routes>
     </BrowserRouter>

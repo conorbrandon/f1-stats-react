@@ -1,6 +1,6 @@
 import React from "react";
 import { useOutletContext, useParams } from "react-router-dom";
-import { ErgastAPI } from "../../api/ErgastAPI";
+import { getDriverQualifying, getDriverResults } from "../../api/ErgastAPI/DriverAPI";
 import { AppOutletContext } from "../../App";
 import { setNewDriverResults, fetchDriver, selectDriver, selectDriverError, selectDriverResults, selectDriverSeasons, selectDriverStatus, setNewDriverQualifying, selectDriverQualifying } from "../../app/driver/driverSlice";
 import { useAppSelector } from "../../app/hooks";
@@ -39,10 +39,10 @@ export const Driver = ({ }) => {
         entityID={driverID} 
         entitySeasons={driverSeasons} 
         entityResults={driverResults}
-        ergastResultsFn={ErgastAPI.getDriverResults}
+        ergastResultsFn={getDriverResults}
         setNewResultsReducerAction={setNewDriverResults}
         entityQualifying={driverQualifying}
-        ergastQualifyingFn={ErgastAPI.getDriverQualifying}
+        ergastQualifyingFn={getDriverQualifying}
         setNewQualifyingReducerAction={setNewDriverQualifying} />
     </>
   );

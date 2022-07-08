@@ -14,6 +14,7 @@ import constructorStandingsReducer from './constructorStandings/constructorStand
 import constructorReducer from './constructor/constructorSlice';
 import constructorsReducer from './constructors/constructorsSlice';
 import circuitReducer from './circuit/circuitSlice';
+import circuitsReducer from './circuits/circuitsSlice';
 
 const middleware = [logger]; // always put logger last
 
@@ -32,7 +33,8 @@ export const store =  configureStore({
     constructorStandings: constructorStandingsReducer,
     myConstructor: constructorReducer,
     myConstructors: constructorsReducer,
-    circuit: circuitReducer
+    circuit: circuitReducer,
+    circuits: circuitsReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(...middleware),
   devTools: true

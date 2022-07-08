@@ -1,4 +1,4 @@
-import { sleep } from "./ErgastAPI";
+import { sleep } from "./ErgastAPI/ErgastAPI";
 
 const baseUrl = 'http://api.timezonedb.com/v2.1/get-time-zone';
 

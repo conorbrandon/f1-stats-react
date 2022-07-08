@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { ErgastAPI } from '../../api/ErgastAPI';
 import type { RootState } from '../store';
 import { ErgastRace } from '../../model/ErgastRace';
 import { ReduxAsyncErrorType, ReduxAsyncStatusType } from '../types';
 import { TimeHelper } from '../../helpers/TimeHelper';
 import { ErgastQualifyingResult } from '../../model/ErgastQualifyingResult';
+import { getRaceQualifying } from '../../api/ErgastAPI/RaceAPI';
 
 interface QualifyingState {
   qualifying: ErgastRace | undefined,
@@ -25,7 +25,7 @@ const initialState: QualifyingState = {
 };
 
 export const fetchQualifying = createAsyncThunk('qualifying/fetchQualifying', async ({year, round}: GetPayloadAction) => {
-  const response = await ErgastAPI.getRaceQualifying(year, round);
+  const response = await getRaceQualifying(year, round);
   return response;
 });
 

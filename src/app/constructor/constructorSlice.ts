@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { ErgastAPI } from '../../api/ErgastAPI';
 import type { RootState } from '../store';
 import { ReduxAsyncErrorType, ReduxAsyncStatusType } from '../types';
 import { ErgastConstructor } from '../../model/ErgastConstructor';
 import { ErgastSeason } from '../../model/ErgastSeason';
 import { ErgastRace } from '../../model/ErgastRace';
+import { getConstructor, getConstructorQualifying, getConstructorResults, getConstructorSeasons } from '../../api/ErgastAPI/ConstructorAPI';
 
 interface ConstructorState {
   constructor: ErgastConstructor | undefined,
@@ -26,10 +26,10 @@ const initialState: ConstructorState = {
 };
 
 export const fetchConstructor = createAsyncThunk('constructor/fetchConstructor', async (constructorID: GetPayloadAction) => {
-  const response = await ErgastAPI.getConstructor(constructorID);
-  const seasons = await ErgastAPI.getConstructorSeasons(constructorID);
-  const results = seasons[seasons.length - 1] ? await ErgastAPI.getConstructorResults(seasons[seasons.length - 1].season, constructorID) : [];
-  const qualifying = seasons[seasons.length - 1] ? await ErgastAPI.getConstructorQualifying(seasons[seasons.length - 1].season, constructorID) : [];
+  const response = await getConstructor(constructorID);
+  const seasons = await getConstructorSeasons(constructorID);
+  const results = seasons[seasons.length - 1] ? await getConstructorResults(seasons[seasons.length - 1].season, constructorID) : [];
+  const qualifying = seasons[seasons.length - 1] ? await getConstructorQualifying(seasons[seasons.length - 1].season, constructorID) : [];
   return { response, seasons, results, qualifying };
 });
 

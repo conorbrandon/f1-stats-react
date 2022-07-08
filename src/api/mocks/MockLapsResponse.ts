@@ -1,4 +1,4 @@
-import { ErgastRaceResponse } from "../model/ErgastRaceResponse";
+import { ErgastRaceResponse } from "../../model/ErgastRaceResponse";
 
 export const MockLapsResponse: ErgastRaceResponse = {
   "MRData": {

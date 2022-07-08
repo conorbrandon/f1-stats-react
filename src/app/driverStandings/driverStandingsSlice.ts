@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ErgastAPI } from '../../api/ErgastAPI';
 import type { RootState } from '../store';
 import { ReduxAsyncErrorType, ReduxAsyncStatusType } from '../types';
 import { ErgastStandingList } from '../../model/ErgastStandingList';
+import { getDriverStandings } from '../../api/ErgastAPI/StandingsAPI';
 
 interface DriverStandingsState {
   driverStandings?: ErgastStandingList,
@@ -18,7 +18,7 @@ const initialState: DriverStandingsState = {
 };
 
 export const fetchDriverStandings = createAsyncThunk('driverStandings/fetchDriverStandings', async (year: GetPayloadAction) => {
-  const response = await ErgastAPI.getDriverStandings(year);
+  const response = await getDriverStandings(year);
   return response;
 });
 

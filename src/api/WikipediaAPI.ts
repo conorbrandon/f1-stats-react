@@ -1,5 +1,62 @@
 import { parse } from 'node-html-parser';
 
+const CACHE: { [url: string]: any } = {};
+
+const baseUrl = 'https://en.wikipedia.org/api/rest_v1/page/html';
+
+export async function getThumbnailLinkFromPage(pageUrl: string): Promise<string> {
+  const pageName = pageUrl.split('wiki/')[1];
+  const url = `${baseUrl}/${pageName}`;
+  let text: string;
+  if (CACHE[url]) {
+    console.log('getting', { url }, 'from cache');
+    text = CACHE[url];
+  } else {
+    const data: Response = await fetch(url);
+    text = await data.text();
+    CACHE[url] = text;
+  }
+  // console.log({ wikipediaResponse: text });
+  const root = parse(text);
+  const firstInfoboxImage = root.querySelectorAll('.infobox-image')[0];
+  let infoboxImageSrc;
+  if (firstInfoboxImage) {
+    const infoboxImage = firstInfoboxImage.querySelectorAll('img')[0] as any;
+    infoboxImageSrc = infoboxImage?._attrs?.src;
+  }
+  return infoboxImageSrc;
+};
+
+export async function getCircuitImageLinkFromPage(pageUrl: string, circuitName: string): Promise<string> {
+  const pageName = pageUrl.split('wiki/')[1];
+  const url = `${baseUrl}/${pageName}`;
+  let text: string;
+  if (CACHE[url]) {
+    console.log('getting', { url }, 'from cache');
+    text = CACHE[url];
+  } else {
+    const data: Response = await fetch(url);
+    text = await data.text();
+    CACHE[url] = text;
+  }
+  const root = parse(text);
+  const firstInfoboxImage = root.querySelectorAll('.infobox-image')[0];
+  const imgs = firstInfoboxImage.querySelectorAll('img');
+  // console.log({ imgs });
+  let trackLayoutImg;
+  let trackLogoImg;
+  imgs.forEach(img => {
+    if (img?.attrs?.src.toLowerCase().includes('logo')) {
+      trackLogoImg = img?.attrs?.src;
+    } else if (img?.attrs?.src.toLowerCase().includes('svg')) {
+      trackLayoutImg = img?.attrs?.src;
+    }
+  });
+  return `https:${trackLayoutImg || trackLogoImg || imgs[0].attrs.src}`;
+};
+
+
+
 export interface WikipediaSummaryResponse {
   "type": string,
   "title": string,
@@ -48,31 +105,4 @@ export interface WikipediaSummaryResponse {
   },
   "extract": string,
   "extract_html": string
-};
-
-const CACHE: { [url: string]: any } = {};
-
-const baseUrl = 'https://en.wikipedia.org/api/rest_v1/page/html';
-
-export async function getThumbnailLinkFromPage(pageUrl: string): Promise<string> {
-  const pageName = pageUrl.split('wiki/')[1];
-  const url = `${baseUrl}/${pageName}`;
-  let text: string;
-  if (CACHE[url]) {
-    console.log('getting', { url }, 'from cache');
-    text = CACHE[url];
-  } else {
-    const data: Response = await fetch(url);
-    text = await data.text();
-    CACHE[url] = text;
-  }
-  // console.log({ wikipediaResponse: text });
-  const root = parse(text);
-  const firstInfoboxImage = root.querySelectorAll('.infobox-image')[0];
-  let infoboxImageSrc;
-  if (firstInfoboxImage) {
-    const infoboxImage = firstInfoboxImage.querySelectorAll('img')[0] as any;
-    infoboxImageSrc = infoboxImage?._attrs?.src;
-  }
-  return infoboxImageSrc;
 };

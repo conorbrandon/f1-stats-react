@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ErgastAPI } from '../../api/ErgastAPI';
+import { getSchedule } from '../../api/ErgastAPI/ScheduleAPI';
 import type { RootState } from '../../app/store';
 import { ErgastRace } from '../../model/ErgastRace';
 import { ReduxAsyncErrorType, ReduxAsyncStatusType } from '../types';
@@ -18,7 +18,7 @@ const initialState: ScheduleState = {
 };
 
 export const fetchSchedule = createAsyncThunk('schedule/fetchSchedule', async (year: GetPayloadAction) => {
-  const response = await ErgastAPI.getSchedule(year);
+  const response = await getSchedule(year);
   return response;
 });
 

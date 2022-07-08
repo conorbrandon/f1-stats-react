@@ -37,7 +37,7 @@ export const Schedule = ({ }) => {
 
   return (
     <>
-      <ScheduleHeader schedule={schedule} scheduleYear={scheduleYear} changeScheduleYear={changeScheduleYear} setUseCardLayout={setUseCardLayout} />
+      <ScheduleHeader schedule={schedule} scheduleYear={scheduleYear} changeScheduleYear={changeScheduleYear} setUseCardLayout={setUseCardLayout} useCardLayout={useCardLayout} />
       <div className={`page-content ${isDarkMode ? 'dark' : 'light'}`}>
         <UseReduxAsyncStatus status={scheduleStatus} successContent={useCardLayout ? <RaceCards isDarkMode={isDarkMode} races={schedule} /> : <RaceList isDarkMode={isDarkMode} races={schedule} />} error={scheduleError} fetchAction={fetchSchedule} fetchParams={scheduleYear} />
       </div>

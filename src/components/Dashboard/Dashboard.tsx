@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
-import { ErgastAPI } from "../../api/ErgastAPI";
+import { getRaceResult } from "../../api/ErgastAPI/RaceAPI";
+import { getNextRace, getPreviousRace } from "../../api/ErgastAPI/ScheduleAPI";
 import { AppOutletContext } from "../../App";
 import { fetchConstructorStandings, selectConstructorStandings, selectConstructorStandingsError, selectConstructorStandingsStatus } from "../../app/constructorStandings/constructorStandingsSlice";
 import { fetchDriverStandings, selectDriverStandings, selectDriverStandingsError, selectDriverStandingsStatus } from "../../app/driverStandings/driverStandingsSlice";
@@ -30,7 +31,7 @@ export const Dashboard = ({ }) => {
   const [isNextRaceActive, setIsNextRaceActive] = useState(true);
   useEffect(() => {
     if (!nextRace) {
-      ErgastAPI.getNextRace()
+      getNextRace()
         .then(response => {
           const { nextRace, timeZone } = response;
           setNextRace(nextRace);
@@ -38,7 +39,7 @@ export const Dashboard = ({ }) => {
         });
     }
     if (!previousRace && !isNextRaceActive) {
-      ErgastAPI.getPreviousRace()
+      getPreviousRace()
         .then(response => {
           const { prevRace, timeZone } = response;
           setPreviousRace(prevRace);
@@ -46,7 +47,7 @@ export const Dashboard = ({ }) => {
         });
     }
     if (!previousRaceResult && !isNextRaceActive) {
-      ErgastAPI.getRaceResult('current', 'last')
+      getRaceResult('current', 'last')
         .then(response => {
           setPreviousRaceResult(response);
         })

@@ -7,10 +7,11 @@ import { FlagHelper } from "../../helpers/FlagHelper";
 import { useOutletContext } from "react-router-dom";
 import { AppOutletContext } from "../../App";
 
+type MapType = 'vertical' | 'horizontal' | 'square' | 'smallSquare';
 interface MapboxProps {
   races: ErgastRace[],
   activePopup?: number,
-  mapType: string,
+  mapType: MapType,
   zoomParam?: number
 }
 

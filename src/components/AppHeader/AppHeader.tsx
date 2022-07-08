@@ -47,12 +47,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ isDarkMode, enableDarkMode
         <Link to={'/current/standings'} onClick={handleResetStandings}>standings</Link>
         <Link to={'/drivers'}>drivers</Link>
         <Link to={'/constructors'}>constructors</Link>
+        <Link to={'/circuits'}>circuits</Link>
         {process.env.REACT_APP_ENVIRONMENT === 'mock' && 
           <>
-          <Link style={{ color: 'gray' }} to="2008/5">test race 2008</Link>
-          <Link style={{ color: 'gray' }} to="2022/5">test race 2022</Link>
-          <Link style={{ color: 'gray' }} to="driver/massa">test driver massa</Link>
-          <Link style={{ color: 'gray' }} to="constructor/ferrari">test const. ferrari</Link>
+          <Link style={{ color: 'gray' }} to="2008/5">turkey 2008</Link>
+          <Link style={{ color: 'gray' }} to="2022/5">miami 2022</Link>
+          <Link style={{ color: 'gray' }} to="driver/massa">massa</Link>
+          <Link style={{ color: 'gray' }} to="constructor/ferrari">ferrari</Link>
+          <Link style={{ color: 'gray' }} to="circuit/bahrain">bahrain circuit</Link>
           </>}
       </nav>  
       {isDarkMode && <span className={`material-icons ${styles.darkModeToggleButton} ${styles.lightModeButton}`} onClick={handleDisableDarkMode}>light_mode</span>}

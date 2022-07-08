@@ -5,18 +5,20 @@ import { AppOutletContext } from "../../App";
 import { ConstructorLogoType } from "../../app/constructorLogos/constructorLogosSlice";
 import { useAppDispatch } from "../../app/hooks";
 import { FlagHelper } from "../../helpers/FlagHelper";
+import { ErgastCircuit } from "../../model/ErgastCircuit";
 import { ErgastConstructor } from "../../model/ErgastConstructor";
 import { ErgastDriver } from "../../model/ErgastDriver";
 import { ErgastRace } from "../../model/ErgastRace";
 import { ErgastSeason } from "../../model/ErgastSeason";
 import { LoadingSpinner } from "../LoadingSpinner/LoadingSpinner";
+import { Mapbox } from "../Mapbox/Mapbox";
 import { RaceQualifying } from "../RaceQualifying/RaceQualifying";
 import { RaceResults } from "../RaceResults/RaceResults";
 import { SortableTableHeader } from "../SortableTable/SortableTable";
 import styles from "./EntityProfile.module.css";
 
 interface EntityProfileProps {
-  entity: ErgastDriver | ErgastConstructor | undefined,
+  entity: ErgastDriver | ErgastConstructor | ErgastCircuit | undefined,
   entityID: string | undefined,
   entitySeasons: ErgastSeason[],
   entityResults: ErgastRace[] | undefined,
@@ -26,10 +28,12 @@ interface EntityProfileProps {
   ergastQualifyingFn: (year: string, id: string) => Promise<ErgastRace[]>,
   setNewQualifyingReducerAction: ActionCreatorWithOptionalPayload<any, string>,
   constructorLogos?: ConstructorLogoType,
-  isConstructorProfile?: boolean
+  isConstructorProfile?: boolean,
+  isCircuitProfile?: boolean,
+  circuitImgLink?: string
 }
 
-export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, entitySeasons, entityResults, ergastResultsFn, setNewResultsReducerAction, entityQualifying, ergastQualifyingFn, setNewQualifyingReducerAction, constructorLogos, isConstructorProfile }) => {
+export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, entitySeasons, entityResults, ergastResultsFn, setNewResultsReducerAction, entityQualifying, ergastQualifyingFn, setNewQualifyingReducerAction, constructorLogos, isConstructorProfile, isCircuitProfile, circuitImgLink }) => {
   const { isDarkMode } = useOutletContext<AppOutletContext>();
   const dispatch = useAppDispatch();
   const [resultsYear, setResultsYear] = useState<string>();
@@ -48,15 +52,39 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
       setResultsYear(entityResults[0].season);
     }
   }, [entityResults]);
+  const circuitResultsTemplate = ['Fastest Lap', 'Points', 'Position', 'Constructor', 'Driver'];
+  const circuitResultsWidths = {
+    'Fastest Lap': '17%',
+    'Points': '10%',
+    'Position': '10%',
+    'Constructor': '30%',
+    'Driver': '33%'
+  };
+  const circuitQualifyingTemplate = ['Driver', 'Constructor', 'Position', 'Q3', 'Q2', 'Q1'];
+  const circuitQualifyingWidths = {
+    'Position': '9%',
+    'Q1': '12%',
+    'Q2': '12%',
+    'Q3': '12%',
+    'Driver': '27.5%',
+    'Constructor': '27.5%'
+  };
 
   const entityBodyContent = <>{entity &&
     <div>
       <div className="displayFlex flexDirRow flexAlignItemsCenter" style={{ justifyContent: 'space-evenly', marginBottom: '1rem' }}>
         {entityID && constructorLogos && constructorLogos[entityID] && <img className="white-bg" src={constructorLogos[entityID]} alt={`${entityID} logo`} />}
-        <div>Nationality: {entity.nationality}</div>
-        <img src={FlagHelper.getFlagFromDenonym(entity.nationality)} alt={`${entity.nationality} flag`} />
+        {"nationality" in entity && <div>Nationality: {entity.nationality}</div>}
+        {"nationality" in entity && <img src={FlagHelper.getFlagFromDenonym(entity.nationality)} alt={`${entity.nationality} flag`} />}
+        {"Location" in entity && <img src={FlagHelper.getFlag(entity.Location.country)} alt={`${entity.Location.country} flag`} />}
+        {isCircuitProfile && circuitImgLink && "circuitName" in entity ? <img className='white-bg' src={circuitImgLink} alt={`${entity.circuitName} track map`} /> : <></>}
+        {"Location" in entity && <Mapbox zoomParam={4} mapType='smallSquare' races={entityResults || []} />}
         {"dateOfBirth" in entity && <div>Date of birth: {new Date(entity.dateOfBirth).toLocaleDateString()}</div>}
-        <div><a href={entity.url} target="_blank">Wikipedia</a></div>
+        {!isCircuitProfile && <div><a href={entity.url} target="_blank">Wikipedia</a></div>}
+        {isCircuitProfile && "Location" in entity && <div>
+          <a href={entity.url} target="_blank">Wikipedia</a><br />
+          <a href={`https://www.google.com/maps/place/${entity.Location.lat},${entity.Location.long}`} target="_blank">Google Maps</a>
+        </div>}
         <div style={{ width: '35%' }}>
           Seasons:
           <div style={{
@@ -106,8 +134,8 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
                     {entityResults[0].season} Results:
                   </div>
                   <SortableTableHeader
-                    template={['Fastest Lap', 'Finishing Status', 'Laps', 'Points', 'Position', 'Driver']}
-                    prescribeWidths={{
+                    template={isCircuitProfile ? circuitResultsTemplate : ['Fastest Lap', 'Finishing Status', 'Laps', 'Points', 'Position', 'Driver']}
+                    prescribeWidths={isCircuitProfile ? circuitResultsWidths : {
                       'Fastest Lap': '20%',
                       'Finishing Status': '20%',
                       'Laps': '10%',
@@ -125,9 +153,9 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
                     {entityQualifying[0].season} Qualifying:
                   </div>
                   <SortableTableHeader
-                    template={[`${isConstructorProfile ? 'Driver': 'Constructor'}`, 'Position', 'Q3', 'Q2', 'Q1']}
-                    prescribeWidths={{
-                      [`${isConstructorProfile ? 'Driver': 'Constructor'}`]: '30%',
+                    template={isCircuitProfile ? circuitQualifyingTemplate : [`${isConstructorProfile ? 'Driver' : 'Constructor'}`, 'Position', 'Q3', 'Q2', 'Q1']}
+                    prescribeWidths={isCircuitProfile ? circuitQualifyingWidths : {
+                      [`${isConstructorProfile ? 'Driver' : 'Constructor'}`]: '30%',
                       'Position': '10%',
                       'Q1': '20%',
                       'Q2': '20%',
@@ -139,16 +167,16 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
               }
             </div>
             <div style={{
-                  overflowY: 'auto',
-                  height: '65vh',
-                  width: '100%',
-                  border: `solid ${isDarkMode ? 'white' : 'black'} 1px`,
-                  borderRadius: '10px',
-                  padding: '1rem'
-                }}>
+              overflowY: 'auto',
+              height: '65vh',
+              width: '100%',
+              border: `solid ${isDarkMode ? 'white' : 'black'} 1px`,
+              borderRadius: '10px',
+              padding: '1rem'
+            }}>
               {(entityResults.length >= entityQualifying.length ? entityResults : entityQualifying).map((_, i) => {
                 return (
-                  <div style={{ width: '100%', marginBottom: '1rem' }}>
+                  <div key={`${_.raceName + i}`} style={{ width: '100%', marginBottom: '1rem' }}>
                     <div style={{ width: '100%' }}>
                       <Link to={`/${(entityResults[i] || entityQualifying[i]).season}/${(entityResults[i] || entityQualifying[i]).round}`}>
                         <span className={`x-large-font displayFlex flexDirRow`} style={{ justifyContent: 'space-between' }}>
@@ -171,9 +199,9 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
                           noTableHeader
                           noClass
                           captionForTable={<></>}
-                          templateParam={['Fastest Lap', 'Finishing Status', 'Laps', 'Points', 'Position', 'Driver']}
+                          templateParam={isCircuitProfile ? circuitResultsTemplate : ['Fastest Lap', 'Finishing Status', 'Laps', 'Points', 'Position', 'Driver']}
                           inputRace={entityResults[i]}
-                          prescribeWidths={{
+                          prescribeWidths={isCircuitProfile ? circuitResultsWidths : {
                             'Fastest Lap': '20%',
                             'Finishing Status': '20%',
                             'Laps': '10%',
@@ -188,10 +216,10 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
                           noTableHeader
                           noClass
                           captionForTable={<></>}
-                          templateParam={[`${isConstructorProfile ? 'Driver': 'Constructor'}`, 'Position', 'Q3', 'Q2', 'Q1']}
+                          templateParam={isCircuitProfile ? circuitQualifyingTemplate : [`${isConstructorProfile ? 'Driver' : 'Constructor'}`, 'Position', 'Q3', 'Q2', 'Q1']}
                           inputRace={entityQualifying[i]}
-                          prescribeWidths={{
-                            [`${isConstructorProfile ? 'Driver': 'Constructor'}`]: '30%',
+                          prescribeWidths={isCircuitProfile ? circuitQualifyingWidths : {
+                            [`${isConstructorProfile ? 'Driver' : 'Constructor'}`]: '30%',
                             'Position': '10%',
                             'Q1': '20%',
                             'Q2': '20%',

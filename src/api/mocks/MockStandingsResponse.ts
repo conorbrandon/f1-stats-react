@@ -1,4 +1,4 @@
-import { ErgastStandingsResponse } from "../model/ErgastStandingsResponse";
+import { ErgastStandingsResponse } from "../../model/ErgastStandingsResponse";
 
 export const MockDriversStandings2022: ErgastStandingsResponse = {
   "MRData": {

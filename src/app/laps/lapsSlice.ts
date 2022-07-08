@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ErgastAPI } from '../../api/ErgastAPI';
 import type { RootState } from '../store';
 import { ReduxAsyncErrorType, ReduxAsyncStatusType } from '../types';
 import { ErgastLap } from '../../model/ErgastLap';
+import { getLapTimes } from '../../api/ErgastAPI/LapsAndPitsAPI';
 
 interface LapTimesState {
   laps?: ErgastLap[],
@@ -18,7 +18,7 @@ const initialState: LapTimesState = {
 };
 
 export const fetchLaps = createAsyncThunk('laps/fetchLaps', async ({year, round}: GetPayloadAction) => {
-  const response = await ErgastAPI.getLapTimes(year, round);
+  const response = await getLapTimes(year, round);
   return response;
 });
 
