@@ -85,7 +85,13 @@ export const GenericTrace: React.FC<GenericTraceProps> = ({ data, driverIDSet, w
           <YAxis stroke={`${isDarkMode ? 'white' : 'black'}`} allowDataOverflow={true} scale={scale || scaleLinear()} type="number" domain={domain} interval={interval !== undefined ? interval : 0} tickFormatter={formatter || genericFormatter} width={100} tickCount={tickCount} reversed={reversed || false} />
           <Tooltip itemSorter={(item) => {
             return item.value as number;
-          }} formatter={formatter || genericFormatter} position={{ y: -100 }} />
+          }} 
+          formatter={(value: number, name: any, props: any) => { 
+            // console.log(value, name, props, pitstopLapMap); 
+            const pitThisLap = pitstopLapMap && pitstopLapMap[props.payload.lapNum] && pitstopLapMap[props.payload.lapNum][name];
+            return (formatter || genericFormatter)(value) + (pitThisLap ? ' (Pitstop this lap)' : ''); 
+            }} 
+            animationEasing={'linear'} labelFormatter={(value) => `Lap ${value}`} position={{ y: -100 }} />
           <Legend />
           {driverIDSet?.filter(driver => driver.isSelected).map((driver, _i) => {
             return <Line key={driver.driverID} type="linear"

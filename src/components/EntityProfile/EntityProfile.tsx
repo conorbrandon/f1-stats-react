@@ -52,7 +52,7 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
       setResultsYear(entityResults[0].season);
     }
   }, [entityResults]);
-  const circuitResultsTemplate = ['Fastest Lap', 'Points', 'Position', 'Constructor', 'Driver'];
+  const circuitResultsTemplate = ['Fastest Lap', 'Points', 'Constructor', 'Position', 'Driver'];
   const circuitResultsWidths = {
     'Fastest Lap': '17%',
     'Points': '10%',
@@ -60,7 +60,7 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
     'Constructor': '30%',
     'Driver': '33%'
   };
-  const circuitQualifyingTemplate = ['Driver', 'Constructor', 'Position', 'Q3', 'Q2', 'Q1'];
+  const circuitQualifyingTemplate = ['Driver', 'Position', 'Constructor', 'Q3', 'Q2', 'Q1'];
   const circuitQualifyingWidths = {
     'Position': '9%',
     'Q1': '12%',
@@ -78,7 +78,7 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
         {"nationality" in entity && <img src={FlagHelper.getFlagFromDenonym(entity.nationality)} alt={`${entity.nationality} flag`} />}
         {"Location" in entity && <img src={FlagHelper.getFlag(entity.Location.country)} alt={`${entity.Location.country} flag`} />}
         {isCircuitProfile && circuitImgLink && "circuitName" in entity ? <img className='white-bg' src={circuitImgLink} alt={`${entity.circuitName} track map`} /> : <></>}
-        {"Location" in entity && <Mapbox zoomParam={4} mapType='smallSquare' races={entityResults || []} />}
+        {"Location" in entity && <Mapbox zoomParam={4} mapType='smallSquare' races={[]} circuit={entity} />}
         {"dateOfBirth" in entity && <div>Date of birth: {new Date(entity.dateOfBirth).toLocaleDateString()}</div>}
         {!isCircuitProfile && <div><a href={entity.url} target="_blank">Wikipedia</a></div>}
         {isCircuitProfile && "Location" in entity && <div>
@@ -182,7 +182,7 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
                         <span className={`x-large-font displayFlex flexDirRow`} style={{ justifyContent: 'space-between' }}>
                           <span className="material-icons-align">
                             {i + 1}. {(entityResults[i] || entityQualifying[i]).raceName}
-                            <img style={{ width: '10%' }} src={FlagHelper.getFlag((entityResults[i] || entityQualifying[i]).Circuit.Location.country)} alt={`${(entityResults[i] || entityQualifying[i]).Circuit.Location.country} flag`} />
+                            <img style={{ width: '10%', marginLeft: '1rem' }} src={FlagHelper.getFlag((entityResults[i] || entityQualifying[i]).Circuit.Location.country)} alt={`${(entityResults[i] || entityQualifying[i]).Circuit.Location.country} flag`} />
                           </span>
                           <span className="material-icons-align large-font">
                             Go to race
@@ -194,7 +194,7 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
                       </Link>
                     </div>
                     <div style={{ width: '100%', justifyContent: 'space-between' }} className={`x-large-font displayFlex flexDirRow small-font`}>
-                      <div style={{ width: '50%' }}>
+                      <div style={{ width: '50%', borderRight: `dotted 3px ${isDarkMode ? 'white' : 'black'}` }}>
                         <RaceResults
                           noTableHeader
                           noClass
@@ -231,6 +231,10 @@ export const EntityProfile: React.FC<EntityProfileProps> = ({ entity, entityID, 
                   </div>
                 );
               })}
+              <div className="displayFlex flexDirRow" style={{ justifyContent: 'space-between' }}>
+                {!entityResults.length ? <div style={{ width: '50%' }}>Looks like this circuit will have results in {resultsYear || entitySeasons[entitySeasons.length - 1].season}, but the race is upcoming.</div> : <></>}
+                {!entityResults.length ? <div style={{ width: '50%' }}>Looks like this circuit will have qualifying results in {resultsYear || entitySeasons[entitySeasons.length - 1].season}, but the race is upcoming.</div> : <></>}
+              </div>
             </div>
           </div>
         </div>

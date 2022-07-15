@@ -15,6 +15,7 @@ import constructorReducer from './constructor/constructorSlice';
 import constructorsReducer from './constructors/constructorsSlice';
 import circuitReducer from './circuit/circuitSlice';
 import circuitsReducer from './circuits/circuitsSlice';
+import sprintReducer from './sprint/sprintSlice';
 
 const middleware = [logger]; // always put logger last
 
@@ -23,6 +24,7 @@ export const store =  configureStore({
     counter: counterReducer,
     schedule: scheduleReducer,
     result: resultReducer,
+    sprint: sprintReducer,
     qualifying: qualifyingReducer,
     drivers: driversReducer,
     driver: driverReducer,

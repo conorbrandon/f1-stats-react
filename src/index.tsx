@@ -21,6 +21,7 @@ import { Drivers } from './components/Drivers/Drivers';
 import { Constructors } from './components/Constructors/Constructors';
 import { Circuit } from './components/Circuit/Circuit';
 import { Circuits } from './components/Circuits/Circuits';
+import { RaceSprint } from './components/RaceSprint/RaceSprint';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -37,6 +38,7 @@ root.render(
           <Route path={"/:year/:round"} element={<Race />}>
             <Route path='' element={<RaceSummary />} />
             <Route path='results' element={<RaceResults stickyThead />}/>
+            <Route path='sprint' element={<RaceSprint stickyThead />}/>
             <Route path='qualifying' element={<RaceQualifying stickyThead />}/>
             <Route path='laptimes' element={<RaceLapTimes />}/>
             <Route path='racereplay' element={<RaceReplayReMotion />}/>

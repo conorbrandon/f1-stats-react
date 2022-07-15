@@ -1,10 +1,10 @@
 export interface ErgastFastestLap {
-  "rank": string,
+  "rank"?: string,
   "lap": string,
   "Time": {
     "time": string
   },
-  "AverageSpeed": {
+  "AverageSpeed"?: {
     "units": string,
     "speed": string
   }

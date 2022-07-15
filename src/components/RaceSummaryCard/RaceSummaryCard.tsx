@@ -41,7 +41,7 @@ export const RaceSummaryCard: React.FC<RaceSummaryCardProps> = ({ race, horizont
             <span className="material-icons">
               sports_score
             </span>
-            <a href={`https://www.google.com/maps/place/${race.Circuit.Location.lat},${race.Circuit.Location.long}`} target="_blank" rel="noopener">{race.Circuit.circuitName}</a>
+            <Link to={`/circuit/${race.Circuit.circuitId}`}>{race.Circuit.circuitName}</Link>
           </span>
           <span className="material-icons-align">
             <span className="material-icons">

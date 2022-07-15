@@ -40,8 +40,8 @@ export async function getCircuitImageLinkFromPage(pageUrl: string, circuitName: 
     CACHE[url] = text;
   }
   const root = parse(text);
-  const firstInfoboxImage = root.querySelectorAll('.infobox-image')[0];
-  const imgs = firstInfoboxImage.querySelectorAll('img');
+  let imgs: any[] = [];
+  root.querySelectorAll('.infobox-image').forEach(infoBoxImage => imgs.push(...infoBoxImage.querySelectorAll('img')));
   // console.log({ imgs });
   let trackLayoutImg;
   let trackLogoImg;
@@ -52,6 +52,7 @@ export async function getCircuitImageLinkFromPage(pageUrl: string, circuitName: 
       trackLayoutImg = img?.attrs?.src;
     }
   });
+  // console.log({trackLayoutImg, trackLogoImg, img0: imgs[0].attrs.src})
   return `https:${trackLayoutImg || trackLogoImg || imgs[0].attrs.src}`;
 };
 

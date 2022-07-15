@@ -20,6 +20,7 @@ export interface ErgastRace {
   "Qualifying"?: ErgastDate,
   "Results"?: ErgastResult[]
   "QualifyingResults"?: ErgastQualifyingResult[],
+  SprintResults?: ErgastResult[],
   "Laps"?: ErgastLap[],
   "PitStops"?: ErgastPitStop[]
 };

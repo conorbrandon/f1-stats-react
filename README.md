@@ -5,6 +5,7 @@ https://www.smashingmagazine.com/2020/03/sortable-tables-react/
 https://en.wikipedia.org/wiki/List_of_adjectival_and_demonymic_forms_for_countries_and_nations
 
 https://upload.wikimedia.org/wikipedia/commons/d/df/F1_tire_Pirelli_PZero_Red.svg
+https://www.svgrepo.com/show/320095/f1-car.svg
 
 https://stackoverflow.com/questions/47723996/table-with-fixed-thead-and-scrollable-tbody
 

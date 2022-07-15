@@ -5,6 +5,7 @@ import { useAppSelector } from "../../app/hooks";
 import { selectQualifying } from "../../app/qualifying/qualifyingSlice";
 import { selectResult, selectResultError, selectResultStatus } from "../../app/result/resultSlice";
 import { selectSchedule } from "../../app/schedule/scheduleSlice";
+import { selectSprint } from "../../app/sprint/sprintSlice";
 import { FlagHelper } from "../../helpers/FlagHelper";
 import { initializeRace } from "../Race/Race";
 import { TooltipRace } from "../TooltipRace/TooltipRace";
@@ -20,6 +21,7 @@ export const RaceHeader = ({ }) => {
   const scheduleStatus = useAppSelector(selectResultStatus);
   const scheduleError = useAppSelector(selectResultError);
   const qualifying = useAppSelector(selectQualifying);
+  const sprint = useAppSelector(selectSprint);
   const backRef = useRef<HTMLAnchorElement>(null);
   const forwardRef = useRef<HTMLAnchorElement>(null);
 
@@ -87,16 +89,19 @@ export const RaceHeader = ({ }) => {
           errors={[resultError, scheduleError]}
           loadingWidth={'50%'} />
         <span className={styles.links}>
-          {race?.Results?.length && <><span>
+          <span>
             <Link to="">Summary</Link>
           </span>
-          <span>
+          {race?.Results?.length && <span>
             <Link to="results">Results</Link>
-          </span></>}
-          {qualifying && <><span>
+          </span>}
+          {sprint && <span>
+            <Link to="sprint">Sprint</Link>
+          </span>}
+          {qualifying && <span>
             <Link to="qualifying">Qualifying</Link>
-          </span>
-          <span>
+          </span>}
+          {race?.Results?.length && <><span>
             <Link to="laptimes">Lap/Position Trace</Link>
           </span>
           <span>

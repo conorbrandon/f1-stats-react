@@ -6,21 +6,23 @@ import mapboxgl from 'mapbox-gl';
 import { FlagHelper } from "../../helpers/FlagHelper";
 import { useOutletContext } from "react-router-dom";
 import { AppOutletContext } from "../../App";
+import { ErgastCircuit } from "../../model/ErgastCircuit";
 
 type MapType = 'vertical' | 'horizontal' | 'square' | 'smallSquare';
 interface MapboxProps {
   races: ErgastRace[],
+  circuit?: ErgastCircuit,
   activePopup?: number,
   mapType: MapType,
   zoomParam?: number
 }
 
-export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType, zoomParam }) => {
+export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType, zoomParam, circuit }) => {
   const { isDarkMode } = useOutletContext<AppOutletContext>();
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN as string;
   const [map, setMap] = useState<mapboxgl.Map>();
   const mapContainer = useRef<HTMLDivElement>();
-  const racesRef = useRef<ErgastRace[]>(races);
+  const racesRef = useRef<ErgastRace[] | ErgastCircuit>(races.length ? races : circuit || []);
   const activePopupRef = useRef<number | undefined>(activePopup);
 
   const [markerMap, setMarkerMap] = useState<mapboxgl.Marker[]>([]);
@@ -60,6 +62,23 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType, zoo
     // console.log({ sumLng, sumLat })
     map?.setCenter([sumLng | 0, sumLat | 0]);
   };
+  const addMarkerForCircuit = (circuit: ErgastCircuit, map: mapboxgl.Map) => {
+    let lng = parseFloat(circuit.Location.long);
+    let lat = parseFloat(circuit.Location.lat);
+    new mapboxgl.Marker()
+    .setLngLat([lng, lat])
+    .setPopup(
+      new mapboxgl.Popup({ closeButton: true, closeOnClick: true })
+        .setHTML(`
+    <div>
+      <h2>${circuit.circuitName}</h2>
+      <p>${circuit.Location.locality}, ${circuit.Location.country}</p>
+      <img src='${FlagHelper.getFlag(circuit.Location.country)}' />
+    </div>`)
+    )
+    .addTo(map as mapboxgl.Map);
+    map.setCenter([lng, lat]);
+  };
   const removeMarkersForRaces = () => {
     // console.log('removeMarkersForRaces', { markerMap })
     markerMap?.forEach(marker => marker.remove());
@@ -77,7 +96,8 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType, zoo
       map.on("load", () => {
         // console.log('map loaded');
         setMap(map);
-        addMarkersForRaces(races, map);
+        if (races.length) addMarkersForRaces(races, map as mapboxgl.Map);
+        else if (circuit) addMarkerForCircuit(circuit, map as mapboxgl.Map);
       });
     };
     if (!map) initializeMap(setMap, mapContainer);
@@ -85,7 +105,10 @@ export const Mapbox: React.FC<MapboxProps> = ({ races, activePopup, mapType, zoo
       if (racesRef.current !== races) {
         // console.log('races changed', { races });
         removeMarkersForRaces();
-        if (map) addMarkersForRaces(races, map as mapboxgl.Map);
+        if (map) {
+          if (races.length) addMarkersForRaces(races, map as mapboxgl.Map);
+          else if (circuit) addMarkerForCircuit(circuit, map as mapboxgl.Map);
+        }
         racesRef.current = races;
       } else {
         // console.log('races constant');

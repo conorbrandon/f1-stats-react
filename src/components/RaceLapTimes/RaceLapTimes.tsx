@@ -83,6 +83,8 @@ const customStyles = (isDarkMode: boolean): StylesConfig<DriverIDElement> => {
         color: isDarkMode ? 'white' : 'black',
       }
     },
+    // i.e. display: none;
+    indicatorSeparator: () => ({})
   }
 };
 
@@ -256,14 +258,14 @@ export const RaceLapTimes = ({ }) => {
     {(useLapType === 'all' || useLapType === 'avg') && lapTimes && !showPositions && driverIDSet.find(driver => driver.isSelected) &&
       <GenericTrace driverIDSet={driverIDSet} grid
         domain={useLapType === 'all' ? ['dataMin - 1000', 'dataMax + 2000'] : [minimumLapTime, averageLapTime]} data={lapTimes}
-        width={1200} height={450}
+        width={1200} height={500}
         chartTitle={`${year} ${race?.raceName} Lap Comparison ${useLapType === 'avg' ? '(outlier laps removed)' : ''}`}
         tickCount={10} formatter={(ms: number) => TimeHelper.msToRaceTime(ms)} dot={false} pitstopLapMap={pitstopLapMap} />
     }
     {useLapType == 'log' && logScaleFunction && logLapTimes && !showPositions && driverIDSet.find(driver => driver.isSelected) &&
       <GenericTrace driverIDSet={driverIDSet} grid
         domain={['dataMin', 'dataMax']} data={logLapTimes}
-        width={1200} height={450}
+        width={1200} height={500}
         chartTitle={`${year} ${race?.raceName} Log Lap Comparison`}
         scale={logScaleFunction.theFunc}
         tickCount={2} interval={1}
@@ -273,12 +275,13 @@ export const RaceLapTimes = ({ }) => {
     {showPositions && driverIDSet.find(driver => driver.isSelected) &&
       <GenericTrace driverIDSet={driverIDSet}
         data={positionTrace || []} domain={[0.5, driverIDSet.length + .5]}
-        width={1200} height={450}
+        width={1200} height={500}
         chartTitle={`${year} ${race?.raceName} Position Trace`}
         tickCount={driverIDSet.length} reversed={true} dot={false} strokeWidth={3}
-        pitstopLapMap={pitstopLapMap} />
+        pitstopLapMap={pitstopLapMap}
+        formatter={(position: number) => `P${position}`} />
     }
-    {!driverIDSet.find(driver => driver.isSelected) && <div style={{ height: '450px' }}></div>}
+    {!driverIDSet.find(driver => driver.isSelected) && <div style={{ height: '500px' }}></div>}
   </>;
   return (
     <div className={`page-content ${isDarkMode ? 'dark' : 'light'}`}>

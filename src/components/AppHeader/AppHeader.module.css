@@ -5,6 +5,12 @@
 .paddedLink a {
   padding-left: 20px;
 }
+.smallglowingF1Text {
+  text-shadow: 0 0 5px red/*, 0 0 30px red */;
+}
+.bigglowingF1Text {
+  text-shadow: 0 0 15px red, 0 0 30px red;
+}
 
 .darkModeToggleButton {
   cursor: pointer;
