@@ -13,13 +13,13 @@ interface ScheduleHeaderProps {
 }
 
 export const ScheduleHeader: React.FC<ScheduleHeaderProps> = ({ scheduleYear, changeScheduleYear, setUseCardLayout, schedule, useCardLayout }) => {
-  const { isDarkMode } = useOutletContext<AppOutletContext>();
+  const { isDarkMode, windowWidth, windowWidthThreshold } = useOutletContext<AppOutletContext>();
   const years: string[] = Array.from({ length: new Date().getUTCFullYear() + 1 - 1950 }, (_, i) => i + 1950 + '').reverse();
   return (
-    <div className={`page-header ${isDarkMode ? 'dark' : 'light'} ${styles.roundsHeader}`}>
+    <div className={`page-header ${isDarkMode ? 'dark' : 'light'} ${windowWidth > windowWidthThreshold ? styles.roundsHeader : styles.roundsHeaderNarrow}`}>
       {scheduleYear !== 'current' ? scheduleYear : (schedule && schedule.length ? schedule[0].season : '')} Schedule:
       <span className={styles.layoutSelect}>
-        <span className="x-large-font">Select year:</span>
+        <span className={windowWidth < windowWidthThreshold ? "medium-font" : "x-large-font"}>Select year:</span>
         <select name="years" id="years" onChange={(event) => changeScheduleYear(event.target.value)} defaultValue={scheduleYear}>
           {years.map((year, i) => <option key={i} value={year}>{year}</option>)}
         </select>
@@ -28,7 +28,10 @@ export const ScheduleHeader: React.FC<ScheduleHeaderProps> = ({ scheduleYear, ch
             list
           </span>
         </button>}
-        {!useCardLayout && <button onClick={() => setUseCardLayout(true)}>
+        {!useCardLayout && <button onClick={() => {
+          setUseCardLayout(true);
+          window.scrollTo(0, 0);
+        }}>
           <span className="material-icons">
             dashboard
           </span>

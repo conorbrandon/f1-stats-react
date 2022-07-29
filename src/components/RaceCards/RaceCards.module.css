@@ -7,6 +7,9 @@
   position: relative;
   margin: 5px;
 }
+.raceCardNarrow {
+  flex: 0 1 26%;
+}
 .raceCarddark {
   border: solid 1px white;
 }
@@ -32,9 +35,9 @@
 .raceCardRoundCounter {
   position: absolute;
   top: 0;
-  left: 89%;
-  font-size: x-large;
-  width: 10%;
+  left: 86%;
+  font-size: large;
+  width: 13%;
   height: auto;
   padding: 1px;
   text-align: center;

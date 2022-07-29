@@ -12,6 +12,8 @@ https://stackoverflow.com/questions/47723996/table-with-fixed-thead-and-scrollab
 cumulative standings endpoint:
 https://ergast.com/api/f1/1955/drivers/ascari/results.json?limit=1000
 
+https://docs.mapbox.com/api/maps/styles/#mapbox-styles
+
 
 function getRandomColor(): string {
   var letters = '0123456789ABCDEF'.split('');

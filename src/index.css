@@ -28,7 +28,7 @@ html, body {
 
 ::-webkit-scrollbar {
   -webkit-appearance: none;
-  width: 5px;
+  width: 2px;
 }
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
@@ -69,6 +69,9 @@ button {
 .mapboxgl-popup-content, .mapboxgl-popup-close-button {
   color: black;
   border-radius: 10px;
+}
+.mapboxgl-popup-content {
+  background-color: transparent !important;
 }
 .mapboxgl-ctrl-bottom-right {
   display: none;
@@ -274,13 +277,8 @@ a:visited {
   font-size: x-small;
 }
 .recharts-responsive-container {
-  background-color: white;
   margin-top: 1rem;
   margin-bottom: 1rem;
-}
-.VictoryContainer {
-  background-color: white;
-  margin-top: 1rem;
 }
 
 .Collapsible__trigger:hover {

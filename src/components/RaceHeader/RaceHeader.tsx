@@ -101,7 +101,7 @@ export const RaceHeader = ({ }) => {
           {qualifying && <span>
             <Link to="qualifying">Qualifying</Link>
           </span>}
-          {race?.Results?.length && <><span>
+          {race?.Results?.length && qualifying && <><span>
             <Link to="laptimes">Lap/Position Trace</Link>
           </span>
           <span>

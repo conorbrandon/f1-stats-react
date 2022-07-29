@@ -5176,22 +5176,22 @@ export const MockNextRace: ErgastRaceResponse = {
               "country": "Austria"
             }
           },
-          "date": "2022-07-10",
+          "date": "2022-09-10",
           "time": "13:00:00Z",
           "FirstPractice": {
-            "date": "2022-07-08",
+            "date": "2022-09-08",
             "time": "11:30:00Z"
           },
           "Qualifying": {
-            "date": "2022-07-08",
+            "date": "2022-09-08",
             "time": "15:00:00Z"
           },
           "SecondPractice": {
-            "date": "2022-07-09",
+            "date": "2022-09-09",
             "time": "10:30:00Z"
           },
           "Sprint": {
-            "date": "2022-07-09",
+            "date": "2022-09-09",
             "time": "14:30:00Z"
           }
         }

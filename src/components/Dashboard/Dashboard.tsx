@@ -15,7 +15,7 @@ import { UseReduxAsyncStatus } from "../UseReduxAsyncStatuses/UseReduxAsyncStatu
 import styles from "./Dashboard.module.css";
 
 export const Dashboard = ({ }) => {
-  const { isDarkMode } = useOutletContext<AppOutletContext>();
+  const { isDarkMode, windowWidth, windowWidthThreshold } = useOutletContext<AppOutletContext>();
   const [nextRace, setNextRace] = useState<ErgastRace>();
   const [nextRaceTimeZone, setNextRaceTimeZone] = useState<string>();
   const [previousRace, setPreviousRace] = useState<ErgastRace>();
@@ -63,7 +63,7 @@ export const Dashboard = ({ }) => {
         Next Round
       </span>
     </div>
-    {isNextRaceActive ? (nextRace ? <RaceSummaryCard race={nextRace} timeZone={nextRaceTimeZone || ''} useBuiltInHeader isUpcomingRace /> : <><LoadingSpinner />Next race loading...</>) : <></>}
+    {isNextRaceActive ? (nextRace ? <RaceSummaryCard horizontalLayout={windowWidth < windowWidthThreshold} race={nextRace} timeZone={nextRaceTimeZone || ''} useBuiltInHeader isUpcomingRace /> : <><LoadingSpinner />Next race loading...</>) : <></>}
     {!isNextRaceActive ? (previousRace && previousRaceResult ? <RaceSummaryCard race={{...previousRaceResult, ...previousRace}} timeZone={previousRaceTimeZone || ''} useBuiltInHeader useBuiltInResults /> : <><LoadingSpinner />Previous race loading...</>) : <></>}
     </>;
 
@@ -77,12 +77,12 @@ export const Dashboard = ({ }) => {
           </span>
         </span>
       </div>
-      <div className={`page-content ${isDarkMode ? 'dark' : 'light'} ${styles.dashboardGridLayout}`}>
-        <div style={{ gridColumn: 2, gridRow: 1 }}>
+      <div className={`page-content ${isDarkMode ? 'dark' : 'light'} ${windowWidth > windowWidthThreshold ? styles.dashboardGridLayout : styles.dashboardColumnLayout}`}>
+        <div style={windowWidth > windowWidthThreshold ? { gridColumn: 2, gridRow: 1 } : { width: '100%' }}>
           {raceSummaryCardContent}
         </div>
-        <div style={{ gridColumn: 3, gridRow: 1 }}>
-          <div className="displayFlex flexDirCol" style={{ alignItems: 'flex-end' }}>
+        <div style={windowWidth > windowWidthThreshold ? { gridColumn: 3, gridRow: 1, width: '100%' } : { width: '100%', marginTop: '1rem' }}>
+          <div className="displayFlex flexDirCol" style={windowWidth > windowWidthThreshold ? { alignItems: 'flex-end' } : { alignItems: 'center' }}>
             <UseReduxAsyncStatus
               status={driverStandingsStatus}
               error={driverStandingsError}

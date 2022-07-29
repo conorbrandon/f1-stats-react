@@ -5,6 +5,10 @@
 .paddedLink a {
   padding-left: 20px;
 }
+.paddedLinkNarrow a {
+  font-size: small;
+  padding-left: 10px;
+}
 .smallglowingF1Text {
   text-shadow: 0 0 5px red/*, 0 0 30px red */;
 }
@@ -24,4 +28,13 @@
 }
 .darkModeButton {
   color: black
+}
+
+.smallWindowWidthWarning {
+  color: gold;
+  cursor: pointer;
+  position: absolute;
+  right: 3rem;
+  top: 1rem;
+  font-size: xx-large;
 }

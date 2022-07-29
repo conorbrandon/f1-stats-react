@@ -9,10 +9,17 @@
   grid-template-columns: 5% 35% 55% 5%;
   grid-template-rows: auto;
 }
+.dashboardColumnLayout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .tabContainer {
   justify-content: space-evenly;
   margin-bottom: 1rem;
+  width: 90%;
+  margin-left: 5%;
 }
 .tabContainerdark {
   border-bottom: solid gray 1px;
@@ -21,7 +28,7 @@
   border-bottom: solid rgb(171, 171, 171) 1px;
 }
 .tab {
-  width: 50%;
+  width: 40%;
   text-align: center;
   cursor: pointer;
 }

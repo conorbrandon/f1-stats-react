@@ -49,10 +49,15 @@ const customStyles = (isDarkMode: boolean): StylesConfig<DriverIDElement> => {
       return {
         ...provided,
         border: `solid 5px ${state.data.driverColor}`,
-        color: isDarkMode ? 'white' : 'black',
         backgroundColor: isDarkMode ? 'black' : 'white',
         fontSize: 'small',
         padding: 0
+      }
+    },
+    multiValueLabel: (provided: any, state: any) => {
+      return {
+        ...provided,
+        color: isDarkMode ? 'white' : 'black'
       }
     },
     menuList: (provided: any, state: any) => {
@@ -74,7 +79,7 @@ const customStyles = (isDarkMode: boolean): StylesConfig<DriverIDElement> => {
     valueContainer: (provided: any, state: any) => {
       return {
         ...provided,
-        backgroundColor: isDarkMode ? 'black' : 'white',
+        backgroundColor: isDarkMode ? 'black' : 'white'
       }
     },
     placeholder: (provided: any, state: any) => {
@@ -84,7 +89,13 @@ const customStyles = (isDarkMode: boolean): StylesConfig<DriverIDElement> => {
       }
     },
     // i.e. display: none;
-    indicatorSeparator: () => ({})
+    indicatorSeparator: () => ({}),
+    indicatorsContainer: (provided: any, state: any) => {
+      return {
+        ...provided,
+        backgroundColor: isDarkMode ? 'black' : 'white',
+      }
+    },
   }
 };
 
@@ -253,7 +264,7 @@ export const RaceLapTimes = ({ }) => {
       {!selectFirstLoad && <span><button onClick={selectAllDrivers}>Select all drivers</button></span>}
     </span>
 
-    <Select placeholder={'Select drivers...'} options={driverIDSet} isMulti isSearchable onChange={onChange} styles={customStyles(isDarkMode)} value={selectFirstLoad ? [] : driverIDSet.filter(driver => driver.isSelected)} />
+    <Select placeholder={'Search drivers...'} options={driverIDSet} isMulti isSearchable onChange={onChange} styles={customStyles(isDarkMode)} value={selectFirstLoad ? [] : driverIDSet.filter(driver => driver.isSelected)} />
 
     {(useLapType === 'all' || useLapType === 'avg') && lapTimes && !showPositions && driverIDSet.find(driver => driver.isSelected) &&
       <GenericTrace driverIDSet={driverIDSet} grid

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Collapsible from "react-collapsible";
 import { ErgastRace } from "../../../model/ErgastRace";
 import { Mapbox } from "../../Mapbox/Mapbox";
@@ -8,7 +8,9 @@ import { useOutletContext } from "react-router-dom";
 import { AppOutletContext } from "../../../App";
 
 export const CollapsibleMapbox: React.FC<{race: ErgastRace}> = ({ race }) => {
-  const { isDarkMode } = useOutletContext<AppOutletContext>();
+  const { isDarkMode, windowWidth, windowWidthThreshold } = useOutletContext<AppOutletContext>();
+  const [lessThanWindowWidthThreshold, setLessThanWindowWidthThreshold] = useState(false);
+  useEffect(() => setLessThanWindowWidthThreshold(windowWidth < windowWidthThreshold), [windowWidth]);
   const [myIsOpen, setMyIsOpen] = useState(true);
   return (
       <div className={styles.collapsibleMapContainer}>
@@ -25,7 +27,7 @@ export const CollapsibleMapbox: React.FC<{race: ErgastRace}> = ({ race }) => {
           }
           handleTriggerClick={() => { setMyIsOpen(!myIsOpen); }}
           >
-          <Mapbox races={[race]} mapType="square" zoomParam={5} />
+          <Mapbox races={[race]} mapType={lessThanWindowWidthThreshold ? 'smallVertical' : "square"} zoomParam={5} />
         </Collapsible>
       </div>
   );

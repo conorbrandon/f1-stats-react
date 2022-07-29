@@ -2,16 +2,20 @@
   /* margin: 2% auto; */
   border: solid 3px gray;
 }
+
 .mapdark {
   border: solid white 3px;
 }
+
 .maplight {
   border: solid black 3px;
 }
+
 .horizontal {
   height: 400px;
   width: 50%;
 }
+
 .vertical {
   height: 75vh;
   width: 40%;
@@ -19,11 +23,30 @@
   margin-top: 1%;
   position: fixed;
 }
+
 .square {
   height: 400px;
   width: 400px;
 }
-.smallSquare {
+
+.smallVertical {
   height: 300px;
   width: 200px;
+}
+
+.smallSquare {
+  height: 200px;
+  width: 200px;
+}
+
+.popupdark {
+  background-color: black;
+  color: white;
+  border-radius: 12px;
+}
+
+.popuplight {
+  background-color: white;
+  color: black;
+  border-radius: 12px;
 }

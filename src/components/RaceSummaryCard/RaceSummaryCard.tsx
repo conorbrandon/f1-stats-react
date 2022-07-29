@@ -24,14 +24,14 @@ export const RaceSummaryCard: React.FC<RaceSummaryCardProps> = ({ race, horizont
   };
   return (
     <div className={horizontalLayout ? styles.horizontalLayout : ''}>
-      {/* built-in header */}
-      {useBuiltInHeader && <span className="material-icons-align">
-        <Link className="material-icons-align" to={`/${race.season}/${race.round}`}>
-          <span className="large-font">{race.season} {race.raceName} (Round {race.round})</span>
-          <img className={styles.dashboardImg} src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
-        </Link>
-      </span>}
-      <div style={{ width: horizontalLayout ? '30%' : '' }}>
+      <div style={{ width: horizontalLayout ? '50%' : '' }}>
+        {/* built-in header */}
+        {useBuiltInHeader && <span className="displayFlex flexJustContentCenter">
+          <Link className="material-icons-align" to={`/${race.season}/${race.round}`}>
+            <span className="x-large-font">{race.season} {race.raceName} (Round {race.round})</span>
+            <img className={styles.dashboardImg} src={FlagHelper.getFlag(race.Circuit.Location.country)} alt={`${race.Circuit.Location.country} flag`} />
+          </Link>
+        </span>}
         {/* isUpcomingRace */}
         {isUpcomingRace && <div style={{ fontSize: '0.8rem', marginTop: '1rem', marginBottom: '1rem', border: 'solid 3px green', borderRadius: '10px', padding: '0.5rem' }}>
           The race is coming up! Check back afterwards for results and detailed analysis.
